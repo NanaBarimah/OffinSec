@@ -1,68 +1,234 @@
+<!--
+
+    Created By: Nii Codbit
+    Date: 30/03/13
+
+    empty container with the base layout of the dashboard.
+    Created this so that we can have something to play around layouts with.
+    Copy this whenever you want to create a new page.
+
+    
+-->
+<!doctype html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="css/vendor/bootstrap.min.css" />
-    <link rel="stylesheet" href="font/font-awesome-4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/main.css" />
-    <style>
-        .notification{
-            border-radius: 50%;
-            padding: 4px;
-            margin-left: -8px;
-            margin-bottom: -30px;
-            display: inline-block;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <title>{{$page_title}} | GUARD ATTENDANCE MANAGEMENT SYSTEM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Guard attendance management system. Allows security agencies to track the attendance of their guards."
+        name="description" />
+    <meta content="Codbit Developers" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App css -->
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css" />
+
+    <!--Custom css-->
+    @yield('styles')
+
+    <script src="{{asset('assets/js/modernizr.min.js')}}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Rubik" rel="stylesheet">
+
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div>
-            <div class="navbar-wrapper">
-                <div class="navbar-toggle">
-                    <button type="button" class="navbar-toggler">
-                        <span class="navbar-toggler-bar bar1"></span>
-                        <span class="navbar-toggler-bar bar2"></span>
-                        <span class="navbar-toggler-bar bar3"></span>
-                    </button>
+
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+
+                <!-- Logo container-->
+                <div class="logo">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/offin-logo.png" alt="" height="48" class="logo-small">
+                        <img src="assets/images/offin-logo.png" alt="" height="42" class="logo-large">
+                    </a>
+
                 </div>
-                <span class="navbar-brand">Page Title</span>
+                <!-- End Logo container-->
+
+
+                <div class="menu-extras topbar-custom">
+
+                    <ul class="list-unstyled topbar-right-menu float-right mb-0">
+
+                        <li class="menu-item">
+                            <!-- Mobile menu toggle-->
+                            <a class="navbar-toggle nav-link">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                            <!-- End mobile menu toggle-->
+                        </li>
+                        <li class="dropdown notification-list">
+                            <a class="nav-link dropdown-toggle waves-effect nav-user" data-toggle="dropdown" href="#"
+                                role="button" aria-haspopup="false" aria-expanded="false">
+                                <img class="rounded-circle" height="30" style="width: 30px" avatar="{{ucwords(Auth::user()->firstname.' '.Auth::user()->lastname)}}" />
+                                <span class="ml-1 pro-user-name">
+                                    {{ucwords(Auth::user()->firstname.' '.Auth::user()->lastname)}} <i class="mdi mdi-chevron-down"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown">
+
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fi-head"></i> <span>My Account</span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fi-lock"></i> <span>Lock Screen</span>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fi-power"></i> <span>Logout</span>
+                                </a>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end menu-extras -->
+
+                <div class="clearfix"></div>
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end topbar-main -->
+
+        <div class="navbar-custom">
+            <div class="container-fluid">
+                <div id="navigation">
+                    <!-- Navigation Menu-->
+                    <ul class="navigation-menu">
+
+                        <li>
+                            <a href="#" class="active">Dashboard</a>
+                        </li>
+
+                        <li class="has-submenu">
+                            <a href="#">Guards</a>
+                            <ul class="submenu">
+                                <li><a href="#">View Guards</a></li>
+                                <li><a href="#">New Guard</a></li>
+                                <li><a href="#">Guard Reports</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="">
+                            <a href="#">Clients</a>
+                        </li>
+
+                        <li class="has-submenu">
+                            <a href="#">Attendance</a>
+                            <ul class="submenu">
+                                <li><a href="#">View Attendance</a></li>
+                                <li><a href="#">Mark Attendance</a></li>
+                                <li><a href="#">Permissions</a></li>
+                                <li><a href="#">Attendance Reports</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu">
+                            <a href="#">Deductions</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="#">Record Deduction</a>
+                                </li>
+                                <li>
+                                    <a href="#">View Guard Deductions</a>
+                                </li>
+                                <li>
+                                    <a href="#">Deduction Types</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu">
+                            <a href="#">Reports</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="#">New Report</a>
+                                </li>
+                                <li>
+                                    <a href="#">View Reports</a>
+                                </li>
+                                <li>
+                                    <a href="#">Report Templates</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <button class="navbar-toggler ml-auto">
-            <span class="navbar-toggler-icon" data-toggle="collapse" data-target="#navbarMenu"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-bell">
-                            <span class="badge badge-info notification">11</span>
-                        </i>
-                        
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="round" width="30" height="30" avatar="Jon Germain" />
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    </header>
+    <!-- End Navigation Bar-->
 
-    <script src="js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="js/vendor/popper.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+
+    <div class="wrapper">
+        <div class="container-fluid">
+
+            <!-- Page-Title -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">OSAMS</a></li>
+                                <li class="breadcrumb-item active">{{$page_title}}</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">{{$page_title}}</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title end breadcrumb -->
+
+            <!--
+                content you want comes here
+            -->
+            @yield('content')
+            
+        </div> <!-- end container -->
+    </div>
+    <!-- end wrapper -->
+    @yield('modals')
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    2019 &copy; OSAMS. - Made with ❤️ By <a href="http://codbitgh.com">Codbit Ghana Limited</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+
+    <!-- jQuery  -->
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/js/waves.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
+    <script src="{{asset('assets/js/avatar.js')}}"></script>
+    <!-- App js -->
+    <script src="{{asset('assets/js/jquery.core.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.app.js')}}"></script>
+
+    @yield('scripts')
+
 </body>
+
+</html>

@@ -23,3 +23,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users/add', 'UserController@create')->name('user.add');
 Route::post('/users/activate', 'UserController@is_active')->name('user.active');
 Route::get('/users', 'UserController@index')->name('user.index');
+Route::get('/clients', 'ClientController@index')->name('clients');

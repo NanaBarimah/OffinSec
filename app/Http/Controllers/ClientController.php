@@ -16,7 +16,7 @@ class ClientController extends Controller
     {
         $clients = Client::with('sites')->get();
 
-        return view('all-clients')->with('clients', $clients);
+        return view('clients')->with('clients', $clients);
     }
 
     public function getClientSites()
