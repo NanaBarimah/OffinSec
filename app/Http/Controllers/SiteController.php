@@ -41,7 +41,8 @@ class SiteController extends Controller
             'client_id' => 'required',
             'name' => 'required',
             'location' => 'required',
-            'phone_number' => 'required' 
+            'phone_number' => 'required',
+            'guard_id' => 'required'
         ]);
         
         if(Site::where([['name', $request->name], ['client_id', $request->client_id]])->get()->count() > 0){
@@ -57,7 +58,7 @@ class SiteController extends Controller
         $site->name = $request->name;
         $site->location = $request->location;
         $site->phone_number = $request->phone_number;
-
+        $site->guard_id = $request->guard_id;
         if($site->save()){
             return response()->json([
                 'data' => $site,

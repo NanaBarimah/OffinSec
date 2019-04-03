@@ -9,6 +9,8 @@ class Duty_Roster extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'duty_rosters';
+
     protected $fillable = [
         'site_id', 'name'
     ];
@@ -20,6 +22,6 @@ class Duty_Roster extends Model
 
     public function guards()
     {
-        return $this->belongsToMany('App\Guard', 'guard_roster')->withPivot('shift_type_id', 'day')->withTimestamps();
+        return $this->belongsToMany('App\Guard', 'guard_roster', 'duty_roster_id', 'guard_id')->withPivot('shift_type_id', 'day')->withTimestamps();
     }
 }

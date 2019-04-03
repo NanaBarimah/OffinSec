@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Guard;
+use App\Client;
+use App\User;
+use App\Deduction;
+use Carbon;
 
 class HomeController extends Controller
 {
@@ -23,6 +28,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $guards = Guard::count();
+
+        $clients = Client::count();
+
+        $users = User::count();
+
+        $today = Carbon\Carbon::today();
+        $deductions = Deduction::whereBetween('created_at', [$today->startOfMonth(), $today->endOfMonth()])->count();
+
+        return view('home')
+            ->with('guards', $guards)
+            ->with('clients', $clients)
+            ->with('users', $users)
+            ->with('deductions', $deductions);
     }
 }

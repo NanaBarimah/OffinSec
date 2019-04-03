@@ -21,13 +21,15 @@
     <meta content="Codbit Developers" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!--Custom css-->
+    @yield('styles')
+
+
     <!-- App css -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css" />
 
-    <!--Custom css-->
-    @yield('styles')
 
     <script src="{{asset('assets/js/modernizr.min.js')}}"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Rubik" rel="stylesheet">
@@ -44,8 +46,8 @@
                 <!-- Logo container-->
                 <div class="logo">
                     <a href="index.html" class="logo">
-                        <img src="assets/images/offin-logo.png" alt="" height="48" class="logo-small">
-                        <img src="assets/images/offin-logo.png" alt="" height="42" class="logo-large">
+                        <img src="{{asset('assets/images/offin-logo.png')}}" alt="" height="48" class="logo-small">
+                        <img src="{{asset('assets/images/offin-logo.png')}}" alt="" height="42" class="logo-large">
                     </a>
 
                 </div>
@@ -223,11 +225,14 @@
     <script src="{{asset('assets/js/waves.js')}}"></script>
     <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
     <script src="{{asset('assets/js/avatar.js')}}"></script>
+
+    
+    @yield('scripts')
+
     <!-- App js -->
     <script src="{{asset('assets/js/jquery.core.js')}}"></script>
     <script src="{{asset('assets/js/jquery.app.js')}}"></script>
 
-    @yield('scripts')
 
 </body>
 
