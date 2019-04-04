@@ -15,10 +15,10 @@ class CreateFingerprintsTable extends Migration
     {
         Schema::create('fingerprints', function (Blueprint $table) {
             $table->string('guard_id')->primary();
-            $table->string('RTB64');
-            $table->string('LTB64');
-            $table->string('RTISO');
-            $table->string('LTISO');
+            $table->text('RTB64');
+            $table->text('LTB64');
+            $table->text('RTISO');
+            $table->text('LTISO');
             $table->timestamps();
             $table->softDeletes();
 

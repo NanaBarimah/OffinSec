@@ -7,6 +7,8 @@ use App\Fingerprint;
 use App\Guarantor;
 use Illuminate\Http\Request;
 
+use Utils;
+
 class GuardController extends Controller
 {
     /**
@@ -61,9 +63,26 @@ class GuardController extends Controller
             'emergency_contact' => 'required|string',
             'photo' => 'required|string'
         ]);
+        
+        if(Guard::where('national_id', $request->national_id)->get()->count() > 0){
+            return response()->json([
+                'error' => $result,
+                'message' => 'National ID number already exists'
+            ]);
+        }
+
+        if(Guard::where('SSNIT', $request->SSNIT)->get()->count() > 0){
+            return response()->json([
+                'error' => $result,
+                'message' => 'SSNIT number already exists'
+            ]);
+        }
 
         $guard = new Guard();
-
+        
+        $guard_id = md5(microtime().$request->firstname);
+        $guard_id = substr($guard_id, 0, 18);
+        $guard->id = $guard_id;
         $guard->firstname = $request->firstname;
         $guard->lastname = $request->lastname;
         $guard->dob = $request->dob;

@@ -123,7 +123,7 @@
         <h4 class="custom-modal-title">New Client</h4>
         <div class="custom-modal-text">
             <form class="form-horizontal" action="#" id="new_client">
-
+                @csrf
                 <div class="form-row mb-4">
                     <div class="col-md-4 col-sm-12">
                         <label for="name">Client Name</label>

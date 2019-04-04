@@ -17,7 +17,7 @@ class Fingerprint extends Model
         'guard_id', 'RTB64', 'LTB64', 'RTISO', 'LTISO'
     ];
 
-    public function guard()
+    public function owner_guard()
     {
         return $this->belongsTo('App\Guard');
     }

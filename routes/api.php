@@ -21,3 +21,4 @@ Route::put('users/activate', 'UserController@is_active');
 
 Route::post('/client/add', 'ClientController@store')->name('client.add');
 Route::post('/sites/add', 'SiteController@store')->name('site.add');
+Route::post('/guard/add', 'GuardController@store')->name('guard.add');

@@ -58,7 +58,9 @@ class UserController extends Controller
 
         $user = new User();
         
-        $user->id = md5($request->username.microtime());
+        $user_id = md5($request->username.microtime());
+        $user_id = substr($user_id, 0, 18);
+        $user->id = $user_id;
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
         $user->username = $request->username;

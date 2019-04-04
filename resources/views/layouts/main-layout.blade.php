@@ -127,7 +127,7 @@
                         </li>
 
                         <li class="">
-                            <a href="#">Clients</a>
+                            <a href="/clients">Clients</a>
                         </li>
 
                         <li class="has-submenu">

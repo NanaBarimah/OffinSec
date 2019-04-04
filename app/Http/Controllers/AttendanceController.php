@@ -105,4 +105,9 @@ class AttendanceController extends Controller
     {
         //
     }
+
+    public function view()
+    {
+        return view('attendance');
+    }
 }
