@@ -16,7 +16,7 @@
 <div class="row mb-4">
                 <div class="col-sm-4">
                     <button href="#custom-modal" class="btn btn-custom waves-effect w-md mr-2 mb-2" data-animation="contentscale"
-                        data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a"><i class="mdi mdi-plus-circle"></i>
+                        data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a">
                         New Client</button>
                 </div>
                 <div class="col-sm-8">
@@ -47,6 +47,14 @@
 
 
             <div class="row">
+                @if($clients->count() < 1)
+                    <div class="jumbotron p-4">
+                        <h1 class="display-4">No clients yet :( </h1>
+                        <p class="lead">You haven't registered any clients yet. Add a new client to view and manage.</p>
+                        <hr class="my-4">
+                        <p>Simply use the "Add New" button to begin registering a new client.</p>
+                    </div>
+                @endif
                 @foreach($clients as $client)
                 <div class="col-xl-4">
                     <div class="card-box project-box">
@@ -82,8 +90,9 @@
                             <label class="mr-3">Guards :</label>
                             <?php $count = 1; ?>
                             @foreach($client->guards as $guard)
-                                <?php if($count > 5){break;}?>
-
+                                @if($count > 5)
+                                    @break;
+                                @endif
                                 <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$guard->firstname.' '.$guard->lastname}}">
                                     <img src="{{$guard->photo == '' || $guard->photo == null ? asset('assets/images/guards/'.$guard->photo) : asset('assets/images/avatar.jpg')}}" onerror="this.src={{asset('assets/images/avatar.jpg')}}" class="rounded-circle thumb-sm" alt="friend" />
                                 </a> 

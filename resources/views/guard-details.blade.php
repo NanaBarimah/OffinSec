@@ -1,0 +1,1 @@
+@extends('layouts.main-layout', ['page_title' => ucwords($guard->firstname.' '.$guard->lastname)])

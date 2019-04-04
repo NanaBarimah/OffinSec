@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Guard;
 use App\Fingerprint;
 use App\Guarantor;
+
+use App\Utils;
+
 use Illuminate\Http\Request;
 
 class GuardController extends Controller
@@ -16,9 +19,12 @@ class GuardController extends Controller
      */
     public function index()
     {
-        $guards = Guard::all();
+        $guards = Guard::with('duty_rosters', 'duty_rosters.site')->paginate(15);
 
-        return view('all-guard')->with('guards', $guards);
+        return view('guards')->with('guards', $guards);
+        /*return response()->json([
+            'guards' => $guards
+        ]);*/
     }
 
     public function getGuardGuarantor(Request $request)
@@ -35,7 +41,7 @@ class GuardController extends Controller
      */
     public function create()
     {
-        return view('add-guard');
+        return view('guard-add');
     }
 
     /**
@@ -58,15 +64,14 @@ class GuardController extends Controller
             'national_id' => 'required|string',
             'phone_number' => 'required|string',
             'SSNIT' => 'required|string',
-            'emergency_contact' => 'required|string',
-            'photo' => 'required|string'
+            'emergency_contact' => 'required|string'
         ]);
 
         $guard = new Guard();
 
         $guard->firstname = $request->firstname;
         $guard->lastname = $request->lastname;
-        $guard->dob = $request->dob;
+        $guard->dob = date('Y-m-d', strtotime($request->dob));
         $guard->gender = $request->gender;
         $guard->marital_status = $request->marital_status;
         $guard->occupation = $request->occupation;
@@ -75,9 +80,18 @@ class GuardController extends Controller
         $guard->phone_number = $request->phone_number;
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
+        $guard->id = md5(microtime().$request->firstname);
+        
+        if($request->welfare == 'on'){
+            $request->welfare = 1;
+        }else if($request->welfare == 'off'){
+            $request->welfare = 0;
+        }
 
-        if ($request->hasFile('image')){
-            $fileName        = Utils::saveImage($request, 'image', 'img/guard');
+        $guard->welfare = $request->welfare;
+
+        if($request->image != null){
+            $fileName        = Utils::saveBase64Image($request->image, microtime().'-'.$guard->firstname, 'assets/images/guards/');
             $guard->photo = $fileName;
          }else{
             return response()->json(["error" => true,"message" => 'no-image']);
@@ -88,33 +102,52 @@ class GuardController extends Controller
 
              $fingerprint->guard_id = $guard->id;
              $fingerprint->RTB64 = $request->RTB64;
-             $fingerprint->LTB64 = $request->LTB64;
-             $fingerprint->RTISO = $request->RTISO;
-             $fingerprint->LTISO = $request->LTISO;
+             $fingerprint->LTB64 = $request->RTB64;
+             $fingerprint->RTISO = $request->RTB64;
+             $fingerprint->LTISO = $request->RTB64;
 
              if($fingerprint->save()){
-                $guarantor = new Guarantor();
+                 $temp_guarantors = array();
 
-                $guarantor->guard_id = $guard->id;
-                $guarantor->firstname = $request->firstname;
-                $guarantor->lastname = $request->lastname;
-                $guarantor->dob = $request->dob;
-                $guarantor->gender = $request->gender;
-                $guarantor->occupation = $request->occupation;
-                $guarantor->address = $request->address;
-                $guarantor->phone_number = $request->phone_number;
-                $guarantor->national_id = $request->national_id;
+                 $temp_guarantors = json_decode($request->guarantors);
+                 
+                 foreach($temp_guarantors as $temp){
+                    $guarantor = new Guarantor();
 
-                if($guarantor->save()){
-                    $result = false;
-                }
+                    $guarantor->guard_id = $guard->id;
+                    $guarantor->firstname = $temp->firstname;
+                    $guarantor->lastname = $temp->lastname;
+                    $guarantor->dob = date('Y-m-d', strtotime($temp->dob));
+                    $guarantor->gender = $temp->gender;
+                    $guarantor->occupation = $temp->occupation;
+                    $guarantor->address = $temp->address;
+                    $guarantor->phone_number = $temp->phone_number;
+                    $guarantor->national_id = $temp->national_id;
+
+                    if(!$guarantor->save()){
+                        return response()->json([
+                            'error' => true,
+                            'message' => 'Error trying to save a guarantor'
+                        ]);
+                    }
+                 }
+             }else{
+                 return response()->json([
+                    'error' => true,
+                    'message' => 'Could not save fingerprint data'
+                 ]);
              }
+
+             return response()->json([
+                'error' => false,
+                'data' => $guard,
+                'message' => 'Guard created successfully'
+              ]);
          }
 
          return response()->json([
-            'error' => $result,
-            'data' => $guard,
-            'message' => !$result ? 'Guard created successfully' : 'Error creating guard'
+            'error' => true,
+            'message' => 'Error creating guard'
           ]);
     }
 
@@ -221,5 +254,11 @@ class GuardController extends Controller
     public function destroy(Guard $guard)
     {
         //
+    }
+
+    public function view(Request $request){
+        $guard = Guard::where('id', $request->id)->first();
+
+        return view('guard-details')->with('guard', $guard);
     }
 }
