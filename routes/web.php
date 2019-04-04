@@ -25,5 +25,11 @@ Route::post('/users/activate', 'UserController@is_active')->name('user.active');
 Route::get('/users', 'UserController@index')->name('user.index');
 Route::get('/clients', 'ClientController@index')->name('clients');
 Route::get('/client/{id}', 'ClientController@view')->name('client');
+<<<<<<< HEAD
 
 Route::get('/attendance', 'AttendanceController@view')->name('view.attendance');
+=======
+Route::get('/guards', 'GuardController@index')->name('guards');
+Route::get('/guards/add', 'GuardController@create')->name('guard.add');
+Route::get('/guard/{id}', 'GuardController@view')->name('guard.view');
+>>>>>>> 651058257d09af57831ca9cb07b414bbec8805aa

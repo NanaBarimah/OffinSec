@@ -13,7 +13,7 @@ class Guarantor extends Model
         'guard_id', 'firstname', 'lastname', 'dob', 'gender', 'occupation', 'address', 'phone_number', 'national_id'
     ];
 
-    public function guard()
+    public function owner_guard()
     {
         return $this->belongsTo('App\Guard');
     }

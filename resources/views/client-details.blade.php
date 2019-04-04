@@ -334,52 +334,67 @@
             var btn = $(this).find('[type="submit"]');
             var data = $(this).serialize();
 
-            applyLoading(btn)
+            applyLoading(btn);
 
-            $.ajax({
-                url: '/api/sites/add',
-                method: 'POST',
-                data: data,
-                success: function(data){
-                    removeLoading(btn, 'Add Client');
-                    if(data.error){
-                        removeLoading(btn, 'Add Client');
-                     
-                        $.toast({
-                            text : data.message,
-                            heading : 'Error',
-                            position: 'top-right',
-                            showHideTransition : 'slide', 
-                            bgColor: '#d9534f'
-                        });
-                    }else{
-                        $('#new_site_form').trigger('reset');
-                        $.toast({
-                            text : data.message,
-                            heading : 'Done',
-                            position: 'top-right',
-                            bgColor : '#5cb85c',
-                            showHideTransition : 'slide'
-                        });
-
-                        $('.inbox-widget').append('<a href="#">'+
-                        '<div class="inbox-item"><p class="inbox-item-author">'+data.data.name+'</p>'+
-                        '<p class="inbox-item-text">'+data.data.location+'</p><p class="inbox-item-date m-t-10">'+
-                        '<button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">'+
-                        'View </button></p></div></a>'); 
-                            
-                    }
-                },
-                error: function(err){
-                    $.toast({
-                            text : 'Network error',
-                            heading : 'Error',
-                            position: 'top-right',
-                            showHideTransition : 'slide', 
-                            bgColor: '#d9534f'
-                        });
+            var error = false;
+            $(this).find('input, select').each(function(){
+                if($(this).val() == '' || $(this).val() == null){
+                    error = true;
+                    $(this).closest('div').append('<p class="text-danger text-small">This field is required</p>');
                 }
-            })
+            });
+
+            if(!error){
+                $('.text-danger').css('display', 'none');
+
+                $.ajax({
+                    url: '/api/sites/add',
+                    method: 'POST',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, 'Add Client');
+                        if(data.error){
+                            removeLoading(btn, 'Add Client');
+                        
+                            $.toast({
+                                text : data.message,
+                                heading : 'Error',
+                                position: 'top-right',
+                                showHideTransition : 'slide', 
+                                bgColor: '#d9534f'
+                            });
+                        }else{
+                            $('#new_site_form').trigger('reset');
+                            $.toast({
+                                text : data.message,
+                                heading : 'Done',
+                                position: 'top-right',
+                                bgColor : '#5cb85c',
+                                showHideTransition : 'slide'
+                            });
+
+                            $('.inbox-widget').append('<a href="#">'+
+                            '<div class="inbox-item"><p class="inbox-item-author">'+data.data.name+'</p>'+
+                            '<p class="inbox-item-text">'+data.data.location+'</p><p class="inbox-item-date m-t-10">'+
+                            '<button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">'+
+                            'View </button></p></div></a>'); 
+                                
+                        }
+                    },
+                    error: function(err){
+                        removeLoading(btn, 'Add Client');
+                        
+                        $.toast({
+                                text : 'Network error',
+                                heading : 'Error',
+                                position: 'top-right',
+                                showHideTransition : 'slide', 
+                                bgColor: '#d9534f'
+                            });
+                    }
+                });
+            }
+            
         })
     </script>
 @endsection
