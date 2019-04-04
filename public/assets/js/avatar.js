@@ -82,3 +82,17 @@
     }
   
   })(window, document);
+
+function applyLoading(element) {
+    e = $(element);
+
+    e.prop('disabled', true);
+    e.html('<div class="lds-css ng-scope"><div style="width:100%;height:100%" class="lds-ball"><div></div></div>');
+}
+
+function removeLoading(element, initialText){
+    e = $(element);
+
+    e.prop('disabled', false);
+    e.html(initialText);
+}

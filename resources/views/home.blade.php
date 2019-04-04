@@ -11,7 +11,7 @@
                                 <div class="card-box mb-0 widget-chart-two">
                                     <div class="widget-chart-two-content">
                                         <p class="text-muted mb-0 mt-2">Guard Count</p>
-                                        <h3 class="">1209</h3>
+                                        <h3 class="">{{ $guards }}</h3>
                                     </div>
 
                                 </div>
@@ -21,7 +21,7 @@
                                 <div class="card-box mb-0 widget-chart-two">
                                     <div class="widget-chart-two-content">
                                         <p class="text-muted mb-0 mt-2">Client Count</p>
-                                        <h3 class="">80</h3>
+                                        <h3 class="">{{ $clients }}</h3>
                                     </div>
 
                                 </div>
@@ -31,7 +31,7 @@
                                 <div class="card-box mb-0 widget-chart-two">
                                     <div class="widget-chart-two-content">
                                         <p class="text-muted mb-0 mt-2">System User Count</p>
-                                        <h3 class="">5</h3>
+                                        <h3 class="">{{ $users }}</h3>
                                     </div>
 
                                 </div>
@@ -41,7 +41,7 @@
                                 <div class="card-box mb-0 widget-chart-two">
                                     <div class="widget-chart-two-content">
                                         <p class="text-muted mb-0 mt-2">Total Monthly Deductions</p>
-                                        <h3 class="">400</h3>
+                                        <h3 class="">{{ $deductions }}</h3>
                                     </div>
 
                                 </div>
