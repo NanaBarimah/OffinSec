@@ -307,7 +307,7 @@
         </button>
         <h4 class="custom-modal-title">New Guarantor</h4>
         <div class="custom-modal-text">
-            <form class="form-horizontal" action="#" id="new_guarantor">
+            <form class="form-horizontal" action="#" id="new_client">
 
                 <div class="form-row mb-4">
                     <div class="col-md-4 col-sm-12">
@@ -389,5 +389,14 @@
             toggleActive: true
         });
 
+        $('#new-guarantor').on('submit', function(){
+
+        });
+        
+        function applyLoading(element, loadingMessage){
+            e = $(element);
+
+            e.attr('disabled', true)
+        }
     </script>
 @endsection
