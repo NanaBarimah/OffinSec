@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Duty_Roster;
+use App\Guard;
+use App\Site;
+use App\Shift_Type;
+
+use DB;
+
 use Illuminate\Http\Request;
 
 class DutyRosterController extends Controller
@@ -49,7 +55,7 @@ class DutyRosterController extends Controller
             //convert array from request to php array
 
             //create array from days
-            $guard_roster_days = array();
+            /*$guard_roster_days = array();
 
             foreach($request->guard_roster as $roster){
                 foreach($roster->days as $day){
@@ -63,7 +69,7 @@ class DutyRosterController extends Controller
             }
 
             //attach
-            $duty_roster->guards()->attach($guard_roster_days);
+            $duty_roster->guards()->attach($guard_roster_days);*/
 
             return \response()->json([
                 'error' => false,
@@ -145,5 +151,53 @@ class DutyRosterController extends Controller
     public function destroy(Duty_Roster $duty_Roster)
     {
         //
+    }
+
+    public function view(Request $request){
+        $site = Site::where('id', $request->id)->first();
+        $guards = Guard::all();
+        $roster = Duty_Roster::where('site_id', $request->id)->where('active', 1)->with('guards')->first();
+        $shift_types = Shift_Type::all();
+
+        if($roster != null){
+            foreach($roster->guards as $guard){
+                $guard->day = $guard->pivot->day;
+            }
+
+            $temp = $roster->guards->groupBy('day');
+
+            $roster->sorted = $temp;
+            $site->roster = $roster;
+        }       
+
+        return view('roster')->with('guards', $guards)->with('site', $site)->with('shift_types', $shift_types);
+
+        /*return response()->json([
+            'site' => $site->roster->sorted['Monday']
+        ]);*/
+    }
+
+    public function add_guard(Request $request){
+        $request->validate([
+            'roster_id' => 'required',
+            'guard_id' => 'required',
+            'days' => 'required',
+            'shift_type_id' => 'required'
+        ]);
+        $duty_roster = Duty_Roster::where('id', $request->roster_id)->first();
+        $days = json_decode($request->days);
+        
+        foreach($days as $day){
+            $duty_roster->guards()->attach($request->guard_id, [
+                'duty_roster_id' => $request->roster_id,
+                'day' => $day,
+                'shift_type_id' => $request->shift_type_id
+            ]);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Guard added to roster'
+        ]);
     }
 }

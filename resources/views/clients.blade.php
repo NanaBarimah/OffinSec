@@ -77,7 +77,7 @@
 
                         <ul class="list-inline">
                             <li class="list-inline-item">
-                                <h3 class="mb-0">{{$client->number_of_guards}}</h3>
+                                <h3 class="mb-0">{{$client->guards->count()}}</h3>
                                 <p class="text-muted">Guards</p>
                             </li>
                             <li class="list-inline-item">
@@ -110,11 +110,21 @@
                             </span>
                             @endif
                         </div>
-
-                        <label class="">Completion : <span class="text-custom">55/85</span></label>
+                        <?php 
+                            $date = Carbon\Carbon::parse($client->start_date);
+                            $complete = Carbon\Carbon::parse($client->end_date);
+                            $isPast = $date->isPast();
+                            if($isPast){
+                                $percentage = ($date->diffInDays(Carbon\Carbon::now())/$complete->diffInDays(Carbon\Carbon::now()))*100;
+                            }else{
+                                $percentage = 0;
+                            }
+                            
+                        ?>
+                        <label class="">Completion : <span class="text-custom">{{$isPast ? $date->diffInDays(Carbon\Carbon::now()) : 0}}/{{$complete->diffInDays(Carbon\Carbon::now())}}</span></label>
                         <div class="progress mb-1" style="height: 7px;">
                             <div class="progress-bar" role="progressbar" aria-valuenow="(55/85)*100" aria-valuemin="0"
-                                aria-valuemax="100" style="width: 80%;">
+                                aria-valuemax="100" style="width: {{$percentage}}%;">
                             </div><!-- /.progress-bar .progress-bar-danger -->
                         </div><!-- /.progress .no-rounded -->
 

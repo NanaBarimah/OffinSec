@@ -6,6 +6,7 @@
     <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
     <style>
         #myOnlineCamera video{width:320px;height:240px;margin:15px;float:left;}
         #myOnlineCamera canvas{width:320px;height:240px;margin:15px;float:left;}
@@ -26,7 +27,11 @@
     </style>
 @endsection
 @section('content')
-            <div class="row">
+            <div class="loader">
+                <div class="sk-rotating-plane"></div>
+            </div>
+
+            <div class="row notLoader" style="display:none;">
                 <div class="col-md-12">
                     <div class="card-box">
                         <h4 class="m-t-0 header-title">Add Guard Wizard</h4>
@@ -632,13 +637,15 @@
                             $(result).each(function ()  {
                                 $(this).css('display', 'block');
                             });
-                            $.toast({
+
+                        $.toast({
                                 text : data.message,
                                 heading : 'Error',
                                 position: 'top-right',
                                 showHideTransition : 'slide', 
                                 bgColor: '#d9534f'
                             });
+                        
                         }else{
                             $('#new_client').trigger('reset');
                             $.toast({
@@ -670,5 +677,11 @@
             });
 
         });
+
+        $(document).ready(function(){
+                $('.loader').css('display', 'none');
+                $('.notLoader').css('display', 'block');
+            }
+        );
     </script>
 @endsection

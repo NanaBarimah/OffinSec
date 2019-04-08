@@ -14,9 +14,13 @@ class Attendance extends Model
     ];
 
 
-    public function guard()
+    public function owner_guard()
     {
-        return $this->belongsTo('App\Guard');
+        return $this->belongsTo('App\Guard', 'guard_id');
+    }
+
+    public function site(){
+        return $this->belongsTo('App\Site');
     }
 
     public function site()

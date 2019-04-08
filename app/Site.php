@@ -23,8 +23,7 @@ class Site extends Model
         return $this->hasOne('App\Duty_Roster');
     }
 
-    public function attendances()
-    {
+    public function attendances(){
         return $this->hasMany('App\Attendance');
     }
 }

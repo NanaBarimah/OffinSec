@@ -30,7 +30,8 @@
                 target: $(this).attr("href"),
                 effect: $(this).attr("data-animation"),
                 overlaySpeed: $(this).attr("data-overlaySpeed"),
-                overlayColor: $(this).attr("data-overlayColor")
+                overlayColor: $(this).attr("data-overlayColor"),
+                fullscreen: $(this).attr("data-fullscreen")
             });
         	e.preventDefault();
         });

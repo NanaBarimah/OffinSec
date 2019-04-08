@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Attendance;
+use App\Guard;
+use App\Site;
+use App\Duty_Roster;
+
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -110,6 +114,25 @@ class AttendanceController extends Controller
 
     public function view()
     {
-        return view('attendance');
+        $guards = Guard::all();
+        $sites = Site::all();
+
+        return view('attendance')->with('guards', json_encode($guards))->with('sites', $sites);
+    }
+
+    public function getAttendanceByDate(Request $request){
+        $request->validate([
+            'date' => 'required',
+            'site' => 'required'
+        ]);
+
+        $attendance = Attendance::with('site', 'owner_guard')
+        ->where('site_id', $request->site)->whereRaw("DATE(date_time) = DATE('$request->date')")->get();
+    
+
+        return response()->json([
+            'error' => false,
+            'data' => $attendance
+        ]);
     }
 }

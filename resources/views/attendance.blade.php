@@ -5,8 +5,18 @@
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet" />
 
 <!--Date Picker-->
+<link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 <link href="{{asset('plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+<link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
+
+<style>
+    #view_attendance{
+        display: none;
+    }
+</style>
+
 @endsection
 @section('content')
 <div class="row">
@@ -50,14 +60,14 @@
                             <div class="form-group col-md-12">
                                 <select class="selectpicker show-tick" data-style="btn-light" title="Select A Site"
                                     id="site" name="site">
-                                    <option>BOST Kpone</option>
-                                    <option>BOST Kumasi</option>
+                                    @foreach($sites as $site)
+                                        <option value="{{$site->id}}">{{$site->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer border-0 pt-0">
-                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success save-event waves-effect waves-light">
+                            <button id="view_attendance" class="btn btn-success waves-effect w-md mr-2 mb-2">
                                 View Attendance
                             </button>
                         </div>
@@ -109,9 +119,37 @@
     <!-- end col-12 -->
 </div> <!-- end row -->
 @endsection
+@section('modals')
+    <div id="custom-modal" class="modal-demo">
+        <button type="button" class="close" onclick="Custombox.close();">
+            <span>&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="custom-modal-title">Attendance</h4>
+        <div class="custom-modal-text">
+            <div class="loader">
+                <div class="sk-rotating-plane"></div>
+            </div>
+            <div class="row col-sm-12" id="attendance_div">
+                <table id="attendance" class="table table-bordered table-striped table-hover dt-responsive nowrap">
+                    <thead>
+                        <th>Guard Name</th>
+                        <th>Time In</th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection
 @section('scripts')
     <!-- Jquery-Ui -->
     <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+
+    <!--Animations-->
+    <script src="{{asset('plugins/custombox/js/custombox.min.js')}}"></script>
+    <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
 
     <!-- SCRIPTS -->
     <script src="{{asset('plugins/moment/moment.js')}}"></script>
@@ -121,37 +159,30 @@
     <script src="{{asset('plugins/autocomplete/jquery.autocomplete.min.js')}}"></script>
     <script src="{{asset('plugins/bootstrap-timepicker/bootstrap-timepicker.js')}}"></script>
 
+    
+    <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
     <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
     <script>
-        var guards = [{
-            'id': 1,
-            'name': 'Masawudu'
-        }, {
-            'id': 2,
-            'name': 'W.O'
-        }, {
-            'id': 1,
-            'name': 'Mr. Luqman'
-        }, {
-            'id': 1,
-            'name': 'Falz'
-        }, {
-            'id': 1,
-            'name': 'Barimah'
-        }, {
-            'id': 1,
-            'name': 'James'
-        },];
+        var string = "{{$guards}}";
+        var attendance_date;
+        
+        var string = string.replace(/&quot;/g, '"');
+        var string = string.replace(/&amp;/g, '&');
+        
+        
+        var guards = JSON.parse(string);
 
-        var formatted = $.map(guards, function (guard) { return { value: guard.name, data: { id: guard.id } }; });
+        var formatted = $.map(guards, function (guard) { return { value: guard.firstname+' '+guard.lastname, data: { id: guard.id } }; });
 
 
         $('#calendar').fullCalendar({
             dayClick: function (day) {
+                attendance_date = day.format();
                 $('#view-attendance').modal('show');
             },
             defaultView: 'month'
-
         });
 
         $('#autocomplete').devbridgeAutocomplete({
@@ -181,5 +212,70 @@
             },
             minuteStep: 1,
         });
+        
+        $('#site').on('change', function(){
+            if($(this).val() != null || $(this).val() == ''){
+                $('#view_attendance').css('display', 'block');
+            }
+        });
+
+        $('#view_attendance').on('click', function(e){
+            e.preventDefault();
+            
+            $('.loader').css('display', 'block');
+            $('#attendance_div').css('display', 'none');
+
+            if(attendance_date == null){
+                $(this).closest('.modal-body').append('<span class="text-danger text-small">Select a date </span>');
+            }else{
+                    var data = 'date='+attendance_date+'&site='+$('#site').val();  
+                    console.log(data);
+                    
+                    $.ajax({
+                            url: '/api/attendance',
+                            method: 'GET',
+                            data: data,
+                            success: function(data){
+                                var attendances = [];
+
+                                var table = $('#attendance').DataTable();
+                                table.clear().draw();
+
+                                for(var i = 0; i < data.data.length; i++){
+                                    table.row.add([
+                                        data.data[i].owner_guard.firstname + ' ' + data.data[i].owner_guard.lastname,
+                                        data.data[i].date_time
+                                    ]).draw();
+                                }
+                                
+                                $('.loader').css('display', 'none');
+                                $('#attendance_div').css('display', 'block');
+                                
+                            },
+                            error: function(error){
+                                console.log(data);
+                            }
+                    });
+              
+                    
+                    Custombox.open({
+                    target: '#custom-modal',
+                    effect: 'push',
+                    overlaySpeed: '100',
+                    overlayColor: '#36404a',
+                    fullscreen: true,
+                    onOpen: function(){
+                        return 0;
+                    },
+                    onClose: function(){
+                        return 0;
+                    },
+                    onComplete: function(){
+                        return 0;
+                    }
+                });
+            }
+        })
+        
     </script>
 @endsection
