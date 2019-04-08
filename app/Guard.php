@@ -29,7 +29,11 @@ class Guard extends Model
 
     public function duty_rosters()
     {
-        return $this->belongsToMany('App\Duty_Roster', 'guard_roster', 'duty_roster_id', 'guard_id')->withPivot('shift_type_id', 'day')->withTimestamps();
+        return $this->belongsToMany('App\Duty_Roster', 'guard_roster', 'duty_roster_id', 'guard_id')
+        ->withPivot('shift_type_id', 'day')
+        ->join('shift_types', 'shift_type_id', '=', 'shift_types.id')
+        ->select('guards.*', 'shift_types.name as pivot_shift_type_name')
+        ->withTimestamps();
     }
     
     public function attendances()

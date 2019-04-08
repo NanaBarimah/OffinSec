@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Shift_Type extends Model
 {
     use SoftDeletes;
+    protected $table = "shift_types";
 
     protected $fillable = [
         'name'

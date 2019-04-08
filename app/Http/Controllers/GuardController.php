@@ -10,8 +10,6 @@ use App\Utils;
 
 use Illuminate\Http\Request;
 
-use Utils;
-
 class GuardController extends Controller
 {
     /**
@@ -36,6 +34,7 @@ class GuardController extends Controller
         return view('guard-guarantor')->with('guard', $guard);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -46,6 +45,7 @@ class GuardController extends Controller
         return view('guard-add');
     }
 
+    
     /**
      * Store a newly created resource in storage.
      *

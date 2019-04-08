@@ -7,6 +7,10 @@
     .text-small{
         font-size: 14px;
     }
+
+    .text-tiny{
+        font-size: 12px;
+    }
 </style>
 @endsection
 @section('content')
@@ -73,7 +77,8 @@
                                     <p class="inbox-item-text">{{$site->location}}</p>
                                     <p class="inbox-item-date m-t-10">
                                         <button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">
-                                            View </button>
+                                            Edit </button>
+                                        <br/><span class="text-tiny"><a href="/roster/{{$site->id}}">Duty Roster</a></span>
                                     </p>
                                 </div>
                             </a>
@@ -161,11 +166,11 @@
                     <div class="form-row m-b-25">
                         <div class="col-md-6 col-sm-12">
                             <label for="name">Site Name</label>
-                            <input class="form-control" type="text" id="name" placeholder="Codbit ADC" name="name">
+                            <input class="form-control required" type="text" id="name" placeholder="Codbit ADC" name="name">
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="location">Site Location</label>
-                            <input class="form-control" type="text" id="location" placeholder="Ring Road Central"
+                            <input class="form-control required" type="text" id="location" placeholder="Ring Road Central"
                                 name="location">
                         </div>
                     </div>
@@ -173,7 +178,7 @@
                     <div class="form-row mb-4">
                         <div class="form-group col-md-6 col-sm-12">
                             <label for="garuantor_phone_number" class="col-form-label"><b>Contact Number</b></label>
-                            <input type="tel" placeholder="" class="form-control" name="phone_number">
+                            <input type="tel" placeholder="" class="form-control required" name="phone_number" id="phone_number">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="supervisor" class="col-form-label"><b>&nbsp;</b></label>
@@ -183,7 +188,7 @@
                                 <option value="{{$guard->id}}" data-subtext="{{$guard->phone_number}}">{{$guard->firstname.' '.$guard->lastname}}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" name="client_id" value="{{$client->id}}"/>
+                            <input type="hidden" name="client_id" class="required" value="{{$client->id}}"/>
                         </div>
                     </div>
                     <div class="form-group account-btn text-center m-t-10">
@@ -334,18 +339,25 @@
             var btn = $(this).find('[type="submit"]');
             var data = $(this).serialize();
 
-            applyLoading(btn);
 
             var error = false;
-            $(this).find('input, select').each(function(){
+
+            $(this).find('.required').each(function(){
                 if($(this).val() == '' || $(this).val() == null){
                     error = true;
                     $(this).closest('div').append('<p class="text-danger text-small">This field is required</p>');
                 }
             });
 
+            if($('#supervisor').val() == '' || $('#supervisor').val() == null){
+                error = true;
+                $(this).closest('div').append('<p class="text-danger text-small">This field is required</p>');
+            }
+
+
             if(!error){
                 $('.text-danger').css('display', 'none');
+                applyLoading(btn);
 
                 $.ajax({
                     url: '/api/sites/add',
