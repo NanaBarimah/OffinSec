@@ -10,8 +10,6 @@ use App\Utils;
 
 use Illuminate\Http\Request;
 
-use Utils;
-
 class GuardController extends Controller
 {
     /**

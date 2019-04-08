@@ -39,12 +39,14 @@ class AttendanceController extends Controller
     {
         $request->validate([
             'guard_id' => 'required',
+            'site_id' => 'required',
             'date_time' => 'required'
         ]);
 
         $attendance = new Attendance();
 
         $attendance->guard_id = $request->guard_id;
+        $attendance->site_id = $request->site_id;
         $attendance->date_time = $request->date_time;
 
         if($attendance->save()){

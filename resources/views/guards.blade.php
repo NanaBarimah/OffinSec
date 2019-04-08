@@ -2,8 +2,8 @@
 @section('content')
 <div class="row">
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-custom w-md waves-effect waves-light mb-4">
-                         New Guard</button>
+                    <a href="/guards/add" class="btn btn-custom w-md waves-effect waves-light mb-4">
+                         New Guard</a>
                 </div>
                 <div class="col-sm-8">
                     <div class="project-sort float-right">
@@ -33,7 +33,7 @@
 
                         <div class="member-card pt-2 pb-2">
                             <div class="thumb-lg member-thumb m-b-10 mx-auto">
-                                <img src="{{asset('assets/images/guards/'.$guard->photo)}}" onerror="this.src={{asset('assets/images/avatar.jpg')}}" class="rounded-circle img-thumbnail" alt="profile-image" style="width:78px; height:78px; object-fit: center;">
+                                <img src="{{asset('assets/images/guards/'.$guard->photo)}}" onerror="this.src='{{asset('assets/images/avatar.jpg')}}'" class="rounded-circle img-thumbnail" alt="profile-image" style="width:78px; height:78px; object-fit: cover;">
                             </div>
 
                             <div class="">

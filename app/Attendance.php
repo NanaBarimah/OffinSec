@@ -10,12 +10,17 @@ class Attendance extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'guard_id', 'date_time'
+        'guard_id', 'site_id', 'date_time'
     ];
 
 
     public function guard()
     {
         return $this->belongsTo('App\Guard');
+    }
+
+    public function site()
+    {
+        return $this->belongsTo('App\Site');
     }
 }

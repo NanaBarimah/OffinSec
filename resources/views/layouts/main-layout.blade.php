@@ -85,15 +85,16 @@
                                     <i class="fi-head"></i> <span>My Account</span>
                                 </a>
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="fi-lock"></i> <span>Lock Screen</span>
+                                <a href="{{ route('logout') }}" class="dropdown-item notify-item" 
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    <i class="fi-power"></i>
+                                    {{ __('Logout') }}
                                 </a>
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="fi-power"></i> <span>Logout</span>
-                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
 
                             </div>
                         </li>
@@ -114,14 +115,14 @@
                     <ul class="navigation-menu">
 
                         <li>
-                            <a href="#" class="active">Dashboard</a>
+                            <a href="/home" class="active">Dashboard</a>
                         </li>
 
                         <li class="has-submenu">
                             <a href="#">Guards</a>
                             <ul class="submenu">
-                                <li><a href="#">View Guards</a></li>
-                                <li><a href="#">New Guard</a></li>
+                                <li><a href="/guards">View Guards</a></li>
+                                <li><a href="/guards/add">New Guard</a></li>
                                 <li><a href="#">Guard Reports</a></li>
                             </ul>
                         </li>
@@ -133,8 +134,7 @@
                         <li class="has-submenu">
                             <a href="#">Attendance</a>
                             <ul class="submenu">
-                                <li><a href="#">View Attendance</a></li>
-                                <li><a href="#">Mark Attendance</a></li>
+                                <li><a href="/attendance">View Attendance</a></li>
                                 <li><a href="#">Permissions</a></li>
                                 <li><a href="#">Attendance Reports</a></li>
                             </ul>
