@@ -13,8 +13,12 @@ class Permission extends Model
         'guard_id', 'reliever', 'reason', 'date',
     ];
 
-    public function guard()
+    public function owner_guard()
     {
-        return $this->belongsTo('App\Guard');
+        return $this->belongsTo('App\Guard', 'guard_id', 'id');
+    }
+
+    public function relieving_guard(){
+        return $this->belongsTo('App\Guard', 'reliever', 'id');
     }
 }

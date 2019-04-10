@@ -10,10 +10,15 @@
 <link href="{{asset('plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
 <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
+<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 
 <style>
     #view_attendance{
         display: none;
+    }
+
+    .text-damage{
+        font-size: 12px;
     }
 </style>
 
@@ -85,31 +90,39 @@
                         <h4 class="modal-title mt-2">Record Attendance</h4>
                     </div>
                     <div class="modal-body p-4">
-                        <form role="form">
-                            <div class="mb-4">
+                        <form role="form" id="record_attendance">
+                            <div class="mb-2">
                                 <p class="mb-1 font-weight-bold text-muted">Search for guard<br /><span
                                         class="text-muted" style="font-weight: 300; font-size: 12px;"><i>Begin
                                             typing a guard's name in the box below</i></span></p>
                                 <input type="text" name="guard" id="autocomplete" class="form-control" />
-                                <input type="hidden" name="guard_id" id="guard_id" />
+                                <input type="hidden" name="guard_id" class="verifiable" id="guard_id" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <select class="selectpicker show-tick" data-style="btn-light col-md-12" title="Select A Site"
+                                    id="record_site" name="site_id" data-live-search="true">
+                                    @foreach($sites as $site)
+                                        <option value="{{$site->id}}">{{$site->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-row mb-4">
                                 <div class="col-md-6 col-sm-12">
                                     <label class="font-weight-bold text-muted">Date in</label>
-                                    <input class="form-control" id="date_in"/>
+                                    <input class="form-control verifiable" id="date_in"/>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
                                     <label class="font-weight-bold text-muted">Time in</label>
-                                    <input class="form-control" id="time_in"/>
+                                    <input class="form-control verifiable" id="time_in"/>
                                 </div>
                             </div>
-                        </form>
 
-                        <div class="text-right">
-                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-custom ml-1 waves-effect waves-light save-category"
-                                data-dismiss="modal">Save</button>
-                        </div>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
+                            </div>
+                            
+                        </form>
                     </div>
                 </div>
             </div>
@@ -164,6 +177,8 @@
     <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
+    <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}"></script>
+
     <script>
         var string = "{{$guards}}";
         var attendance_date;
@@ -275,7 +290,83 @@
                     }
                 });
             }
-        })
+        });
+
+
+        $('#record_attendance').on('submit', function(e){
+            e.preventDefault();
+            $('.text-damage').css('display', 'none');
+            var error = false;
+
+            $(this).find('.verifiable').each(function(){
+                if($(this).val() == '' || $(this).val() == null){
+                    error = true;
+                    $(this).closest('div').append('<p class="text-danger text-damage">This field is required</p>');
+                }
+            });
+
+            if($('#record_site').val() == '' || $('#site').val() == null){
+                error = true;
+                $('#record_site').closest('.form-group').append('<p class="text-danger text-damage">Select a site</p>');
+            }
+
+
+            data = $(this).serialize();
+            var date_time = $('#date_in').val()+' '+$('#time_in').val();
+            data += '&date_time='+date_time;
+            btn = $(this).find('[type="submit"]');
+            
+            if(!error){
+                applyLoading(btn);
+
+
+                $.ajax({
+                    url : '/api/attendance/add',
+                    method : 'POST',
+                    data : data,
+                    success: function(data){
+                        removeLoading(btn, 'Add Client');
+                            if(data.error){
+                                removeLoading(btn, 'Add Client');
+
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+
+                                $('#new_client').trigger('reset');
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 500);
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, 'Add Client');
+
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                });
+            }
+            
+        });
         
     </script>
 @endsection

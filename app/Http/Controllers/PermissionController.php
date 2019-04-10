@@ -14,9 +14,12 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::with('owner_guard', 'relieving_guard')->get();
 
-        return response()->json($permissions, 200);
+        return view('permissions', compact('permissions'));
+        /*return response()->json([
+            'permission' =>  $permissions
+        ]);*/
     }
 
     /**
@@ -135,9 +138,15 @@ class PermissionController extends Controller
         //
     }
 
-    public function approval()
+    public function approval(Request $request)
     {
-        $permission->approval = !$permission->approval;
+        $request->validate([
+            'permission_id' => 'required',
+            'approval' => 'required'
+        ]);
+
+        $permission = Permission::where('id', $request->permission_id)->first();
+        $permission->approval = $request->approval;
 
         if($permission->save()){
             return response()->json([

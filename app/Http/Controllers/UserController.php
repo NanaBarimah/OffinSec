@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('all-users')->with('users', $users);
+        return view('users')->with('users', $users);
     }
 
     public function allUsers()
@@ -73,7 +73,7 @@ class UserController extends Controller
             return response()->json([
                 'data' => $user,
                 'message' => 'User Created Successfully',
-                'error' => !$result,
+                'error' => $result,
             ]);
         }else{
             return response()->json([

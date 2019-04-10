@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-<div class="row mb-4">
+            <div class="row mb-4">
                 <div class="col-sm-4">
                     <button href="#custom-modal" class="btn btn-custom waves-effect w-md mr-2 mb-2" data-animation="contentscale"
                         data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a">

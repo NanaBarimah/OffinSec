@@ -135,22 +135,19 @@
                             <a href="#">Attendance</a>
                             <ul class="submenu">
                                 <li><a href="/attendance">View Attendance</a></li>
-                                <li><a href="#">Permissions</a></li>
+                                <li><a href="/permissions">Permissions</a></li>
                                 <li><a href="#">Attendance Reports</a></li>
                             </ul>
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#">Deductions</a>
+                            <a href="#">Offences</a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="#">Record Deduction</a>
+                                    <a href="/offences">Guard Offences</a>
                                 </li>
                                 <li>
-                                    <a href="#">View Guard Deductions</a>
-                                </li>
-                                <li>
-                                    <a href="#">Deduction Types</a>
+                                    <a href="/offence-types">Offence Types</a>
                                 </li>
                             </ul>
                         </li>
@@ -168,6 +165,10 @@
                                     <a href="#">Report Templates</a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li>
+                            <a href="/users">Users</a>
                         </li>
                     </ul>
                 </div>

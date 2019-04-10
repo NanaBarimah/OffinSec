@@ -7,6 +7,8 @@ use App\Guard;
 use App\Site;
 use App\Duty_Roster;
 
+use DB;
+
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -47,11 +49,22 @@ class AttendanceController extends Controller
             'date_time' => 'required'
         ]);
 
+        
+        $count = DB::select(DB::raw("SELECT count(`guard_roster`.id) as kount FROM `guard_roster`, `duty_rosters` WHERE guard_id ='$request->guard_id' AND site_id='$request->site_id' AND `duty_rosters`.id = `guard_roster`.duty_roster_id"));
+
+        if($count[0]->kount < 1){
+            return response()->json([
+                'error' => true,
+                'message' => 'This guard does not belong to this site'
+            ]);
+        }
+        
         $attendance = new Attendance();
 
         $attendance->guard_id = $request->guard_id;
         $attendance->site_id = $request->site_id;
-        $attendance->date_time = $request->date_time;
+        $date = date('Y-m-d H:i:s', strtotime($request->date_time));
+        $attendance->date_time = $date;
 
         if($attendance->save()){
             return response()->json([
