@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-footer text-right">
                                 <button class="btn btn-outline btn-primary waves-effect">Edit</button>
-                                <button class="btn btn-outline btn-danger waves-effect">{{$user->active == 1 ? 'Deactivate' : 'Activate' }}</button>
+                                <button class="btn btn-outline btn-danger waves-effect" onclick="toggleActive('{{$user->id}}', this)">{{$user->active == 1 ? 'Deactivate' : 'Activate' }}</button>
                             </div>
                         </div>
                     </div>
@@ -141,9 +141,8 @@
                     method: 'POST',
                     data: data,
                     success: function(data){
-                        removeLoading(btn, 'Add Client');
+                        removeLoading(btn, 'Add User');
                             if(data.error){
-                                removeLoading(btn, 'Add Client');
                                 Custombox.close();
 
                                 $.toast({
@@ -176,7 +175,7 @@
                             }
                     },
                     error: function(err){
-                        removeLoading(btn, 'Add Client');
+                        removeLoading(btn, 'Add User');
                         Custombox.close();
 
                         $.toast({
@@ -190,5 +189,55 @@
                 })
             }
         });
+
+        function toggleActive(user, element){
+            el = $(element);
+
+            var initial = el.html();
+            applyLoading(el);
+
+            $.ajax({
+                url: '/api/user/toggle-active',
+                method: 'post',
+                data: 'user_id='+user,
+                success: function(data){
+                    removeLoading(el, initial);
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        }); 
+                    }else{
+                        if(data.data.active == 0){
+                            removeLoading(el, 'Activate');
+                        }else{
+                            removeLoading(el, 'Deactivate');
+                        }
+
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+                    }
+                },
+
+                error: function(error){
+                    removeLoading(el, initial);
+                    $.toast({
+                            text : 'There was a network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        }); 
+                }
+            })
+        }
 </script>
 @endsection
