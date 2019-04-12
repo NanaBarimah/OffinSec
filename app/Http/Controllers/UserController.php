@@ -58,14 +58,14 @@ class UserController extends Controller
 
         $user = new User();
         
-        $user_id = md5($request->username.microtime());
-        $user_id = substr($user_id, 0, 18);
-        $user->id = $user_id;
+        $userId = md5($request->username.microtime());
+        $userId = substr($userId, 0, 18);
+        $user->id = $userId;
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
         $user->username = $request->username;
         $user->phone_number = $request->phone_number;
-        $user->password = bcrypt($request->password);
+        $user->password = $request->password;
 
         if($user->save()){
             $result = false;

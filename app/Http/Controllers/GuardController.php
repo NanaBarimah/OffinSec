@@ -280,4 +280,11 @@ class GuardController extends Controller
 
         return view('guard-details')->with('guard', $guard);
     }
+
+    public function welfareGuards()
+    {
+        $guards = Guard::where('welfare', 1)->get();
+
+        return view('welfare-guard')->with('guards', $guards);
+    }
 }

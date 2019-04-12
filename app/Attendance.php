@@ -22,9 +22,4 @@ class Attendance extends Model
     public function site(){
         return $this->belongsTo('App\Site');
     }
-
-    public function site()
-    {
-        return $this->belongsTo('App\Site');
-    }
 }

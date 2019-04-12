@@ -29,7 +29,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
     
-    protected $primaryKey = 'id';
+    public $primaryKey = 'id';
 
     public $incrementing  = false;
 
