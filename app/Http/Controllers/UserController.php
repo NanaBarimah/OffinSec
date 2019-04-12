@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('all-users')->with('users', $users);
+        return view('users')->with('users', $users);
     }
 
     public function allUsers()
@@ -73,7 +73,7 @@ class UserController extends Controller
             return response()->json([
                 'data' => $user,
                 'message' => 'User Created Successfully',
-                'error' => !$result,
+                'error' => $result,
             ]);
         }else{
             return response()->json([
@@ -151,25 +151,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function is_active (Request $request)
+    public function toggleActive(Request $request)
       {
+         $request->validate([
+             'user_id' => 'required'
+         ]);
+
          $user = User::where('id', $request->user_id)->first();
 
-         $isactive     = $request->active;
-         $user->active = $isactive;
+         if($user->active == 0){
+            $user->active = 1;
+         }else if($user->active == 1){
+            $user->active = 0;
+         }
 
-         if ($user->save())
+         if($user->save())
          {
             return response()->json([
                'data'    => $user,
-               'message' => 'User updated',
+               'message' => $user->active == 1 ? 'User activated' : 'User deactivated',
                'error' => false
             ]);
          }
          else
          {
             return response()->json([
-               'message' => 'Could not update the user',
+               'message' => 'Could not update the active status of the user',
                'error'   => true
             ]);
          }

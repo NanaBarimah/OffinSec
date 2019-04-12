@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Deduction;
+use App\Guard;
 use Illuminate\Http\Request;
 
 class DeductionController extends Controller
@@ -15,6 +16,8 @@ class DeductionController extends Controller
     public function index()
     {
         //
+        $deductions = Deduction::all();
+        return view('deduction-types')->with('deductions', $deductions);
     }
 
     /**
@@ -24,7 +27,21 @@ class DeductionController extends Controller
      */
     public function create()
     {
-        return view('add-deduction');
+        $deductions = Deduction::with('guards')->get();
+        $guards = Guard::all();
+        $offending_guards = array();
+
+        foreach($deductions as $deduction){
+            foreach($deduction->guards as $guard){
+                $guard->offense = $deduction->name;
+                array_push($offending_guards, $guard);
+            }
+        }
+
+        $offending_guards = collect($offending_guards);
+        $offending_guards->sortByDesc('created_at');
+
+        return view('deductions')->with('deductions', $deductions)->with('guards', $guards)->with('offending_guards', $offending_guards);
     }
 
     /**
@@ -108,8 +125,21 @@ class DeductionController extends Controller
 
     public function deductGuard(Request $request)
     {
-        $deduction = Deduction::where('id', $request->id)->first();
+        $request->validate([
+            'guard_id' => 'required',
+            'deduction_id' => 'required',
+            'description' => 'required',
+            'date' => 'required'
+        ]);
 
-        $deduction->guards()->attach($request->guard_id, ['date' => $request->date, 'details' => $request->details]);
+        $deduction = Deduction::where('id', $request->deduction_id)->first();
+        $date = date('Y-m-d', strtotime($request->date));
+
+        $deduction->guards()->attach($request->guard_id, ['date' => $date, 'details' => $request->description]);
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Deduction recorded'
+        ]);
     }
 }

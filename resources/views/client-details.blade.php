@@ -3,6 +3,7 @@
 <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
 <style>
     .text-small{
         font-size: 14px;
@@ -136,9 +137,8 @@
                                 <div class="project-sort-item">
                                     <form class="form-inline">
                                         <div class="form-group">
-                                            <select class="selectpicker show-tick" data-style="btn-primary"
-                                                title="Report Type" id="marital">
-                                                <option selected>All Sites ({{$client->sites->count()}})</option>
+                                            <select class="show-tick" data-style="btn-primary"
+                                                title="Select Site" id="graph_sites">
                                                 @foreach($client->sites as $site)
                                                     <option value="{{$site->id}}">{{$site->name}}</option>
                                                 @endforeach
@@ -156,7 +156,11 @@
                         </div>
                     </div>
                 </div>
-                <canvas id="lineChart" height="350" class="mt-4"></canvas>
+                <div class="loader">
+                    <div class="sk-rotating-plane"></div>
+                </div>
+                <canvas id="lineChart" height="350" class="mt-4" style="display:none;"></canvas>
+                <div id="chartError"></div>
             </div>
 
             <div class="card-box">
@@ -182,7 +186,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="supervisor" class="col-form-label"><b>&nbsp;</b></label>
-                            <select class="selectpicker show-tick" data-style="btn-primary" 
+                            <select class="selectpicker show-tick form-control" data-style="btn-primary" 
                             title="Supervisor" id="supervisor" name="guard_id" data-live-search="true">
                                 @foreach($guards as $guard)
                                 <option value="{{$guard->id}}" data-subtext="{{$guard->phone_number}}">{{$guard->firstname.' '.$guard->lastname}}</option>
@@ -222,116 +226,15 @@
     <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
 
     <script>
-        !function ($) {
-            "use strict";
 
-            var ChartJs = function () { };
-
-            ChartJs.prototype.respChart = function (selector, type, data, options) {
-                // get selector by context
-                var ctx = selector.get(0).getContext("2d");
-                // pointing parent container to make chart js inherit its width
-                var container = $(selector).parent();
-
-                // enable resizing matter
-                $(window).resize(generateChart);
-
-                // this function produce the responsive Chart JS
-                function generateChart() {
-                    // make chart width fit with its container
-                    var ww = selector.attr('width', $(container).width());
-                    switch (type) {
-                        case 'Line':
-                            new Chart(ctx, { type: 'line', data: data, options: options });
-                            break;
-                        default:
-                            break;
-                    }
-                    // Initiate new chart or Redraw
-
-                };
-                // run function - render chart at first load
-                generateChart();
-            },
-
-                //init
-                ChartJs.prototype.init = function () {
-                    //creating lineChart
-                    var lineChart = {
-                        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                        datasets: [{
-                            label: "Kpone",
-                            fill: false,
-                            backgroundColor: '#4eb7eb',
-                            borderColor: '#4eb7eb',
-                            data: [44, 60, 33, 58, 4, 57, 89]
-                        }, {
-                            label: "Kumasi",
-                            fill: false,
-                            backgroundColor: '#e3eaef',
-                            borderColor: "#e3eaef",
-                            borderDash: [5, 5],
-                            data: [68, 41, 86, 49, 2, 65, 64, 86, 49, 2]
-                        }]
-                    };
-
-                    var lineOpts = {
-                        responsive: true,
-                        // title:{
-                        //     display:true,
-                        //     text:'Chart.js Line Chart'
-                        // },
-                        tooltips: {
-                            mode: 'index',
-                            intersect: false
-                        },
-                        hover: {
-                            mode: 'nearest',
-                            intersect: true
-                        },
-                        scales: {
-                            xAxes: [{
-                                display: true,
-                                // scaleLabel: {
-                                //     display: true,
-                                //     labelString: 'Month'
-                                // },
-                                gridLines: {
-                                    color: "rgba(0,0,0,0.1)"
-                                }
-                            }],
-                            yAxes: [{
-                                gridLines: {
-                                    color: "rgba(255,255,255,0.05)",
-                                    fontColor: '#fff'
-                                },
-                                ticks: {
-                                    max: 100,
-                                    min: -100,
-                                    stepSize: 20
-                                }
-                            }]
-                        }
-                    };
-
-                    this.respChart($("#lineChart"), 'Line', lineChart, lineOpts);
-                },
-                $.ChartJs = new ChartJs, $.ChartJs.Constructor = ChartJs
-
-        }(window.jQuery),
-
-            //initializing
-            function ($) {
-                "use strict";
-                $.ChartJs.init()
-            }(window.jQuery);
+        $('.selectpicker').selectpicker();
+        $('#graph_sites').selectpicker('val', $('#graph_sites option:first').val());
 
         $('#date').datepicker({
             autoclose: true,
             todayHighlight: true
         });
 
-        $('.selectpicker').selectpicker();
         
         $('#new_site_form').on('submit', function(e){
             e.preventDefault();
@@ -407,6 +310,151 @@
                 });
             }
             
+        });
+
+        $(document).ready(function(){
+            @if($client->sites->count() > 0)
+                loadGraph({{date('Y-m-d')}}, $('#graph_sites').val());
+            @else
+                $('.loader').css('display', 'none');
+                $('#chartError').css('display', 'block');
+                $('#chartError').html('<p class="text-muted text-small text-center"><b>This client has no sites yet</b></p>');
+            @endif
+        });
+        
+
+        function loadGraph(date, site){
+            $('#chartError, #lineChart').css('display', 'none');
+            $('.loader').css('display', 'block')
+            $.ajax({
+                url : '/api/client/report',
+                data: 'site='+site+'&date='+date+'&client={{$client->id}}',
+                method: 'GET',
+                success: function(data){
+                    $('.loader').css('display', 'none');
+                    $('#lineChart').css('display', 'block');
+
+                    var dataset = [];
+                    for(var i = 0; i <= 6; i++){
+                        var found = false;
+                        for(var k = 0; k < data.sites.length; k++){
+                            if(data.sites[k].day == i){
+                                dataset.push(data.sites[k].total);
+                                found = true;
+                            }
+                        }
+
+                        if(!found){
+                            dataset.push(0);
+                        }
+                    }
+                    !function ($) {
+                        "use strict";
+
+                        var ChartJs = function () { };
+
+                        ChartJs.prototype.respChart = function (selector, type, data, options) {
+                            // get selector by context
+                            var ctx = selector.get(0).getContext("2d");
+                            // pointing parent container to make chart js inherit its width
+                            var container = $(selector).parent();
+
+                            // enable resizing matter
+                            $(window).resize(generateChart);
+
+                            // this function produce the responsive Chart JS
+                            function generateChart() {
+                                // make chart width fit with its container
+                                var ww = selector.attr('width', $(container).width());
+                                switch (type) {
+                                    case 'Line':
+                                        new Chart(ctx, { type: 'line', data: data, options: options });
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                // Initiate new chart or Redraw
+
+                            };
+                            // run function - render chart at first load
+                            generateChart();
+                        },
+
+                            //init
+                            ChartJs.prototype.init = function () {
+                                //creating lineChart
+                                var lineChart = {
+                                    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                                    datasets: [{
+                                        label: data.site.name,
+                                        fill: false,
+                                        backgroundColor: '#4eb7eb',
+                                        borderColor: '#4eb7eb',
+                                        data: dataset
+                                    }]
+                                };
+
+                                var lineOpts = {
+                                    responsive: true,
+                                    // title:{
+                                    //     display:true,
+                                    //     text:'Chart.js Line Chart'
+                                    // },
+                                    tooltips: {
+                                        mode: 'index',
+                                        intersect: false
+                                    },
+                                    hover: {
+                                        mode: 'nearest',
+                                        intersect: true
+                                    },
+                                    scales: {
+                                        xAxes: [{
+                                            display: true,
+                                            // scaleLabel: {
+                                            //     display: true,
+                                            //     labelString: 'Month'
+                                            // },
+                                            gridLines: {
+                                                color: "rgba(0,0,0,0.1)"
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            gridLines: {
+                                                color: "rgba(255,255,255,0.05)",
+                                                fontColor: '#fff'
+                                            },
+                                            ticks: {
+                                                max: 100,
+                                                min: 0,
+                                                stepSize: 10
+                                            }
+                                        }]
+                                    }
+                                };
+
+                                this.respChart($("#lineChart"), 'Line', lineChart, lineOpts);
+                            },
+                            $.ChartJs = new ChartJs, $.ChartJs.Constructor = ChartJs
+
+                    }(window.jQuery),
+
+                        //initializing
+                        function ($) {
+                            "use strict";
+                            $.ChartJs.init()
+                        }(window.jQuery);
+                },
+                error: function(data){
+                    $('.loader').css('display', 'none');
+                    $('#chartError').css('display', 'block');
+                    $('#chartError').html('<p class="text-muted text-small text-center"><b>Could not fetch report data.</b></p>')
+                }
+            });
+        }
+
+        $('#date').on('change', function(){
+            loadGraph($(this).val(), $('#graph_sites').val());
         })
     </script>
 @endsection

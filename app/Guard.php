@@ -10,6 +10,7 @@ class Guard extends Model
     use SoftDeletes;
 
     protected $primaryKey = 'id';
+    protected $table = 'guards';
 
     public $incrementing  = false;
 
@@ -32,7 +33,7 @@ class Guard extends Model
         return $this->belongsToMany('App\Duty_Roster', 'guard_roster', 'duty_roster_id', 'guard_id')
         ->withPivot('shift_type_id', 'day')
         ->join('shift_types', 'shift_type_id', '=', 'shift_types.id')
-        ->select('duty_rosters.*', 'shift_types.name as pivot_shift_type_name')
+        ->select('duty_rosters.*','shift_types.name as pivot_shift_type_name')
         ->withTimestamps();
     }
     

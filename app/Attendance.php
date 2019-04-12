@@ -18,8 +18,9 @@ class Attendance extends Model
     {
         return $this->belongsTo('App\Guard', 'guard_id');
     }
-
-    public function site(){
+    
+    public function site()
+    {
         return $this->belongsTo('App\Site');
     }
 }
