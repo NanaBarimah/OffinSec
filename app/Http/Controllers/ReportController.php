@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Report;
+use App\Client;
+use App\Site;
+use PDF;
+
+use Mail;
+
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -123,5 +129,61 @@ class ReportController extends Controller
     public function destroy(Report $report)
     {
         //
+    }
+
+    public function send(Request $request){
+        $clients = Client::all();
+        return view('reports')->with('clients', $clients);
+    }
+
+    public function generateReport(Request $request){
+        $request->validate([
+            'client_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'email' => 'required'
+        ]);
+
+        $start_date = date('Y-m-d', strtotime($request->start_date));
+        $end_date = date('Y-m-d', strtotime($request->end_date));
+        
+        $client = Client::where('id', $request->client_id)->first();
+        $id = $client->id;
+
+        $attendances = Site::with('attendances', 'attendances.owner_guard')
+                        ->where('client_id', $id)->whereHas('attendances', function($q) use ($start_date, $end_date){
+                            $q->whereRaw("DATE(date_time) BETWEEN DATE('$start_date') AND DATE('$end_date')");
+                        })->get();
+        
+        $to_name = $client->name;
+        $to_email = $request->email;
+
+        $incidents = $request->incidents;
+        
+        $pdf = PDF::loadView('report_template', compact('client', 'attendances', 'start_date', 'end_date', 'incidents'));
+        $link = storage_path().'/docs'.'/'.microtime().'-'.$client->name.'['.$start_date.'].pdf';
+        $pdf->save($link);
+        $pdf->stream('download.pdf');
+        
+        $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
+
+        Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                    ->subject('Scheduled Report');
+            $message->from('noreply@offinsecuritygh.com','Offin Security');
+        });
+
+        if(count(Mail::failures()) > 0){
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not send the mail'
+            ]);
+        }else{
+            return response()->json([
+                'error' => false,
+                'message' => 'Report sent successfully'
+            ]);
+        }
+        
     }
 }

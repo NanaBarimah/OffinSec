@@ -156,7 +156,7 @@
                             <a href="#">Reports</a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="#">New Report</a>
+                                    <a href="/send-report">New Report</a>
                                 </li>
                                 <li>
                                     <a href="#">View Reports</a>

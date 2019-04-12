@@ -34,3 +34,4 @@ Route::get('/roster/{id}', 'DutyRosterController@view')->name('roster.view');
 Route::get('/offences', 'DeductionController@create')->name('offences');
 Route::get('/offence-types', 'DeductionController@index')->name('offence-types');
 Route::get('/permissions', 'PermissionController@index')->name('permissions');
+Route::get('/send-report', 'ReportController@send')->name('report.send');

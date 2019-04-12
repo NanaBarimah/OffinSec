@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Guard;
+use App\Site;
+
+use DB;
 
 use Illuminate\Http\Request;
 
@@ -196,5 +199,26 @@ class ClientController extends Controller
         $guards = Guard::all();
 
         return view('client-details')->with('client', $client)->with('guards', $guards);
+    }
+
+    public function report(Request $request){
+        $request->validate([
+            'site' => 'required',
+            'client' => 'required',
+            'date' => 'required'
+        ]);
+
+        $date = date('Y-m-d', strtotime($request->date));
+        $client = $request->client;
+        $site = $request->site;
+        
+        $sites = DB::select(DB::raw("SELECT count(id) as total, DAYOFWEEK(date_time) as day from attendances where WEEK(date_time) = WEEK('$date') and site_id = '$site' GROUP BY  day"));
+        $site = Site::where('id', $site)->first();
+
+        return response()->json([
+            'error' => false,
+            'sites' => $sites,
+            'site' => $site
+        ]);
     }
 }

@@ -21,6 +21,7 @@ Route::put('users/activate', 'UserController@is_active');
 Route::post('/user/toggle-active', 'UserController@toggleActive')->name('user.toggle');
 
 Route::post('/client/add', 'ClientController@store')->name('client.add');
+Route::get('/client/report', 'ClientController@report')->name('client.report');
 Route::post('/sites/add', 'SiteController@store')->name('site.add');
 Route::post('/guard/add', 'GuardController@store')->name('guard.add');
 Route::get('/attendance', 'AttendanceController@getAttendanceByDate')->name('attendance');
@@ -30,3 +31,4 @@ Route::post('/duty_roster/add_to_roster', 'DutyRosterController@add_guard')->nam
 Route::post('/offences/record', 'DeductionController@deductGuard')->name('offences.record');
 Route::post('/offences/add', 'DeductionController@store')->name('offences.add');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
+Route::post('/report/send-report', 'ReportController@generateReport');
