@@ -156,9 +156,9 @@
                                                         added.
                                                         Click on the button below to add a guarantor
                                                     </p>
-                                                    <a href="#custom-modal" class="btn btn-block btn-custom waves-effect w-md mr-2 mb-2"
+                                                    <button href="#custom-modal" class="btn btn-block btn-custom waves-effect w-md mr-2 mb-2"
                                                         data-animation="contentscale" data-plugin="custommodal"
-                                                        data-overlaySpeed="100" data-overlayColor="#36404a" id="btn_add_guarantor">Add Guarantor</a>
+                                                        data-overlaySpeed="100" data-overlayColor="#36404a" id="btn_add_guarantor">Add Guarantor</button>
                                                 </div>
                                                 <div class="col-sm-12 col-md-8">
                                                     <table id="datatable" class="table table-bordered dt-responsive nowrap"
