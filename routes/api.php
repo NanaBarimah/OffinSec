@@ -36,3 +36,5 @@ Route::post('/offences/record', 'DeductionController@deductGuard')->name('offenc
 Route::post('/offences/add', 'DeductionController@store')->name('offences.add');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
 Route::post('/report/send-report', 'ReportController@generateReport');
+
+Route::get('/site/get', 'SiteController@setupApp')->name('site.get');

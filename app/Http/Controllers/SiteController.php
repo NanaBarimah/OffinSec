@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Site;
+use App\Guard;
+
+use DB;
+
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -57,6 +61,7 @@ class SiteController extends Controller
         $site->client_id = $request->client_id;
         $site->name = $request->name;
         $site->location = $request->location;
+
         $site->phone_number = $request->phone_number;
         $site->guard_id = $request->guard_id;
         $code = md5(microtime().$request->name);
@@ -149,5 +154,41 @@ class SiteController extends Controller
     public function destroy(Site $site)
     {
         //
+    }
+
+    public function setupApp(Request $request){
+        $request->validate([
+            'site' => 'required'
+        ]);
+        
+        $site_id = $request->site;
+        $site = Site::where('access_code', $site_id)->first();
+
+        if($site == null){
+            return response()->json([
+                'error' => true,
+                'message' => 'No site with the specified access code'
+            ]);
+        }
+
+        
+        $site_id = $site->id;
+
+        $filter = function($q) use($site_id){
+            $q->where('site_id', $site_id);
+        };
+
+        $guards = DB::select(DB::raw("SELECT guards.id , guards.firstname, guards.lastname, fingerprints.rtb64 FROM guards, fingerprints, duty_rosters, sites, guard_roster 
+        WHERE guards.id = fingerprints.guard_id and duty_rosters.site_id = sites.id and guard_roster.duty_roster_id = duty_rosters.id and sites.id = '$site_id'"));
+
+        $guards = collect($guards);
+        $guards = $guards->unique('id')->values()->toArray();
+        
+        return response()->json([
+            'error' => false,
+            'message' => 'Site retrieved',
+            'site' => $site,
+            'guards' => $guards
+        ]);
     }
 }
