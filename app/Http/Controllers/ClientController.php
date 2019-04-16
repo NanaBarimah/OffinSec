@@ -94,6 +94,14 @@ class ClientController extends Controller
         $client->start_date = date('Y-m-d', strtotime($request->start));
         $client->end_date = date('Y-m-d', strtotime($request->end));
 
+        if(Client::onlyTrashed()->where('email', $request->email)->get()->count() > 0){
+            $client_temp = Client::onlyTrashed()->where('email', $request->email)->first();
+
+            $client_temp->email = 'DELETED ==> '.$client_temp->email.'___'.$client_temp->id;
+            
+            $client_temp->save();
+        }
+
         if($client->save()){
             return response()->json([
                 "error" => false, 
@@ -139,22 +147,24 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
             'phone_number' => 'required',
             'email' => 'required',
             'contact_person_name' => 'required',
-            'number_of_guards' => 'required'
+            'number_of_guards' => 'required',
+            'id' => 'required'
         ]);
-
+        
+        $client = Client::where('id', $request->id)->first();
         $client->name = $request->name;
         $client->phone_number = $request->phone_number;
         $client->email = $request->email;
         $client->contact_person_name = $request->contact_person_name;
         $client->number_of_guards = $request->number_of_guards;
-
+        
         if($client->update()){
             return response()->json([
                 'error' => false,
@@ -177,7 +187,12 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $status = $client->delete();
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Client Deleted' : 'Error Deleting Client'
+        ]);
     }
 
     public function view(Request $request){
@@ -220,5 +235,31 @@ class ClientController extends Controller
             'sites' => $sites,
             'site' => $site
         ]);
+    }
+
+    public function changeDate(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+        
+        $client = Client::where('id', $request->id)->first();
+
+        $client->start_date = date('Y-m-d', strtotime($request->start_date));
+        $client->end_date = date('Y-m-d', strtotime($request->end_date));
+
+        if($client->update()){
+            return response()->json([
+                'error' => false,
+                'message' => 'Contract duration has been updated'
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Error updating contract duration'
+            ]);
+        }
+
     }
 }

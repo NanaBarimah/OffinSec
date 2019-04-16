@@ -20,6 +20,7 @@ class CreateSitesTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('phone_number');
+            $table->string('access_code');
             $table->timestamps();
             $table->softDeletes();
 

@@ -161,15 +161,13 @@
                                 <li>
                                     <a href="#">View Reports</a>
                                 </li>
-                                <li>
-                                    <a href="#">Report Templates</a>
-                                </li>
                             </ul>
                         </li>
-
+                        @if(strtolower(Auth::user()->role) == 'admin')
                         <li>
                             <a href="/users">Users</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -227,14 +225,11 @@
     <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
     <script src="{{asset('assets/js/avatar.js')}}"></script>
 
-    
-    @yield('scripts')
-
     <!-- App js -->
     <script src="{{asset('assets/js/jquery.core.js')}}"></script>
     <script src="{{asset('assets/js/jquery.app.js')}}"></script>
-
-
+    
+    @yield('scripts')
 </body>
 
 </html>

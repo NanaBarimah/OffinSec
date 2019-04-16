@@ -103,7 +103,7 @@ class GuardController extends Controller
         
         if($request->welfare == 'on'){
             $request->welfare = 1;
-        }else if($request->welfare == 'off'){
+        }else if($request->welfare == 'off' || $request->welfare == null){
             $request->welfare = 0;
         }
 

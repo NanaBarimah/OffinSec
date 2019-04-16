@@ -53,7 +53,8 @@ class UserController extends Controller
             'lastname' => 'required|string',
             'username' => 'required|string|unique:users',
             'phone_number' => 'required|string',
-            'password' => 'required|string|min:6|confirmed'
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|string'
         ]);
 
         $user = new User();
@@ -66,6 +67,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->phone_number = $request->phone_number;
         $user->password = $request->password;
+        $user->role = $request->role;
 
         if($user->save()){
             $result = false;
@@ -114,32 +116,29 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        $user = User::where('id', $request->id)->first();
         $status = true;
 
         $request->validate([
+            'id' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
-            'username' => 'required'
+            'role' => 'required'
         ]);
+        $user = User::where('id', $request->id)->first();
 
-        if(\request('password_reset') == 'yes'){
-            if(Hash::check(\request('old_password'), $user->password)){
-                $user->password = \bcrypt(\request('new_password'));
-            }else{
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Sorry, the old password you provided is wrong'
-                ]);
-            }
+        if(request('password') != null){
+            $request->validate([
+                'password' => 'confirmed'
+            ]);
+
+            $user->password = $request->password;
         }
         
-
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
-        $user->username = $request->username;
+        $user->role = $request->role;
 
         if($user->update()){
             $status = false;

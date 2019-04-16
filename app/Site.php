@@ -10,7 +10,7 @@ class Site extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'client_id', 'name', 'location', 'phone_number'
+        'client_id', 'name', 'location', 'phone_number', 'access_code'
     ];
 
     public function client()

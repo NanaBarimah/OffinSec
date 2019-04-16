@@ -16,13 +16,17 @@ use Illuminate\Http\Request;
 Route::get('users/', 'UserController@index');
 Route::post('users/add', 'UserController@store');
 Route::get('users/{user}', 'UserController@show');
-Route::put('users/update/{user}', 'UserController@update');
+Route::put('/user/update', 'UserController@update')->name('user.update');
 Route::put('users/activate', 'UserController@is_active');
 Route::post('/user/toggle-active', 'UserController@toggleActive')->name('user.toggle');
 
 Route::post('/client/add', 'ClientController@store')->name('client.add');
 Route::get('/client/report', 'ClientController@report')->name('client.report');
+Route::post('/client/update', 'ClientController@update')->name('client.update');
+Route::put('/client/change-duration', 'ClientController@changeDate')->name('client.change-duration');
+Route::delete('/client/delete/{client}', 'ClientController@destroy')->name('client.delete');
 Route::post('/sites/add', 'SiteController@store')->name('site.add');
+Route::put('/site/update', 'SiteController@update')->name('site.update');
 Route::post('/guard/add', 'GuardController@store')->name('guard.add');
 Route::get('/attendance', 'AttendanceController@getAttendanceByDate')->name('attendance');
 Route::post('/attendance/add', 'AttendanceController@store')->name('attendance.add');

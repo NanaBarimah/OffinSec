@@ -3,6 +3,7 @@
 <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 <style>
     .subtext{
         color: #949494;
@@ -31,16 +32,69 @@
                                 <h5 class="card-title text-custom">{{ucwords($user->firstname.' '.$user->lastname)}}<br/><span class="subtext">@<i>{{$user->username}}</i></span></h5>
                                 <p class="card-text"><b>Phone number: </b> {{$user->phone_number}}</p>
                             </div>
+                            @if(strtolower(Auth::user()->role) == 'admin')
                             <div class="card-footer text-right">
-                                <button class="btn btn-outline btn-primary waves-effect">Edit</button>
+                                <button class="btn btn-outline btn-primary waves-effect" onclick="edit({{$user}})">Edit</button>
                                 <button class="btn btn-outline btn-danger waves-effect" onclick="toggleActive('{{$user->id}}', this)">{{$user->active == 1 ? 'Deactivate' : 'Activate' }}</button>
                             </div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
             </div>
 @endsection
 @section('modals')
+    <div class="modal fade" id="edit-user">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-center border-bottom-0 d-block">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title mt-2">Edit User</h4>
+                </div>
+                <div class="modal-body p-4">
+                    <form role="form" id="edit_user_form">   
+                    @csrf
+                    <div class="form-row mb-4">
+                        <div class="col-md-4 col-sm-12">
+                            <label for="name">Firstname</label>
+                            <input class="form-control resetable" type="text" id="name" placeholder="Kwasi" name="firstname">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="name">Lastname</label>
+                            <input class="form-control resetable" type="text" id="name" placeholder="Koomson" name="lastname">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="email">Phone</label>
+                            <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
+                            <input type="hidden" name="id"/>
+                        </div>
+                    </div>
+                    <div class="form-row mb-4">
+                        <div class="col-md-4 col-sm-12">
+                            <label for="password">Password</label>
+                            <input class="form-control resetable" type="password" id="password" name="password">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="password">Confirm Password</label>
+                            <input class="form-control resetable" type="password" id="password" name="password_confirmation">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="role" class="col-form-label">Role</label>
+                            <select class="selectpicker show-tick form-control" data-style="btn-primary" title="Role" id="edit_role" name="role">
+                                <option>User</option>
+                                <option>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="custom-modal" class="modal-demo">
         <button type="button" class="close" onclick="Custombox.close();">
             <span>&times;</span><span class="sr-only">Close</span>
@@ -63,7 +117,7 @@
                         <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
                     </div>
                 </div>
-                <div class="form-row mb-4">
+                <div class="form-row mb-3">
                     <div class="col-md-4 col-sm-12">
                         <label for="no_of_guards">Username</label>
                         <input class="form-control resetable" type="text" min="1" id="username" name="username">
@@ -75,6 +129,15 @@
                     <div class="col-md-4 col-sm-12">
                         <label for="description">Confirm Password</label>
                         <input class="form-control resetable" type="password" id="password_confirm" name="password_confirmation">
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="form-group col-md-12">
+                        <label for="role" class="col-form-label">Role</label>
+                        <select class="selectpicker show-tick form-control" data-style="btn-primary" title="Role" id="role" name="role">
+                            <option>User</option>
+                            <option>Admin</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group account-btn text-center m-t-10">
@@ -92,6 +155,7 @@
 <!--Animations-->
 <script src="{{asset('plugins/custombox/js/custombox.min.js')}}"></script>
 <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
+<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
 
 <!--Telephone Mask-->
 <script src="{{asset('/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js')}}" type="text/javascript"></script>
@@ -239,5 +303,78 @@
                 }
             })
         }
+        
+        function edit(user){
+            $('#edit-user').find('[name="firstname"]').val(user.firstname);
+            $('#edit-user').find('[name="lastname"]').val(user.lastname);
+            $('#edit-user').find('[name="username"]').val(user.username);
+            $('#edit-user').find('[name="phone_number"]').val(user.phone_number);
+            $('#edit-user').find('[name="id"]').val(user.id);
+
+            $('#edit_role').find('option').each(function(){
+                if($(this).val() == user.role){
+                    $(this).prop('selected', true);
+                    $('#edit_role').val(user.role);
+                    $('.selectpicker').selectpicker('refresh');
+                }
+            })
+
+            $('.modal').modal('show');
+        }
+
+        $('#edit_user_form').on('submit', function(e){
+            e.preventDefault();
+            var btn = $(this).find('[type="submit"]');
+            
+            data = $(this).serialize();
+
+            var error = false;
+
+            if(!error){
+                $(this).find('.text-danger').css('display', 'none');
+
+                applyLoading(btn);
+
+                $.ajax({
+                    url: '/api/user/update',
+                    method: 'PUT',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, 'Save');
+                            if(data.error){
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+
+                                setTimeout(function(){
+                                    location.replace('/users');
+                                }, 500);
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, 'Save');
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                })
+            }
+        });
 </script>
 @endsection

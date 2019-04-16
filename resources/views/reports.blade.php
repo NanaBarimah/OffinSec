@@ -26,13 +26,13 @@
                                                     <label class="col-form-label"><b>Client </b>Name <br/></label>
                                                     <select class="selectpicker show-tick validate" data-style="btn-custom" title="Client" id="client_id" name="client_id">
                                                         @foreach($clients as $client)
-                                                            <option value="{{$client->id}}" data-email="{{$client->email}}">{{$client->name}}</option>
+                                                            <option value="{{$client->id}}" data-email="{{$client->email}}" <?php if(isset($current_client) && $current_client != null && $current_client->id == $client->id) {echo 'selected';} ?>>{{$client->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
                                                     <label class="col-form-label"><b>Recepient </b>Email <br/></label>
-                                                    <input type="email" name="email" id="email" class="form-control validate"/>
+                                                    <input type="email" name="email" id="email" class="form-control validate" <?php if(isset($current_client) && $current_client != null) {echo "value='$current_client->email'";} ?>/>
                                                 </div>
                                             </div>
                                             <div class="form-row">

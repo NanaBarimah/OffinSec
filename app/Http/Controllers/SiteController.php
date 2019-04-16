@@ -42,7 +42,7 @@ class SiteController extends Controller
             'name' => 'required',
             'location' => 'required',
             'phone_number' => 'required',
-            'guard_id' => 'required'
+            'guard_id' => 'required',
         ]);
         
         if(Site::where([['name', $request->name], ['client_id', $request->client_id]])->get()->count() > 0){
@@ -59,6 +59,10 @@ class SiteController extends Controller
         $site->location = $request->location;
         $site->phone_number = $request->phone_number;
         $site->guard_id = $request->guard_id;
+        $code = md5(microtime().$request->name);
+        $code = substr($code, 0, 6);
+        $site->access_code = $code;
+        
         if($site->save()){
             return response()->json([
                 'data' => $site,
@@ -104,19 +108,23 @@ class SiteController extends Controller
      * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Site $site)
+    public function update(Request $request)
     {
         $request->validate([
+            'id' => 'required',
             'client_id' => 'required',
             'name' => 'required',
             'location' => 'required',
-            'phone_number' => 'required' 
+            'phone_number' => 'required', 
+            'guard_id' => 'required',
         ]);
-
+        
+        $site = Site::where('id', $request->id)->first();
         $site->client_id = $request->client_id;
         $site->name = $request->name;
         $site->location = $request->location;
         $site->phone_number = $request->phone_number;
+        $site->guard_id = $request->guard_id;
 
         if($site->update()){
             return response()->json([

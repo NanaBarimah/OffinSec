@@ -132,8 +132,14 @@ class ReportController extends Controller
     }
 
     public function send(Request $request){
+        if($request->client != null){
+            $current_client = Client::where('id', $request->client)->first();
+        }else{
+            $current_client = null;
+        }
         $clients = Client::all();
-        return view('reports')->with('clients', $clients);
+
+        return view('reports')->with('clients', $clients)->with('current_client', $current_client);
     }
 
     public function generateReport(Request $request){
