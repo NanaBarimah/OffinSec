@@ -205,9 +205,10 @@ class GuardController extends Controller
      * @param  \App\Guard  $guard
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guard $guard)
+    public function update(Request $request)
     {
         $request->validate([
+            'id' => 'required',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'dob' => 'required|string',
@@ -215,14 +216,14 @@ class GuardController extends Controller
             'marital_status' => 'required|string',
             'occupation' => 'required|string',
             'address' => 'required|string',
-            'national_id' => 'required|string',
             'phone_number' => 'required|string',
             'SSNIT' => 'required|string',
             'emergency_contact' => 'required|string',
             'bank_name' => 'required|string',
             'account_number' => 'required|string'
         ]);
-
+        
+        $guard = Guard::where('id', $request->id)->first();
         $guard->firstname = $request->firstname;
         $guard->lastname = $request->lastname;
         $guard->dob = $request->dob;
@@ -230,25 +231,24 @@ class GuardController extends Controller
         $guard->marital_status = $request->marital_status;
         $guard->occupation = $request->occupation;
         $guard->address = $request->address;
-        $guard->national_id = $request->national_id;
         $guard->phone_number = $request->phone_number;
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
         $guard->bank_name = $request->bank_name;
         $guard->account_number = $request->account_number;
 
-        if ($request->hasFile('image')){
-            $fileName        = Utils::saveImage($request, 'image', 'img/guard');
-            $guard->photo = $fileName;
+        if($guard->update()){
+            return response()->json([
+                'error'  => false,
+                'data' => $guard,
+                'message' => 'Guard updated successfully'
+            ]);
+        }else{
+            return response()->json([
+                'error'  => true,
+                'message' => 'Error updating guard'
+            ]);
         }
-
-        $status = $guard->update();
-
-         return response()->json([
-            'data' => $guard,
-            'error'  => !$status,
-            'message' => $status ? 'Guard updated!' : 'Error updating guard'
-         ]);
     }
 
     public function welfare (Request $request)
@@ -280,7 +280,12 @@ class GuardController extends Controller
      */
     public function destroy(Guard $guard)
     {
-        //
+        $status = $guard->delete();
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Guard Deleted' : 'Error Deleting Guard'
+        ]);
     }
 
     public function view(Request $request){

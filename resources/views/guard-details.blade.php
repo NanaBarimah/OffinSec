@@ -19,7 +19,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-danger waves-effect">
+                                        <button type="button" class="btn btn-danger waves-effect" onclick="deleteGuard('{{$guard->id}}')">
                                             Delete Guard
                                         </button>
                                     </div>
@@ -63,6 +63,7 @@
                 <h4 class="header-title mt-0 mb-3">Edit Guard</h4>
                 <hr/>
                 <form method="post" action = "#" id="edit_guard_form">
+                @csrf
                 <div id="personal_information">
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
@@ -73,6 +74,7 @@
                                                     <label for="lastname" class="col-form-label"><b>Last</b> Name</label>
                                                     <input type="text" class="form-control required" id="lastname" name="lastname" value="{{$guard->lastname}}">
                                                 </div>
+                                                <input type="hidden" name="id" value="{{$guard->id}}"/>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
@@ -133,8 +135,14 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Emergency Contact</label>
-                                                    <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control"/>
+                                                    <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control" value="{{$guard->emergency_contact}}"/>
                                                     <span class="font-10 text-muted">(233) 244-500500</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="bank_name" class="col-form-label"><b>SSNIT</b> Number</label>
+                                                    <input type="text" class="form-control required" id="SSNIT" name="SSNIT" value="{{$guard->SSNIT}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -144,6 +152,26 @@
                 </form>
             </div>
         </div>
+@endsection
+@section('modals')
+    <div id="deleteGuardModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4>	
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete this guard? This process cannot be undone.</p>
+                    <input type="hidden" id="delete-guard-id"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="btn-delete-guard">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
@@ -158,5 +186,106 @@
     });
 
     
+    function deleteGuard(guard)
+    {
+        $('#delete-guard-id').val(guard);
+
+        $('#deleteGuardModal').modal('show');
+    }
+
+    $('#btn-delete-guard').on('click', function(e){
+        e.preventDefault();
+        var btn = $(this);
+
+        $.ajax({
+            url: '/api/guard/delete/'+ $("#delete-guard-id").val(),
+            method: 'DELETE',
+            success: function(data){
+                removeLoading(btn, 'Delete');
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+
+                        setTimeout(function(){
+                            location.replace('/guards');
+                        }, 500);
+                    }
+            },
+            error: function(err){
+                removeLoading(btn, 'Delete');
+                $.toast({
+                    text : 'Network error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        });
+    });
+
+    $('#edit_guard_form').on('submit', function(e){
+        e.preventDefault();
+        var btn = $(this).find('[type="submit"]');
+
+        data = $(this).serialize();
+
+        var error = false;
+
+        applyLoading(btn);
+
+        $.ajax({
+            url: '/api/guard/update',
+            method: 'PUT',
+            data: data,
+            success: function(data){
+                removeLoading(btn, 'Save');
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+
+                        setTimeout(function(){
+                            location.replace('/guard/'+data.data.id);
+                        }, 500);
+                    }
+            },
+            error: function(err){
+                removeLoading(btn, 'Save');
+                $.toast({
+                    text : 'Network error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        });
+    });
 </script>
 @endsection
