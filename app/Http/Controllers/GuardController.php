@@ -276,7 +276,7 @@ class GuardController extends Controller
     }
 
     public function view(Request $request){
-        $guard = Guard::where('id', $request->id)->first();
+        $guard = Guard::with('duty_rosters', 'duty_rosters.site')->where('id', $request->id)->first();
 
         return view('guard-details')->with('guard', $guard);
     }
