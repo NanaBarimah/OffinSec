@@ -92,6 +92,8 @@
                                                         id="marital" name="marital_status">
                                                         <option>Single</option>
                                                         <option>Married</option>
+                                                        <option>Divorced</option>
+                                                        <option>Widowed</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-4">
@@ -187,7 +189,18 @@
                                     <section id="finish">
                                         <div class="form-group">
                                             <label>Emergency Contact</label>
-                                            <input name="emergency_contact" class="form-control"/>
+                                            <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control"/>
+                                            <span class="font-10 text-muted">(233) 244-500500</span>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="bank_name" class="col-form-label"><b>Bank</b> Name</label>
+                                                <input type="text" class="form-control required" id="bank_name" name="bank_name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
+                                                <input type="text" class="form-control required" id="account_number" name="account_number">
+                                            </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <div class="col-lg-6 col-sm-12">

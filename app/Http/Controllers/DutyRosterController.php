@@ -200,4 +200,28 @@ class DutyRosterController extends Controller
             'message' => 'Guard added to roster'
         ]);
     }
+
+    public function removeRoster(Request $request)
+    {
+        $request->validate([
+            'guard_id' => 'required',
+            'site_id' => 'required',
+            'day' => 'required',
+            'shift_type_id' => 'required'
+         ]);
+
+        $duty_roster = Duty_Roster::where('site_id', $request->site_id)->first();
+        $guard = Guard::findOrFail($request->guard_id);
+
+        $guard->duty_rosters()->newPivotStatement()
+              ->where('guard_id', $request->guard_id)
+              ->where('duty_roster_id', $duty_roster->id)
+              ->where('day', $request->day)
+              ->where('shift_type_id', $request->shift_type_id)->delete();
+        
+        return response()->json([
+            'status' => $guard,
+            'message' => $guard ? 'Guard removed from shift sucessfully' : 'Error removing guard from shift'
+        ]);
+    }
 }

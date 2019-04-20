@@ -57,26 +57,26 @@
                     <div class="form-row mb-4">
                         <div class="col-md-4 col-sm-12">
                             <label for="name">Firstname</label>
-                            <input class="form-control resetable" type="text" id="name" placeholder="Kwasi" name="firstname">
+                            <input class="form-control resetable" type="text" id="edit_fname" placeholder="Kwasi" name="firstname">
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label for="name">Lastname</label>
-                            <input class="form-control resetable" type="text" id="name" placeholder="Koomson" name="lastname">
+                            <input class="form-control resetable" type="text" id="edit_lname" placeholder="Koomson" name="lastname">
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label for="email">Phone</label>
-                            <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
+                            <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="edit_phone_number">
                             <input type="hidden" name="id"/>
                         </div>
                     </div>
                     <div class="form-row mb-4">
                         <div class="col-md-4 col-sm-12">
                             <label for="password">Password</label>
-                            <input class="form-control resetable" type="password" id="password" name="password">
+                            <input class="form-control resetable" type="password" id="edit_password" name="password">
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label for="password">Confirm Password</label>
-                            <input class="form-control resetable" type="password" id="password" name="password_confirmation">
+                            <input class="form-control resetable" type="password" id="edit_password_confirm" name="password_confirmation">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="role" class="col-form-label">Role</label>
@@ -88,7 +88,7 @@
                     </div>
                         <div class="text-right">
                             <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
+                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Update</button>
                         </div>
                     </form>
                 </div>
@@ -232,10 +232,10 @@
                                 '<div class="card-body text-secondary">'+
                                 '<h5 class="card-title text-custom">'+data.data.firstname+' '+data.data.lastname+'<br/><span class="subtext">@<i>'+data.data.username+'</i></span></h5>'+
                                 '<p class="card-text"><b>Phone number: </b> {{$user->phone_number}}</p></div><div class="card-footer text-right">'+
-                                '<button class="btn btn-outline btn-primary waves-effect">Edit</button>'+
-                                '<button class="btn btn-outline btn-danger waves-effect">Deactivate</button></div></div></div>'); 
+                                '<button class="btn btn-outline btn-primary waves-effect mr-1" onclick="edit({\'id\' : \''+data.data.id+'\', \'firstname\' : \''+data.data.firstname+'\', \'lastname\' : \''+data.data.lastname+'\', \'phone_number\' : \''+data.data.phone_number+'\', \'role\' : \''+data.data.role+'\'})">Edit</button>'+
+                                '<button class="btn btn-outline btn-danger waves-effect" onclick="toggleActive(\''+data.data.id+'\', this)">Deactivate</button></div></div></div>'); 
 
-                                $(this).trigger('reset');
+                                $('#new_user').trigger('reset');
                             }
                     },
                     error: function(err){
@@ -307,8 +307,7 @@
         function edit(user){
             $('#edit-user').find('[name="firstname"]').val(user.firstname);
             $('#edit-user').find('[name="lastname"]').val(user.lastname);
-            $('#edit-user').find('[name="username"]').val(user.username);
-            $('#edit-user').find('[name="phone_number"]').val(user.phone_number);
+            $('#edit-user').find('[name="edit_phone_number"]').val(user.phone_number);
             $('#edit-user').find('[name="id"]').val(user.id);
 
             $('#edit_role').find('option').each(function(){
@@ -340,7 +339,7 @@
                     method: 'PUT',
                     data: data,
                     success: function(data){
-                        removeLoading(btn, 'Save');
+                        removeLoading(btn, 'Update');
                             if(data.error){
                                 $.toast({
                                     text : data.message,
@@ -364,7 +363,7 @@
                             }
                     },
                     error: function(err){
-                        removeLoading(btn, 'Save');
+                        removeLoading(btn, 'Update');
                         $.toast({
                             text : 'Network error',
                             heading : 'Error',

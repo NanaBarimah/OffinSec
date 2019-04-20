@@ -19,19 +19,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-Route::get('/users/add', 'UserController@create')->name('user.add');
-Route::post('/users/activate', 'UserController@is_active')->name('user.active');
-Route::get('/users', 'UserController@index')->name('user.index');
-Route::get('/clients', 'ClientController@index')->name('clients');
-Route::get('/client/{id}', 'ClientController@view')->name('client');
-
-Route::get('/attendance', 'AttendanceController@view')->name('view.attendance');
-Route::get('/guards', 'GuardController@index')->name('guards');
-Route::get('/guards/add', 'GuardController@create')->name('guard.add');
-Route::get('/guard/{id}', 'GuardController@view')->name('guard.view');
-Route::get('/roster/{id}', 'DutyRosterController@view')->name('roster.view');
-Route::get('/offences', 'DeductionController@create')->name('offences');
-Route::get('/offence-types', 'DeductionController@index')->name('offence-types');
-Route::get('/permissions', 'PermissionController@index')->name('permissions');
-Route::get('/send-report', 'ReportController@send')->name('report.send');
+Route::middleware('auth')->group(function(){
+    Route::get('/users/add', 'UserController@create')->name('user.add');
+    Route::post('/users/activate', 'UserController@is_active')->name('user.active');
+    Route::get('/users', 'UserController@index')->name('user.index');
+    Route::get('/clients', 'ClientController@index')->name('clients');
+    Route::get('/client/{id}', 'ClientController@view')->name('client');
+    
+    Route::get('/attendance', 'AttendanceController@view')->name('view.attendance');
+    Route::get('/guards', 'GuardController@index')->name('guards');
+    Route::get('/guards/add', 'GuardController@create')->name('guard.add');
+    Route::get('/guard/{id}', 'GuardController@view')->name('guard.view');
+    Route::get('/roster/{id}', 'DutyRosterController@view')->name('roster.view');
+    Route::get('/offences', 'DeductionController@create')->name('offences');
+    Route::get('/offence-types', 'DeductionController@index')->name('offence-types');
+    Route::get('/permissions', 'PermissionController@index')->name('permissions');
+    Route::get('/send-report', 'ReportController@send')->name('report.send');
+});

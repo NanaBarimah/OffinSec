@@ -27,6 +27,8 @@ class CreateGuardsTable extends Migration
             $table->string('SSNIT')->nullable();
             $table->string('emergency_contact');
             $table->string('photo');
+            $table->string('bank_name');
+            $table->string('account_number');
             $table->boolean('welfare')->default(0);
             $table->timestamps();
             $table->softDeletes();
