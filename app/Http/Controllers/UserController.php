@@ -124,7 +124,8 @@ class UserController extends Controller
             'id' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
-            'role' => 'required'
+            'role' => 'required',
+            'edit_phone_number' => 'required'
         ]);
         $user = User::where('id', $request->id)->first();
 
@@ -138,6 +139,7 @@ class UserController extends Controller
         
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
+        $user->phone_number = $request->edit_phone_number;
         $user->role = $request->role;
 
         if($user->update()){

@@ -225,11 +225,13 @@
     <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
     <script src="{{asset('assets/js/avatar.js')}}"></script>
 
+    @yield('scripts')
+    
     <!-- App js -->
     <script src="{{asset('assets/js/jquery.core.js')}}"></script>
     <script src="{{asset('assets/js/jquery.app.js')}}"></script>
     
-    @yield('scripts')
+    
 </body>
 
 </html>

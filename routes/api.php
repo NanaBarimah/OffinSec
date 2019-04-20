@@ -32,7 +32,10 @@ Route::get('/attendance', 'AttendanceController@getAttendanceByDate')->name('att
 Route::post('/attendance/add', 'AttendanceController@store')->name('attendance.add');
 Route::post('/duty_roster/add', 'DutyRosterController@store')->name('duty_roster.add');
 Route::post('/duty_roster/add_to_roster', 'DutyRosterController@add_guard')->name('duty_roster.add');
+Route::delete('/remove-shift/delete', 'DutyRosterController@removeRoster')->name('duty_roster.remove');
 Route::post('/offences/record', 'DeductionController@deductGuard')->name('offences.record');
 Route::post('/offences/add', 'DeductionController@store')->name('offences.add');
+Route::put('/offence/update', 'DeductionController@update')->name('offence.update');
+Route::delete('/offence/delete/{deduction}', 'DeductionController@destroy')->name('offence.delete');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
 Route::post('/report/send-report', 'ReportController@generateReport');

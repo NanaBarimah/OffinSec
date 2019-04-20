@@ -92,6 +92,8 @@
                                                         id="marital" name="marital_status">
                                                         <option>Single</option>
                                                         <option>Married</option>
+                                                        <option>Divorced</option>
+                                                        <option>Widowed</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-4">
@@ -187,7 +189,18 @@
                                     <section id="finish">
                                         <div class="form-group">
                                             <label>Emergency Contact</label>
-                                            <input name="emergency_contact" class="form-control"/>
+                                            <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control"/>
+                                            <span class="font-10 text-muted">(233) 244-500500</span>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="bank_name" class="col-form-label"><b>Bank</b> Name</label>
+                                                <input type="text" class="form-control required" id="bank_name" name="bank_name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
+                                                <input type="text" class="form-control required" id="account_number" name="account_number">
+                                            </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <div class="col-lg-6 col-sm-12">
@@ -590,65 +603,98 @@
                 temp.gender,
                 temp.occupation,
                 temp.phone_number,
-                '<a href="#" class="text-primary">Edit</a>   <a href="#" cl@extends('layouts.main-layout', ['page_title' => 'Add Guard'])
-@section('styles')
-    <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/jquery.steps/css/jquery.steps.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
-    <style>
-        #myOnlineCamera video{width:320px;height:240px;margin:15px;float:left;}
-        #myOnlineCamera canvas{width:320px;height:240px;margin:15px;float:left;}
-        #myOnlineCamera button{clear:both;margin:30px;}
-                
-        #imgPlaceholder {
-            height: 240px;
-            width: 320px;
-        }   
+                '<a href="#" class="text-primary">Edit</a>   <a href="#" class="text-red">Remove </a>'
+            ]).draw();
 
-        .text-small{
-            font-size: 12px;
-        }
+            $(this).trigger('reset');
+            Custombox.close();
 
-        .text-red{
-            color: red;
-        }
-    </style>
+            if(guarantors.length == 2){
+                $('#btn_add_guarantor').prop('disabled', true);
+            }
+        });
+
+        $('#basic-form').on('submit', function(e){
+            e.preventDefault();
+
+            var result = $('ul[aria-label=Pagination]').children().find('a');
+            var btn;
+
+
+            $(result).each(function ()  { 
+                if ($(this).text() == 'Finish') {
+                    btn = $(this)
+                }else{
+                    $(this).css('display', 'none');
+                }
+            });
+
+            applyLoading(btn);
+
+            var formData = new FormData(this);
+
+            formData.append('guarantors', JSON.stringify(guarantors));
+            formData.append('RTB64', guardFingerprint);
+            formData.append('image', $('#guard_image').attr('src'));
+
+            $.ajax({
+                url : '/api/guard/add',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                        removeLoading(btn, 'Finish');
+                        if(data.error){
+                            removeLoading(btn, 'Add Client');
+                            $(result).each(function ()  {
+                                $(this).css('display', 'block');
+                            });
+
+                        $.toast({
+                                text : data.message,
+                                heading : 'Error',
+                                position: 'top-right',
+                                showHideTransition : 'slide', 
+                                bgColor: '#d9534f'
+                            });
+                        
+                        }else{
+                            $('#new_client').trigger('reset');
+                            $.toast({
+                                text : data.message,
+                                heading : 'Done',
+                                position: 'top-right',
+                                bgColor : '#5cb85c',
+                                showHideTransition : 'slide'
+                            });
+
+                            setTimeout(function(){
+                                location.replace('/guard/'+data.data.id);
+                            }, 500);
+                        }
+                    },
+                    error: function(err){
+                        removeLoading(btn, 'Finish');
+                        $(result).each(function ()  {
+                            $(this).css('display', 'block');
+                        });
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+            });
+
+        });
+
+        $(document).ready(function(){
+                $('.loader').css('display', 'none');
+                $('.notLoader').css('display', 'block');
+            }
+        );
+    </script>
 @endsection
-@section('content')
-            <div class="loader">
-                <div class="sk-rotating-plane"></div>
-            </div>
-
-            <div class="row notLoader" style="display:none;">
-                <div class="col-md-12">
-                    <div class="card-box">
-                        <h4 class="m-t-0 header-title">Add Guard Wizard</h4>
-                        <p class="text-muted m-b-30 font-13">
-                            Create a new guard
-                        </p>
-
-                        <div class="pull-in">
-                            <form id="basic-form" action="#" method="post">
-                                <div>
-                                    <h3>Personal Information</h3>
-                                    <section>
-                                        <div id="personal_information">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="firstname" class="col-form-label"><b>First</b> Name</label>
-                                                    <input type="text" class="form-control required" id="firstname" name="firstname">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="lastname" class="col-form-label"><b>Last</b> Name</label>
-                                                    <input type="text" class="form-control required" id="lastname" name="lastname">
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label for="dob" class="col-form-label"><b>Date of</b> Birth</label>
-                                                    <div class="input-group">
-                                                

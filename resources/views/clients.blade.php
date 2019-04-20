@@ -131,62 +131,7 @@
                 </div><!-- end col-->
                 @endforeach
             </div>
-            <!-- end row -->
-@endsection
-@section('modals')
-<div class="modal fade" id="edit-client">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header text-center border-bottom-0 d-block">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title mt-2">Edit Client</h4>
-            </div>
-            <div class="modal-body p-4">
-                <form role="form" id="edit_client_form">
-                    
-                @csrf
-                <div class="form-row mb-4">
-                    <div class="col-md-4 col-sm-12">
-                        <label for="name">Client Name</label>
-                        <input class="form-control resetable" type="text" id="name" placeholder="Codbit Ghana Ltd" name="name">
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <label for="email">Email address</label>
-                        <input class="form-control resetable" type="text" id="email" placeholder="info@codbitgh.com" name="email">
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <label for="email">Phone</label>
-                        <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
-                    </div>
-                    <input type="hidden" name="id"/>
-                </div>
-
-                <div class="form-row mb-4">
-                    <div class="col-md-4 col-sm-12">
-                        <label for="contact_person">Contact Person Name</label>
-                        <input class="form-control resetable" type="text" id="email" placeholder="Abraham Attah" name="contact_person_name">
-                    </div>
-                    <div class="col-md-8 col-sm-12">
-                        <label for="no_of_guards">No. of Guards</label>
-                        <input class="form-control resetable" type="number" min="1" id="no_of_guards" name="number_of_guards">
-                    </div>
-                </div>
-                <div class="form-row mb-4">
-                    <div class="col-md-12 col-sm-12">
-                        <label for="description">Job Description</label>
-                        <input class="form-control resetable" type="text" id="description" name="description">
-                    </div>
-                </div>
-                    <div class="text-right">
-                        <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
-                    </div>
-                    
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+            
 <div id="custom-modal" class="modal-demo">
     <button type="button" class="close" onclick="Custombox.close();">
         <span>&times;</span><span class="sr-only">Close</span>
@@ -244,6 +189,62 @@
             </div>
 
         </form>
+    </div>
+</div>
+            <!-- end row -->
+@endsection
+@section('modals')
+<div class="modal fade" id="edit-client">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center border-bottom-0 d-block">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title mt-2">Edit Client</h4>
+            </div>
+            <div class="modal-body p-4">
+                <form role="form" id="edit_client_form">
+                    
+                @csrf
+                <div class="form-row mb-4">
+                    <div class="col-md-4 col-sm-12">
+                        <label for="name">Client Name</label>
+                        <input class="form-control resetable" type="text" id="name" placeholder="Codbit Ghana Ltd" name="name">
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <label for="email">Email address</label>
+                        <input class="form-control resetable" type="text" id="email" placeholder="info@codbitgh.com" name="email">
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <label for="email">Phone</label>
+                        <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
+                    </div>
+                    <input type="hidden" name="id"/>
+                </div>
+
+                <div class="form-row mb-4">
+                    <div class="col-md-4 col-sm-12">
+                        <label for="contact_person">Contact Person Name</label>
+                        <input class="form-control resetable" type="text" id="email" placeholder="Abraham Attah" name="contact_person_name">
+                    </div>
+                    <div class="col-md-8 col-sm-12">
+                        <label for="no_of_guards">No. of Guards</label>
+                        <input class="form-control resetable" type="number" min="1" id="no_of_guards" name="number_of_guards">
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col-md-12 col-sm-12">
+                        <label for="description">Job Description</label>
+                        <input class="form-control resetable" type="text" id="description" name="description">
+                    </div>
+                </div>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 <div id="deleteClientModal" class="modal fade">
@@ -384,7 +385,7 @@
             $('#edit-client').find('[name="description"]').val(client.description);
             $('#edit-client').find('[name="id"]').val(client.id);
 
-            $('.modal').modal('show');
+            $('#edit-client').modal('show');
         }
 
         $('#edit_client_form').on('submit', function(e){

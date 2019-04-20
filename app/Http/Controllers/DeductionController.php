@@ -107,9 +107,32 @@ class DeductionController extends Controller
      * @param  \App\Deduction  $deduction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Deduction $deduction)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'penalty' => 'required',
+            'description' => 'required'
+        ]);
+
+        $deduction = Deduction::where('id', $request->id)->first();
+        $deduction->name = $request->name;
+        $deduction->penalty = $request->penalty;
+        $deduction->description = $request->description;
+        
+        if($deduction->update()){
+            return response()->json([
+                'error' => false,
+                'data' => $deduction,
+                'message' => 'Offence updated successfully'
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Error updating offence'
+            ]);
+        }
     }
 
     /**
@@ -120,7 +143,12 @@ class DeductionController extends Controller
      */
     public function destroy(Deduction $deduction)
     {
-        //
+        $status = $deduction->delete();
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Offence Deleted Successfully' : 'Error Deleting Offence'
+        ]);
     }
 
     public function deductGuard(Request $request)

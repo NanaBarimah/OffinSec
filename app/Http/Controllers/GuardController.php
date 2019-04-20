@@ -66,7 +66,9 @@ class GuardController extends Controller
             'national_id' => 'required|string',
             'phone_number' => 'required|string',
             'SSNIT' => 'required|string',
-            'emergency_contact' => 'required|string'
+            'emergency_contact' => 'required|string',
+            'bank_name' => 'required|string',
+            'account_number' => 'required|string'
         ]);
         
         if(Guard::where('national_id', $request->national_id)->get()->count() > 0){
@@ -100,6 +102,8 @@ class GuardController extends Controller
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
         $guard->id = md5(microtime().$request->firstname);
+        $guard->bank_name = $request->bank_name;
+        $guard->account_number = $request->account_number;
         
         if($request->welfare == 'on'){
             $request->welfare = 1;
@@ -214,7 +218,9 @@ class GuardController extends Controller
             'national_id' => 'required|string',
             'phone_number' => 'required|string',
             'SSNIT' => 'required|string',
-            'emergency_contact' => 'required|string'
+            'emergency_contact' => 'required|string',
+            'bank_name' => 'required|string',
+            'account_number' => 'required|string'
         ]);
 
         $guard->firstname = $request->firstname;
@@ -228,6 +234,8 @@ class GuardController extends Controller
         $guard->phone_number = $request->phone_number;
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
+        $guard->bank_name = $request->bank_name;
+        $guard->account_number = $request->account_number;
 
         if ($request->hasFile('image')){
             $fileName        = Utils::saveImage($request, 'image', 'img/guard');

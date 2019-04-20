@@ -131,7 +131,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Monday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -155,7 +155,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Tuesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -179,7 +179,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Wednesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -203,7 +203,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Thursday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -227,7 +227,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Friday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -251,7 +251,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Saturday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -275,7 +275,7 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="#" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Sunday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -323,6 +323,25 @@
                 </div>
             </div>
             @endif
+
+             <div id="deleteShiftModal" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Are you sure?</h4>	
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Do you really want to remove this guard from this shift? This process cannot be undone.</p>
+                            <input type="hidden" id="delete-shift-id"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="btn-delete-shift">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 @endsection
 @section('scripts')
 <script src="{{asset('plugins/autocomplete/jquery.autocomplete.min.js')}}"></script>
@@ -501,6 +520,62 @@
             error: function(err){
                 removeLoading(btn, 'Add Client');
 
+                $.toast({
+                    text : 'Network error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        })
+    });
+
+    function removeShift(guard_id, site_id, day, shift_type)
+    {
+        var temp = { 'guard_id' : guard_id, 'site_id' : site_id, 'day' : day, 'shift_type_id' : shift_type};
+
+       $('#delete-shift-id').val(JSON.stringify(temp));
+
+       $('#deleteShiftModal').modal('show');
+    }
+
+    $('#btn-delete-shift').on('click', function(){
+        btn = $(this);
+        var data = JSON.parse($('#delete-shift-id').val());
+
+        applyLoading(btn);
+
+        $.ajax({
+            url: '/api/remove-shift/delete',
+            data : data,
+            method: 'DELETE',
+            success: function(data){
+                removeLoading(btn, 'Remove');
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+
+                        setTimeout(function(){
+                            location.reload();
+                        }, 500);
+                    }
+            },
+            error: function(err){
+                removeLoading(btn, 'Remove');
                 $.toast({
                     text : 'Network error',
                     heading : 'Error',

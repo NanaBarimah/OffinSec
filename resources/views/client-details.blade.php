@@ -183,7 +183,8 @@
                     <div class="form-row mb-4">
                         <div class="form-group col-md-6 col-sm-12">
                             <label for="garuantor_phone_number" class="col-form-label"><b>Contact Number</b></label>
-                            <input type="tel" placeholder="" class="form-control required" name="phone_number" id="phone_number">
+                            <input type="tel" placeholder="" class="form-control required" name="phone_number" id="phone_number" data-mask="(999) 999-999999">
+                            <span class="font-10 text-muted">(233) 244-500500</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="supervisor" class="col-form-label"><b>&nbsp;</b></label>
@@ -193,6 +194,9 @@
                                 <option value="{{$guard->id}}" data-subtext="{{$guard->phone_number}}">{{$guard->firstname.' '.$guard->lastname}}</option>
                                 @endforeach
                             </select>
+                            <div id="sup_error">
+
+                            </div>
                             <input type="hidden" name="client_id" class="required" value="{{$client->id}}"/>
                         </div>
                     </div>
@@ -373,6 +377,7 @@
 
         
         $('#new_site_form').on('submit', function(e){
+            $(this).find('.text-danger').css('display', 'none');
             e.preventDefault();
 
             var btn = $(this).find('[type="submit"]');
@@ -390,7 +395,7 @@
 
             if($('#supervisor').val() == '' || $('#supervisor').val() == null){
                 error = true;
-                $(this).closest('div').append('<p class="text-danger text-small">This field is required</p>');
+                $('#sup_error').append('<p class="text-danger text-small">This field is required</p>');
             }
 
 
@@ -424,11 +429,12 @@
                                 showHideTransition : 'slide'
                             });
 
-                            $('.inbox-widget').append('<a href="#">'+
+                            $('.inbox-widget').append('<a href="javascript:void(0)">'+
                             '<div class="inbox-item"><p class="inbox-item-author">'+data.data.name+'</p>'+
                             '<p class="inbox-item-text">'+data.data.location+'</p><p class="inbox-item-date m-t-10">'+
-                            '<button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">'+
-                            'View </button></p></div></a>'); 
+                            '<button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success" onclick="siteEdit({\'id\' : '+data.data.id+', \'client_id\' : \''+data.data.client_id+'\', \'name\' : \''+data.data.name+'\', \'location\' : \''+data.data.location+'\', \'phone_number\' : \''+data.data.phone_number+'\', \'guard_id\' : \''+data.data.guard_id+'\'})">'+
+                            'Edit </button>'+
+                            '<br/><span class="text-tiny"><a href="/roster/'+data.data.id+'">Duty Roster</a></span></p></div></a>'); 
                                 
                         }
                     },
