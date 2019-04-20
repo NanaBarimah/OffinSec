@@ -111,7 +111,7 @@
                             <div class="card-body">
                                 <div class="col-8">
                                     <h5>
-                                        <a href="#">Send a client report</a>
+                                        <a href="/attendance">View attendance</a>
                                     </h5>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                             <div class="card-body">
                                 <div class="col-8">
                                     <h5>
-                                        <a href="#">Send a client report</a>
+                                        <a href="/view-deductions">View guard monthly offences</a>
                                     </h5>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                             <div class="card-body">
                                 <div class="col-8">
                                     <h5>
-                                        <a href="#">Send a client report</a>
+                                        <a href="javascrip:void(0)">View reports</a>
                                     </h5>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                             <div class="card-body">
                                 <div class="col-8">
                                     <h5>
-                                        <a href="#">Send a client report</a>
+                                        <a href="/send-report">Send a client report</a>
                                     </h5>
                                 </div>
                             </div>

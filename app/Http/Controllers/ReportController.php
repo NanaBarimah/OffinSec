@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Report;
 use App\Client;
 use App\Site;
+
 use PDF;
 
 use Mail;
@@ -21,6 +22,8 @@ class ReportController extends Controller
     public function index()
     {
         //
+        $reports = Report::with('client')->get();
+        return view('view-reports')->with('reports', $reports);
     }
 
     /**
@@ -170,26 +173,39 @@ class ReportController extends Controller
         $link = storage_path().'/docs'.'/'.microtime().'-'.$client->name.'['.$start_date.'].pdf';
         $pdf->save($link);
         $pdf->stream('download.pdf');
+
+        $report = new Report();
+        $report->client_id = $client->id;
+        $report->template = $link;
         
-        $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
 
-        Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
-            $message->to($to_email, $to_name)
-                    ->subject('Scheduled Report');
-            $message->from('noreply@offinsecuritygh.com','Offin Security');
-        });
+        if($report->save()){
+            $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
 
-        if(count(Mail::failures()) > 0){
-            return response()->json([
-                'error' => true,
-                'message' => 'Could not send the mail'
-            ]);
+            Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                        ->subject('Scheduled Report');
+                $message->from('noreply@offinsecuritygh.com','Offin Security');
+            });
+    
+            if(count(Mail::failures()) > 0){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Could not send the mail'
+                ]);
+            }else{
+                return response()->json([
+                    'error' => false,
+                    'message' => 'Report sent successfully'
+                ]);
+            }
         }else{
             return response()->json([
-                'error' => false,
-                'message' => 'Report sent successfully'
+                'error' => true,
+                'message' => 'Could not save the report'
             ]);
         }
+        
         
     }
 }
