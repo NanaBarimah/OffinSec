@@ -179,7 +179,7 @@ class SiteController extends Controller
         };
 
         $guards = DB::select(DB::raw("SELECT guards.id , guards.firstname, guards.lastname, fingerprints.rtb64 FROM guards, fingerprints, duty_rosters, sites, guard_roster 
-        WHERE guards.id = fingerprints.guard_id and duty_rosters.site_id = sites.id and guard_roster.duty_roster_id = duty_rosters.id and sites.id = '$site_id'"));
+        WHERE guards.id = fingerprints.guard_id and guard_roster.guard_id = guards.id and duty_rosters.site_id = sites.id and guard_roster.duty_roster_id = duty_rosters.id and sites.id = '$site_id'"));
 
         $guards = collect($guards);
         $guards = $guards->unique('id')->values()->toArray();

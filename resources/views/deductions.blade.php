@@ -175,7 +175,7 @@
             applyLoading(btn);
 
             var guard_name = $('#autocomplete').val();
-            var offence = $('#offence :selected').val();
+            var offence = $('#offence :selected').html();
             var date = $('#date').val();
             var details = $('#description').val();
 
@@ -211,10 +211,10 @@
                             });
 
                             table.rows.add([
-                                guard_name,
+                                [guard_name,
                                 offence,
                                 date,
-                                details
+                                details]
                             ]).draw();
                         }
                 },

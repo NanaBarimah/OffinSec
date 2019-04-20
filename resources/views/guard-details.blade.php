@@ -156,5 +156,7 @@
     $('#edit_guard_form').find('select').on('change', function(e){
         $('#edit_guard_form').find('[type="submit"]').prop('disabled', false);
     });
+
+    
 </script>
 @endsection

@@ -35,4 +35,5 @@ Route::middleware('auth')->group(function(){
     Route::get('/offence-types', 'DeductionController@index')->name('offence-types');
     Route::get('/permissions', 'PermissionController@index')->name('permissions');
     Route::get('/send-report', 'ReportController@send')->name('report.send');
+    Route::get('/view-deductions', 'DeductionController@guardDeductions')->name('offences.view');
 });

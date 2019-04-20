@@ -149,6 +149,9 @@
                                 <li>
                                     <a href="/offence-types">Offence Types</a>
                                 </li>
+                                <li>
+                                    <a href="/view-deductions">View Monthly Offences</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -160,9 +163,6 @@
                                 </li>
                                 <li>
                                     <a href="#">View Reports</a>
-                                </li>
-                                <li>
-                                    <a href="#">Report Templates</a>
                                 </li>
                             </ul>
                         </li>

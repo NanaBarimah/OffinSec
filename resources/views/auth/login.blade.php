@@ -13,14 +13,15 @@
 <body>
 	
 	<div class="main-container">
+		<img src="{{asset('assets/images/offin-logo.png')}}" style="display:block; margin:0 auto; padding-top:54px; margin-bottom: -20px;"/>
 		<div class="container-login">
-			<div class="wrap-login p-b-160 p-t-50">
+			<div class="wrap-login p-b-160">
 				<form class="login-form validate-form" method="POST" action="{{ route('login') }}">
                     @csrf
 					<span class="login-form-title p-b-30">
 						Login
 					</span>
-					<p class="text-white mb-5">
+					<p class="mb-5" style="color:#555555">
 						Enter your username and password to login <br>
 						If you have forgotten any of these contact your administrator.
 					</p>

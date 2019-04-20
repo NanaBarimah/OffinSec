@@ -6,14 +6,10 @@
 [ FONT ]*/
 
 @font-face {
-  font-family: "Nunito" sans-serif;
-  src: url('../fonts/OpenSans/OpenSans-Regular.ttf'); 
+  font-family: "Montserrat" sans-serif;
+  src: url('https://fonts.googleapis.com/css?family=Montserrat'); 
 }
 
-@font-face {
-  font-family: OpenSans-Bold;
-  src: url('../fonts/OpenSans/OpenSans-Bold.ttf'); 
-}
 
 
 
@@ -29,12 +25,12 @@
 
 body, html {
 	height: 100%;
-	font-family: "Nunito" sans-serif;
+	font-family: "Montserrat" sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-	font-family: "Nunito" sans-serif;
+	font-family: "Montserrat" sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -60,7 +56,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: "Nunito" sans-serif;
+	font-family: "Montserrat" sans-serif;
 	font-size: 16px;
 	line-height: 1.7;
 	color: #666666;
@@ -139,7 +135,7 @@ iframe {
 /*==================================================================
 [ Text ]*/
 .txt1 {
-  font-family: OpenSans-Regular;
+  font-family: 'Montserrat';
   font-size: 13px;
   line-height: 1.4;
   color: #cccccc;
@@ -167,12 +163,6 @@ iframe {
   align-items: center;
   padding: 15px;
 
-  background: #2575fc;
-  background: -webkit-linear-gradient(left, #6a11cb, #2575fc);
-  background: -o-linear-gradient(left, #6a11cb, #2575fc);
-  background: -moz-linear-gradient(left, #6a11cb, #2575fc);
-  background: linear-gradient(left, #6a11cb, #2575fc);
-
 }
 
 .wrap-login {
@@ -197,9 +187,9 @@ iframe {
 .login-form-title {
   width: 100%;
   display: block;
-  font-family: "Nunito" sans-serif;
+  font-family: "Montserrat" sans-serif;
   font-size: 30px;
-  color: #fefefe;
+  color: #555555;
   line-height: 1.2;
   text-transform: uppercase;
   text-align: left;
@@ -236,7 +226,7 @@ iframe {
 }
 
 .label-input {
-  font-family: OpenSans-Bold;
+  font-family: 'Montserrat';
   font-size: 17px;
   color: #555555;
   line-height: 1.2;
@@ -257,7 +247,7 @@ iframe {
 }
 
 .input {
-  font-family: OpenSans-Bold;
+  font-family: 'Montserrat';
   font-size: 15px;
   color: #555555;
   line-height: 1.2;
@@ -313,7 +303,7 @@ input.input {
 }
 
 .login-form-btn {
-  font-family: OpenSans-Bold;
+  font-family: 'Montserrat';
   font-size: 15px;
   color: #fff;
   line-height: 1.2;
@@ -332,7 +322,7 @@ input.input {
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   overflow: hidden;
-  background: #111111;
+  background: #F57C00;
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -351,12 +341,6 @@ input.input {
   height: 100%;
   opacity: 0;
 
-  background: #2575fc;
-  background: -webkit-linear-gradient(right, #6a11cb, #2575fc);
-  background: -o-linear-gradient(right, #6a11cb, #2575fc);
-  background: -moz-linear-gradient(right, #6a11cb, #2575fc);
-  background: linear-gradient(right, #6a11cb, #2575fc);
-
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
@@ -364,7 +348,6 @@ input.input {
 }
 
 .login-form-btn:hover {
-  background-color: transparent;
 }
 .login-form-btn:hover:before {
   opacity: 1;
@@ -401,7 +384,7 @@ input.input {
   right: 12px;
   pointer-events: none;
 
-  font-family: OpenSans-Bold;
+  font-family: 'Montserrat';
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;
