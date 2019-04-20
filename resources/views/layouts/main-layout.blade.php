@@ -132,7 +132,7 @@
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#">Attendance</a>
+                            <a href="javascript:void(0)">Attendance</a>
                             <ul class="submenu">
                                 <li><a href="/attendance">View Attendance</a></li>
                                 <li><a href="/permissions">Permissions</a></li>
@@ -153,16 +153,13 @@
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#">Reports</a>
+                            <a href="javascript:void(0)">Reports</a>
                             <ul class="submenu">
                                 <li>
                                     <a href="/send-report">New Report</a>
                                 </li>
                                 <li>
-                                    <a href="#">View Reports</a>
-                                </li>
-                                <li>
-                                    <a href="#">Report Templates</a>
+                                    <a href="javascript:void(0)">View Reports</a>
                                 </li>
                             </ul>
                         </li>

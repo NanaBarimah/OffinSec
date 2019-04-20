@@ -28,6 +28,8 @@ Route::delete('/client/delete/{client}', 'ClientController@destroy')->name('clie
 Route::post('/sites/add', 'SiteController@store')->name('site.add');
 Route::put('/site/update', 'SiteController@update')->name('site.update');
 Route::post('/guard/add', 'GuardController@store')->name('guard.add');
+Route::put('/guard/update', 'GuardController@update')->name('guard.update');
+Route::delete('/guard/delete/{guard}', 'GuardController@destroy')->name('guard.delete');
 Route::get('/attendance', 'AttendanceController@getAttendanceByDate')->name('attendance');
 Route::post('/attendance/add', 'AttendanceController@store')->name('attendance.add');
 Route::post('/duty_roster/add', 'DutyRosterController@store')->name('duty_roster.add');
