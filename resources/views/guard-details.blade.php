@@ -38,7 +38,7 @@
                             <hr />
 
                             <div class="text-left">
-                                <p class="text-muted font-13"><strong>Guard Name :</strong> <span class="m-l-15">{{$guard->name.' '.$guard->lastname}}</span></p>
+                                <p class="text-muted font-13"><strong>Guard Name :</strong> <span class="m-l-15">{{$guard->firstname.' '.$guard->lastname}}</span></p>
 
                                 <p class="text-muted font-13"><strong>Mobile Number:</strong><span class="m-l-15">{{$guard->phone_number}}</span></p>
 

@@ -66,19 +66,20 @@
                                         <th>&nbsp;</th>
                                         <th>Name</th>
                                         <th>Current Site</th>
-                                        <th>Earliest Check In</th>
-                                        <th>Latest Check In</th>
+                                        <th>Number Of Days</th>
+                                        <th>Contact Number</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($best_guards as $guy)
                                     <tr>
                                         <td>
-                                            <img src="assets/images/avatar.jpg" alt="Kwame Dawuro" title="contact-img"
+                                            <img src="{{asset('assets/images/guards/'.$guy->photo)}}" alt="" title="contact-img"
                                                 class="rounded-circle thumb-sm" />
                                         </td>
 
                                         <td>
-                                            Kwame Dawuro
+                                            {{$guy->firstname.' '. $guy->lastname}}
                                         </td>
 
                                         <td>
@@ -86,116 +87,15 @@
                                         </td>
 
                                         <td>
-                                            <h5 class="m-0 font-weight-normal">4:30 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
+                                            {{$guy->attendances_count}}
                                         </td>
 
                                         <td>
-                                            <h5 class="m-0 font-weight-normal">4:31 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
+                                            {{$guy->phone_number}}
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/avatar.jpg" alt="Kwame Dawuro" title="contact-img"
-                                                class="rounded-circle thumb-sm" />
-                                        </td>
-
-                                        <td>
-                                            Kwame Dawuro
-                                        </td>
-
-                                        <td>
-                                            BOST Kpone
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:30 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:31 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/avatar.jpg" alt="Kwame Dawuro" title="contact-img"
-                                                class="rounded-circle thumb-sm" />
-                                        </td>
-
-                                        <td>
-                                            Kwame Dawuro
-                                        </td>
-
-                                        <td>
-                                            BOST Kpone
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:30 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:31 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/avatar.jpg" alt="Kwame Dawuro" title="contact-img"
-                                                class="rounded-circle thumb-sm" />
-                                        </td>
-
-                                        <td>
-                                            Kwame Dawuro
-                                        </td>
-
-                                        <td>
-                                            BOST Kpone
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:30 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:31 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/avatar.jpg" alt="Kwame Dawuro" title="contact-img"
-                                                class="rounded-circle thumb-sm" />
-                                        </td>
-
-                                        <td>
-                                            Kwame Dawuro
-                                        </td>
-
-                                        <td>
-                                            BOST Kpone
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:30 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                        <td>
-                                            <h5 class="m-0 font-weight-normal">4:31 a.m.</h5>
-                                            <p class="mb-0 text-muted"><small>20th December,</small></p>
-                                        </td>
-
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

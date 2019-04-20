@@ -35,12 +35,18 @@ class HomeController extends Controller
         $users = User::count();
 
         $today = Carbon\Carbon::today();
+
+        $best_guards = Guard::withCount('attendances')->whereHas('attendances', function($query){
+            $query->whereMonth('date_time', '=', date('m'));
+        })->orderBy('attendances_count', 'desc')->take(5)->get();
+
         $deductions = Deduction::whereBetween('created_at', [$today->startOfMonth(), $today->endOfMonth()])->count();
 
         return view('home')
             ->with('guards', $guards)
             ->with('clients', $clients)
             ->with('users', $users)
+            ->with('best_guards', $best_guards)
             ->with('deductions', $deductions);
     }
 }
