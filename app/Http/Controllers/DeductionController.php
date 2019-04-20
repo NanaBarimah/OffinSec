@@ -163,11 +163,43 @@ class DeductionController extends Controller
         $deduction = Deduction::where('id', $request->deduction_id)->first();
         $date = date('Y-m-d', strtotime($request->date));
 
-        $deduction->guards()->attach($request->guard_id, ['date' => $date, 'details' => $request->description]);
+        $deduction->guards()->attach($request->guard_id, ['date' => $date, 'details' => $request->description, 'amount' => $deduction->penalty]);
 
         return response()->json([
             'error' => false,
             'message' => 'Deduction recorded'
+        ]);
+    }
+
+    public function guardDeductions(Request $request){
+        return view('guard-deductions');
+    }
+
+    public function viewMonthly(Request $request){
+        $request->validate([
+            'date' => 'required'
+        ]);
+
+        $date = substr($request->date, 0, strpos($request->date, " 00:"));
+
+        $guards = Guard::with('deductions')->whereHas('deductions', function($q) use ($date){
+            $q->whereMonth('date', '=', date('m', strtotime($date)));
+        })->get();
+
+        foreach($guards as $guard){
+            $sum = 0;
+            $guard->offence_count = $guard->deductions->count();
+
+            foreach($guard->deductions as $deduction){
+                $sum += $deduction->pivot->amount;
+            }
+
+            $guard->offence_total = $sum;
+        }
+
+        return response()->json([
+            'error' => false,
+            'guards' => $guards
         ]);
     }
 }

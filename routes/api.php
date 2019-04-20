@@ -41,5 +41,6 @@ Route::put('/offence/update', 'DeductionController@update')->name('offence.updat
 Route::delete('/offence/delete/{deduction}', 'DeductionController@destroy')->name('offence.delete');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
 Route::post('/report/send-report', 'ReportController@generateReport');
+Route::get('/deductions/view', 'DeductionController@viewMonthly');
 
 Route::get('/site/get', 'SiteController@setupApp')->name('site.get');

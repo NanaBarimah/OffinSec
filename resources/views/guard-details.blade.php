@@ -185,6 +185,7 @@
         $('#edit_guard_form').find('[type="submit"]').prop('disabled', false);
     });
 
+    
     function deleteGuard(guard)
     {
         $('#delete-guard-id').val(guard);

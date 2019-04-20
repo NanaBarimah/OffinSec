@@ -44,7 +44,7 @@ class Guard extends Model
 
     public function deductions()
     {
-        return $this->belongsToMany('App\Deduction', 'deduction_guard')->withTimestamps();
+        return $this->belongsToMany('App\Deduction', 'deduction_guard')->withPivot('date', 'details', 'amount')->withTimestamps();
     }
 
     public function permissions()
