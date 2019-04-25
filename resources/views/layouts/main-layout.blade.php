@@ -119,7 +119,7 @@
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#">Guards</a>
+                            <a href="javascript:void(0)">Guards</a>
                             <ul class="submenu">
                                 <li><a href="/guards">View Guards</a></li>
                                 <li><a href="/guards/add">New Guard</a></li>
@@ -136,12 +136,11 @@
                             <ul class="submenu">
                                 <li><a href="/attendance">View Attendance</a></li>
                                 <li><a href="/permissions">Permissions</a></li>
-                                <li><a href="#">Attendance Reports</a></li>
                             </ul>
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#">Offences</a>
+                            <a href="javascript:void(0)">Offences</a>
                             <ul class="submenu">
                                 <li>
                                     <a href="/offences">Guard Offences</a>
@@ -162,14 +161,15 @@
                                     <a href="/send-report">New Report</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">View Reports</a>
+                                    <a href="/view-reports">View Reports</a>
                                 </li>
                             </ul>
                         </li>
-
+                        @if(strtolower(Auth::user()->role) == 'Admin')
                         <li>
                             <a href="/users">Users</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>

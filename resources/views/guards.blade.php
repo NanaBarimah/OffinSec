@@ -42,7 +42,7 @@
                                     @if($guard->duty_rosters->count() < 1)
                                      No site assigned 
                                      @else 
-                                     {{$guard->duty_roster->site->name}} 
+                                     {{$guard->duty_rosters[0]->site->name}} 
                                     @endif 
                                     <span> | </span> <span> <span class="text-pink">{{$guard->phone_number}}</span>
                                     </span></p>

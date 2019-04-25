@@ -98,7 +98,7 @@
                                 <input type="text" name="guard" id="autocomplete" class="form-control" />
                                 <input type="hidden" name="guard_id" class="verifiable" id="guard_id" />
                             </div>
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-2">
                                 <select class="selectpicker show-tick" data-style="btn-light col-md-12" title="Select A Site"
                                     id="record_site" name="site_id" data-live-search="true">
                                     @foreach($sites as $site)
@@ -106,13 +106,20 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group mb-4">
+                                <select class="selectpicker show-tick" data-style="btn-light col-md-12" title="Attendance Type"
+                                    id="record_type" name="type" data-live-search="true">
+                                    <option value="0">Time In</option>
+                                    <option value="1">Time Out</option>
+                                </select>
+                            </div>
                             <div class="form-row mb-4">
                                 <div class="col-md-6 col-sm-12">
-                                    <label class="font-weight-bold text-muted">Date in</label>
+                                    <label class="font-weight-bold text-muted">Date</label>
                                     <input class="form-control verifiable" id="date_in"/>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
-                                    <label class="font-weight-bold text-muted">Time in</label>
+                                    <label class="font-weight-bold text-muted">Time</label>
                                     <input class="form-control verifiable" id="time_in"/>
                                 </div>
                             </div>

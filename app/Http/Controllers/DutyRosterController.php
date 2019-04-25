@@ -155,7 +155,14 @@ class DutyRosterController extends Controller
 
     public function view(Request $request){
         $site = Site::where('id', $request->id)->first();
-        $guards = Guard::all();
+        $guards = Guard::whereDoesntHave('duty_rosters')
+                         ->orWhereHas('duty_rosters', function($d){
+                             $d->whereHas('site', function($s){
+                                 $s->whereHas('client', function($c){
+                                     $c->where('end_date', '<', date('Y-m-d'));
+                                 });
+                             });
+                         })->get();
         $roster = Duty_Roster::where('site_id', $request->id)->where('active', 1)->with('guards')->first();
         $shift_types = Shift_Type::all();
 

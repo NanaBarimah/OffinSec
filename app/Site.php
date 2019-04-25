@@ -26,4 +26,14 @@ class Site extends Model
     public function attendances(){
         return $this->hasMany('App\Attendance');
     }
+
+    public function incidents()
+    {
+        return $this->hasMany('App\Incident', 'site_id');
+    }
+
+    public function occurrences()
+    {
+        return $this->hasMany('App\Occurrence', 'site_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -16,7 +17,11 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('users')->with('users', $users);
+        if(strtolower(Auth::user()->role) == 'Admin'){
+            return view('users')->with('users', $users);
+        }else{
+            return abort(403);
+        }
     }
 
     public function allUsers()
