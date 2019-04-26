@@ -44,3 +44,4 @@ Route::post('/report/send-report', 'ReportController@generateReport');
 Route::get('/deductions/view', 'DeductionController@viewMonthly');
 
 Route::get('/site/get', 'SiteController@setupApp')->name('site.get');
+Route::post('/permissions/add', 'PermissionController@store')->name('permission.add');

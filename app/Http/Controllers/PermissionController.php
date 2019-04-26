@@ -42,7 +42,6 @@ class PermissionController extends Controller
     {
         $request->validate([
             'guard_id' => 'required',
-            'reliever' => 'required',
             'reason' => 'required',
             'date' => 'required'
         ]);
@@ -50,7 +49,13 @@ class PermissionController extends Controller
         $permission = new Permission();
 
         $permission->guard_id = $request->guard_id;
-        $permission->reliever = $request->guard_id;
+	
+	if($request->reliever == null){
+	     $permission->reliever = null;     
+	}else{
+	     $permission->reliever = $request->reliever;
+	}
+        
         $permission->reason = $request->reason;
         $permission->date = $request->date;
 
