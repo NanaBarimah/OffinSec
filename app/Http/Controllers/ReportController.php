@@ -180,9 +180,9 @@ class ReportController extends Controller
         
 
         if($report->save()){
-            $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
+            //$data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
 
-            Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
+            /*Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
                 $message->to($to_email, $to_name)
                         ->subject('Scheduled Report');
                 $message->from('noreply@offinsecuritygh.com','Offin Security');
@@ -193,12 +193,12 @@ class ReportController extends Controller
                     'error' => true,
                     'message' => 'Could not send the mail'
                 ]);
-            }else{
+            }else{*/
                 return response()->json([
                     'error' => false,
                     'message' => 'Report sent successfully'
                 ]);
-            }
+            //}
         }else{
             return response()->json([
                 'error' => true,

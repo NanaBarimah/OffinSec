@@ -187,16 +187,17 @@
 
             var formData = $(this).serialize();
             formData += '&incidents='+tinymce.get('elm1').getContent();
-            applyLoading(btn);
+            
+            btn.prop('disabled', true);
+            btn.html('Generating PDF');
 
             $.ajax({
                 url : '/api/report/send-report',
                 method : 'POST',
                 data: formData,
                 success: function(data){
-                        removeLoading(btn, 'Finish');
                         if(data.error){
-                            removeLoading(btn, 'Add Client');
+                            removeLoading(btn, 'Finish');
                             $(result).each(function ()  {
                                 $(this).css('display', 'block');
                             });
@@ -210,18 +211,36 @@
                             });
                         
                         }else{
-                            $('#new_client').trigger('reset');
-                            $.toast({
-                                text : data.message,
-                                heading : 'Done',
-                                position: 'top-right',
-                                bgColor : '#5cb85c',
-                                showHideTransition : 'slide'
-                            });
+                            btn.html('Sending Mail');
+                            formData += '&report='+data.data.id;
 
-                            setTimeout(function(){
-                                location.reload();
-                            }, 500);
+                            $.ajax({
+                                url : '/api/report/send-mail',
+                                method : 'POST',
+                                data : formData,
+                                success : function(data){
+                                    removeLoading(btn, 'Finish');
+                                    $('#new_client').trigger('reset');
+                                    
+                                    $.toast({
+                                        text : data.message,
+                                        heading : 'Done',
+                                        position: 'top-right',
+                                        bgColor : '#5cb85c',
+                                        showHideTransition : 'slide'
+                                    });
+                                },
+                                error : function(data){
+                                    removeLoading(btn, 'Finish');
+                                    $.toast({
+                                        text : 'Network error',
+                                        heading : 'Error',
+                                        position: 'top-right',
+                                        showHideTransition : 'slide', 
+                                        bgColor: '#d9534f'
+                                    });
+                                }
+                            });
                         }
                     },
                 error: function(err){
