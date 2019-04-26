@@ -17,6 +17,7 @@ Route::get('users/', 'UserController@index');
 Route::post('users/add', 'UserController@store');
 Route::get('users/{user}', 'UserController@show');
 Route::put('/user/update', 'UserController@update')->name('user.update');
+Route::put('/user/update/my-account', 'UserController@myAccount')->name('user.update.my-account');
 Route::put('users/activate', 'UserController@is_active');
 Route::post('/user/toggle-active', 'UserController@toggleActive')->name('user.toggle');
 

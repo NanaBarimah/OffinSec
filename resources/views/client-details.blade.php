@@ -1,6 +1,5 @@
 @extends('layouts.main-layout', ['page_title' => $client->name])
 @section('styles')
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
@@ -353,7 +352,6 @@
     <script src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     
     <!--JQUERY toast-->
-    <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
     
     <!-- Chart JS -->
     <script src="{{asset('plugins/chart.js/chart.bundle.js')}}"></script>

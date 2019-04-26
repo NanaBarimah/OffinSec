@@ -3,7 +3,6 @@
     <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/jquery.steps/css/jquery.steps.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
@@ -310,7 +309,6 @@
 <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 
     <script>
 

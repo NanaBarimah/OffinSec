@@ -1,8 +1,6 @@
 @extends('layouts.main-layout', ['page_title'=>'Users'])
 @section('styles')
 <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 <style>
     .subtext{
@@ -162,7 +160,6 @@
 
 
 <!--JQUERY toast-->
-<script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 <script>
  jQuery.browser = {};
         (function () {
@@ -318,7 +315,7 @@
                 }
             })
 
-            $('.modal').modal('show');
+            $('#edit-user').modal('show');
         }
 
         $('#edit_user_form').on('submit', function(e){

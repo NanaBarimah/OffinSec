@@ -1,7 +1,6 @@
 @extends('layouts.main-layout', ['page_title' => 'Offence Types'])
 @section('styles')
 <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <style>
     .currency{
         font-size: 14px;
@@ -155,7 +154,6 @@
 <!--Animations-->
 <script src="{{asset('plugins/custombox/js/custombox.min.js')}}"></script>
 <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
-<script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}"></script>
 
 <script>
         $('#new_offence').on('submit', function(e){

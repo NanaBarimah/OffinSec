@@ -10,7 +10,6 @@
 <link href="{{asset('plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
 <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 
 <style>
     #view_attendance{
@@ -109,8 +108,8 @@
                             <div class="form-group mb-4">
                                 <select class="selectpicker show-tick" data-style="btn-light col-md-12" title="Attendance Type"
                                     id="record_type" name="type" data-live-search="true">
-                                    <option value="0">Time In</option>
-                                    <option value="1">Time Out</option>
+                                    <option value="1">Time In</option>
+                                    <option value="0">Time Out</option>
                                 </select>
                             </div>
                             <div class="form-row mb-4">
@@ -153,7 +152,8 @@
                 <table id="attendance" class="table table-bordered table-striped table-hover dt-responsive nowrap">
                     <thead>
                         <th>Guard Name</th>
-                        <th>Time In</th>
+                        <th>Time</th>
+                        <th>Type</th>
                     </thead>
                     <tbody>
 
@@ -184,7 +184,6 @@
     <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
-    <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}"></script>
 
     <script>
         var string = "{{$guards}}";
@@ -264,9 +263,17 @@
                                 table.clear().draw();
 
                                 for(var i = 0; i < data.data.length; i++){
+                                    var type = "undefined";
+
+                                    if(data.data[i].type == 0){
+                                        type = "Check out";
+                                    }else if(data.data[i].type == 1){
+                                        type = "Check in";
+                                    }
                                     table.row.add([
                                         data.data[i].owner_guard.firstname + ' ' + data.data[i].owner_guard.lastname,
-                                        data.data[i].date_time
+                                        data.data[i].date_time,
+                                        type
                                     ]).draw();
                                 }
                                 
@@ -353,10 +360,6 @@
                                     bgColor : '#5cb85c',
                                     showHideTransition : 'slide'
                                 });
-
-                                setTimeout(function(){
-                                    location.reload();
-                                }, 500);
                             }
                     },
                     error: function(err){
