@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Guard;
 use App\Fingerprint;
 use App\Guarantor;
+use DB;
 
 use App\Utils;
 
@@ -289,9 +290,13 @@ class GuardController extends Controller
     }
 
     public function view(Request $request){
-        $guard = Guard::with('duty_rosters', 'duty_rosters.site')->where('id', $request->id)->first();
+        $guard = Guard::with('duty_rosters', 'duty_rosters.site', 'duty_rosters.site.client')->where('id', $request->id)->first();
+        //$guard = DB::select("SELECT sites.name, guards.* FROM guard_roster, duty_rosters, guards, sites WHERE guard_roster.guard_id = guards.id AND guard_roster.duty_roster_id = duty_rosters.id AND sites.id = duty_rosters.site_id AND guards.id = '$request->id' group by guards.id, sites.name ");
 
         return view('guard-details')->with('guard', $guard);
+        /*return response()->json([
+            'data' => $guard
+        ]);*/
     }
 
     public function welfareGuards()

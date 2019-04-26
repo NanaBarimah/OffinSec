@@ -65,6 +65,7 @@ class AttendanceController extends Controller
         $attendance->site_id = $request->site_id;
         $date = date('Y-m-d H:i:s', strtotime($request->date_time));
         $attendance->date_time = $date;
+        $attendance->type = $request->type;
 
         if($attendance->save()){
             return response()->json([

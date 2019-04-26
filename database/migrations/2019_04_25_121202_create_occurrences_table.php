@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttendancesTable extends Migration
+class CreateOccurrencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('occurrences', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('guard_id');
+            $table->text('occurrence');
             $table->integer('site_id')->unsigned();
-            $table->dateTime('date_time');
-            $table->smallInteger('type')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('guard_id')->references('id')->on('guards')
-                  ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('site_id')->references('id')->on('sites')
                   ->onUpdate('cascade')->onDelete('cascade');
         });
@@ -36,6 +32,6 @@ class CreateAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('occurrences');
     }
 }

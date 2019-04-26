@@ -36,16 +36,6 @@
 
                                 </div>
                             </div>
-
-                            <div class="col-sm-6 col-lg-6 col-xl-3">
-                                <div class="card-box mb-0 widget-chart-two">
-                                    <div class="widget-chart-two-content">
-                                        <p class="text-muted mb-0 mt-2">Total Monthly Deductions</p>
-                                        <h3 class="">{{ $deductions }}</h3>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
                         <!-- end row -->
                     </div>
@@ -83,7 +73,7 @@
                                         </td>
 
                                         <td>
-                                            BOST Kpone
+                                            {{$guy->current_site}}
                                         </td>
 
                                         <td>
@@ -131,7 +121,7 @@
                             <div class="card-body">
                                 <div class="col-8">
                                     <h5>
-                                        <a href="javascrip:void(0)">View reports</a>
+                                        <a href="/view-reports">View reports</a>
                                     </h5>
                                 </div>
                             </div>
