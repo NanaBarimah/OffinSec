@@ -305,4 +305,8 @@ class GuardController extends Controller
 
         return view('welfare-guard')->with('guards', $guards);
     }
+
+    public function reports(){
+        return view('guard-report');
+    }
 }

@@ -29,7 +29,6 @@ Route::post('/sites/add', 'SiteController@store')->name('site.add');
 Route::put('/site/update', 'SiteController@update')->name('site.update');
 Route::post('/guard/add', 'GuardController@store')->name('guard.add');
 Route::put('/guard/update', 'GuardController@update')->name('guard.update');
-Route::put('/guards/reports', 'GuardController@update')->name('guard.update');
 Route::delete('/guard/delete/{guard}', 'GuardController@destroy')->name('guard.delete');
 Route::get('/attendance', 'AttendanceController@getAttendanceByDate')->name('attendance');
 Route::post('/attendance/add', 'AttendanceController@store')->name('attendance.add');
