@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        if(strtolower(Auth::user()->role) == 'Admin'){
+        if(strtolower(Auth::user()->role) == 'admin'){
             return view('users')->with('users', $users);
         }else{
             return abort(403);
@@ -198,4 +199,49 @@ class UserController extends Controller
     {
         //
     }
+
+    public function myAccount(Request $request)
+    {
+        $status = true;
+
+        $request->validate([
+            'id' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'phone_number' => 'required',
+        ]);
+
+        $user = User::where('id', $request->id)->first();
+        if($request->password != null){
+            
+            $request->validate([
+                'old_password' => 'required',
+                'password' => 'required|confirmed|min:6'
+            ]);
+
+            if(Hash::check($request->old_password, $user->password)){
+                $user->password = $request->password;
+            }else{
+                return response()->json([
+                    'error' => true,
+                    'message' => 'The old password you provided is wrong'
+                ]);
+            }
+        }
+        
+
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->phone_number = $request->phone_number;
+
+        if($user->update()){
+            $status = false;
+        }
+
+        return response()->json([
+            'error' => $status,
+            'message' => !$status ? 'User Updated Successfully' : 'Could not update user'
+        ]);
+    }
 }
+ 

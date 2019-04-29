@@ -4,32 +4,6 @@
 <link href="{{asset('plugins/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
-<style>
-.loading:after {
-  content: ' .';
-  animation: dots 1s steps(5, end) infinite;}
-
-@keyframes dots {
-  0%, 20% {
-    color: rgba(0,0,0,0);
-    text-shadow:
-      .25em 0 0 rgba(0,0,0,0),
-      .5em 0 0 rgba(0,0,0,0);}
-  40% {
-    color: white;
-    text-shadow:
-      .25em 0 0 rgba(0,0,0,0),
-      .5em 0 0 rgba(0,0,0,0);}
-  60% {
-    text-shadow:
-      .25em 0 0 white,
-      .5em 0 0 rgba(0,0,0,0);}
-  80%, 100% {
-    text-shadow:
-      .25em 0 0 white,
-      .5em 0 0 white;}}
-</style>
 @endsection
 @section('content')
             <div class="row notLoader" style="display:none">
@@ -56,7 +30,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="col-form-label"><b>Recepient </b>Email <br/></label>
+                                                    <label class="col-form-label"><b>Recipient </b>Email <br/></label>
                                                     <input type="email" name="email" id="email" class="form-control validate" <?php if(isset($current_client) && $current_client != null) {echo "value='$current_client->email'";} ?>/>
                                                 </div>
                                             </div>
@@ -89,7 +63,6 @@
 <script src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
 <script src="{{asset('plugins/tinymce/tinymce.min.js')}}"></script>
-<script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 <script>
 //wizard initialization
 !function ($) {

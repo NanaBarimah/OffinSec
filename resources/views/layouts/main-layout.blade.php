@@ -9,8 +9,7 @@
 
     
 -->
-<?php $user = Auth::user(); ?>
-
+<?php $user = Auth::user() ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,6 +29,7 @@
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 
 
     <script src="{{asset('assets/js/modernizr.min.js')}}"></script>
@@ -73,16 +73,16 @@
                         <li class="dropdown notification-list">
                             <a class="nav-link dropdown-toggle waves-effect nav-user" data-toggle="dropdown" href="#"
                                 role="button" aria-haspopup="false" aria-expanded="false">
-                                <img class="rounded-circle" height="30" style="width: 30px" avatar="{{ucwords(Auth::user()->firstname.' '.Auth::user()->lastname)}}" />
+                                <img class="rounded-circle" height="30" style="width: 30px" avatar="{{ucwords($user->firstname.' '.$user->lastname)}}" />
                                 <span class="ml-1 pro-user-name">
-                                    {{ucwords(Auth::user()->firstname.' '.Auth::user()->lastname)}} <i class="mdi mdi-chevron-down"></i>
+                                    {{ucwords($user->firstname.' '.$user->lastname)}} <i class="mdi mdi-chevron-down"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown">
 
 
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="account()">
                                     <i class="fi-head"></i> <span>My Account</span>
                                 </a>
 
@@ -166,7 +166,7 @@
                                 </li>
                             </ul>
                         </li>
-                        @if(strtolower(Auth::user()->role) == 'Admin')
+                        @if(strtolower(Auth::user()->role) == 'admin')
                         <li>
                             <a href="/users">Users</a>
                         </li>
@@ -207,7 +207,54 @@
     </div>
     <!-- end wrapper -->
     @yield('modals')
-
+    <div class="modal fade" id="my-account">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-center border-bottom-0 d-block">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title mt-2">Edit Account</h4>
+                </div>
+                <div class="modal-body p-4">
+                    <form role="form" id="my-account_form">   
+                        @csrf
+                    <div class="form-row mb-4">
+                        <div class="col-md-4 col-sm-12">
+                            <label for="name">Firstname</label>
+                            <input class="form-control resetable" type="text" id="edit_fname" placeholder="Kwasi" name="firstname" value="{{$user->firstname}}">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="name">Lastname</label>
+                            <input class="form-control resetable" type="text" id="edit_lname" placeholder="Koomson" name="lastname" value="{{$user->lastname}}">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="email">Phone</label>
+                            <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number" value="{{$user->phone_number}}">
+                            <input type="hidden" name="id" value="{{$user->id}}"/>
+                        </div>
+                    </div>
+                    <div class="form-row mb-4">
+                        <div class="col-md-4 col-sm-12">
+                            <label for="password">Old Password</label>
+                            <input class="form-control resetable" type="password" id="old_password" name="old_password">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="password">Enter New Password</label>
+                            <input class="form-control resetable" type="password" id="edit_new_password_confirm" name="password">
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="password">Confirm Password</label>
+                            <input class="form-control resetable" type="password" id="edit_password_confirm" name="password_confirmation">
+                        </div>
+                    </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -227,6 +274,7 @@
     <script src="{{asset('assets/js/waves.js')}}"></script>
     <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
     <script src="{{asset('assets/js/avatar.js')}}"></script>
+    <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 
     
     @yield('scripts')
@@ -234,6 +282,66 @@
     <!-- App js -->
     <script src="{{asset('assets/js/jquery.core.js')}}"></script>
     <script src="{{asset('assets/js/jquery.app.js')}}"></script>
+    <script>
+        function account(){
+            $('#my-account').modal('show');
+        }
+
+        $('#my-account_form').on('submit', function(e){
+            e.preventDefault();
+            var btn = $(this).find('[type="submit"]');
+
+            data = $(this).serialize();
+
+            var error = false;
+
+            if(!error){
+                $(this).find('.text-danger').css('display', 'none');
+
+                applyLoading(btn);
+
+                $.ajax({
+                    url: '/api/user/update/my-account',
+                    method: 'PUT',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, 'Update');
+                            if(data.error){
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 500);
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, 'Update');
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                });
+            }
+        })
+    </script>
 
 </body>
 

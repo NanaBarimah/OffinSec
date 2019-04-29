@@ -4,7 +4,6 @@
     <link href="{{asset('plugins/custombox/css/custombox.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('plugins/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet"/>
-    <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
     <style>
         .text-small{
             font-size: 12px;
@@ -281,7 +280,6 @@
     <script src="{{asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     
     <!--JQUERY toast-->
-    <script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 
     <script>
         jQuery.browser = {};

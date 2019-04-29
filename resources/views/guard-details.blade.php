@@ -1,7 +1,6 @@
 @extends('layouts.main-layout', ['page_title' => ucwords($guard->firstname.' '.$guard->lastname)])
 @section('styles')
 
-<link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 @endsection
 @section('content')
@@ -197,7 +196,6 @@
     </div>
 @endsection
 @section('scripts')
-<script src="{{asset('plugins/jquery-toastr/jquery.toast.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
 <script>
     $('#edit_guard_form').find('input').on('keyup', function(){
