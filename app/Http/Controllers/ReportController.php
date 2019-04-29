@@ -157,19 +157,19 @@ class ReportController extends Controller
         $end_date = date('Y-m-d', strtotime($request->end_date));
         
         $client = Client::where('id', $request->client_id)->first();
-        $id = $client->id;
-
-        $attendances = Site::with('attendances', 'attendances.owner_guard')
-                        ->where('client_id', $id)->whereHas('attendances', function($q) use ($start_date, $end_date){
-                            $q->whereRaw("DATE(date_time) BETWEEN DATE('$start_date') AND DATE('$end_date')");
-                        })->get();
+        $sites = Site::where('client_id', $request->client_id)->with(['attendances'=>function($q) use ($start_date, $end_date){
+            $q->whereRaw("DATE(date_time) BETWEEN DATE('$start_date') AND DATE('$end_date')");
+        }])->with('attendances.owner_guard')->with(['incidents' => function($q) use ($start_date, $end_date){
+            $q->whereRaw("DATE(created_at) BETWEEN DATE('$start_date') AND DATE('$end_date')");
+        }])->with(['occurrences' => function($q) use ($start_date, $end_date){
+            $q->whereRaw("DATE(created_at) BETWEEN DATE('$start_date') AND DATE('$end_date')");
+        }])->get();
         
-        $to_name = $client->name;
-        $to_email = $request->email;
-
+        $client->sites = $sites;
+        
         $incidents = $request->incidents;
         
-        $pdf = PDF::loadView('report_template', compact('client', 'attendances', 'start_date', 'end_date', 'incidents'));
+        $pdf = PDF::loadView('report_template', compact('client', 'start_date', 'end_date', 'incidents'));
         $link = storage_path().'/docs'.'/'.microtime().'-'.$client->name.'['.$start_date.'].pdf';
         $pdf->save($link);
         $pdf->stream('download.pdf');
@@ -180,32 +180,54 @@ class ReportController extends Controller
         
 
         if($report->save()){
-            //$data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $link);
-
-            /*Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
-                $message->to($to_email, $to_name)
-                        ->subject('Scheduled Report');
-                $message->from('noreply@offinsecuritygh.com','Offin Security');
-            });
-    
-            if(count(Mail::failures()) > 0){
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Could not send the mail'
-                ]);
-            }else{*/
-                return response()->json([
-                    'error' => false,
-                    'message' => 'Report sent successfully'
-                ]);
-            //}
+            return response()->json([
+                'error' => false,
+                'message' => 'Report saved',
+                'data' => $report
+            ]);
         }else{
             return response()->json([
                 'error' => true,
                 'message' => 'Could not save the report'
             ]);
         }
+    }
+
+    public function sendMail(Request $request){
+        $request->validate([
+            'client_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'email' => 'required',
+            'report' => 'required'
+        ]);
+
+        $report = Report::where('id', $request->report)->first();
+        $client = Client::where('id', $request->client_id)->first();
+
+        $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $report->template);
         
-        
+
+        $to_name = $client->name;
+        $to_email = $request->email;
+
+        Mail::send('email_templates.basic', $data, function($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                    ->subject('Scheduled Report');
+            $message->from('noreply@offinsecuritygh.com','Offin Security');
+        });
+
+
+        if(count(Mail::failures()) > 0){
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not send the mail'
+            ]);
+        }else{
+            return response()->json([
+                'error' => false,
+                'message' => 'Report sent successfully'
+            ]);
+        }
     }
 }

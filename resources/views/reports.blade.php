@@ -5,6 +5,31 @@
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/jquery-toastr/jquery.toast.min.css')}}" rel="stylesheet"/>
+<style>
+.loading:after {
+  content: ' .';
+  animation: dots 1s steps(5, end) infinite;}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0,0,0,0);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  40% {
+    color: white;
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  60% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 rgba(0,0,0,0);}
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 white;}}
+</style>
 @endsection
 @section('content')
             <div class="row notLoader" style="display:none">
@@ -189,7 +214,7 @@
             formData += '&incidents='+tinymce.get('elm1').getContent();
             
             btn.prop('disabled', true);
-            btn.html('Generating PDF');
+            btn.html('<span class"loading">Generating PDF...</span>');
 
             $.ajax({
                 url : '/api/report/send-report',
@@ -209,9 +234,11 @@
                                 showHideTransition : 'slide', 
                                 bgColor: '#d9534f'
                             });
-                        
+                            $(result).each(function ()  { 
+                                $(this).css('display', 'block');
+                            });
                         }else{
-                            btn.html('Sending Mail');
+                            btn.html('Sending Mail...');
                             formData += '&report='+data.data.id;
 
                             $.ajax({
@@ -220,6 +247,9 @@
                                 data : formData,
                                 success : function(data){
                                     removeLoading(btn, 'Finish');
+                                    $(result).each(function ()  { 
+                                        $(this).css('display', 'block');
+                                    });
                                     $('#new_client').trigger('reset');
                                     
                                     $.toast({
@@ -229,9 +259,17 @@
                                         bgColor : '#5cb85c',
                                         showHideTransition : 'slide'
                                     });
+
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 500);
+
                                 },
                                 error : function(data){
                                     removeLoading(btn, 'Finish');
+                                    $(result).each(function ()  { 
+                                        $(this).css('display', 'block');
+                                    });
                                     $.toast({
                                         text : 'Network error',
                                         heading : 'Error',

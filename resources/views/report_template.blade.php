@@ -2,7 +2,7 @@
   <table>
       <tr>
           <td>
-              <h1>Scheduled Attendance Report</h1>
+              <h1>Scheduled Client Report</h1>
           </td>
       </tr>
       <tr style="margin-top: 16px">
@@ -19,61 +19,60 @@
       </tr>
       <tr>
           <td style="width: 100%;">
-              <h5 style="text-align: center">Attendance Report for guards between <b>{{Carbon\Carbon::parse($end_date)->format('jS F Y')}}</b> and <b>{{Carbon\Carbon::parse($start_date)->format('jS F Y')}}</b></h5>
+              <h5>Attendance Report for guards between <b>{{Carbon\Carbon::parse($end_date)->format('jS F Y')}}</b> and <b>{{Carbon\Carbon::parse($start_date)->format('jS F Y')}}</b></h5>
           </td>
       </tr>
       <tr>
           <td>
+              <h3>Contents</h3>
               <p>
-                  This report contains the following information:
-                    <ul>
-                        <li>Attendance of guards between the specified dates per site</li>
-                        <li>Incidents that occured on the sites between the dates specified</li>
-                    </ul>
+                    As requested, the following report includes information for the specified time period on the following, grouped into respective sites:
+                    <ol>
+                        <li>Incidents Recorded</li>
+                        <li>Occurences Recorded</li>
+                        <li>Attendance Recorded</li>
+                        <li>Extra Notes</li>
+                    </ol>
               </p>
           </td>
       </tr>
       <tr>
-          <td>
-            <h2>
+          @foreach($client->sites as $site)
+          <td style="margin-bottom: 40px">
+            <h4>{{$site->name}}</h4>
+            <h5>
                 Incident Reports
-            </h2>
-            @if($incidents!=null)
+            </h5>
+            @if($site->incidents->count() > 0)
             <div>
-                {!! $incidents !!}
+                @foreach($site->incidents as $incident)
+                <p style="font-weight: bold; font-size: 16px; text-transform: uppercase;">Date: {{Carbon\Carbon::parse($incident->created_at)->format('jS F, Y')}}</p>
+                <table style="border:2px; width: 100%;">
+                    <thead>
+                        <th>Incident</th>
+                        <th>Action Taken</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$incident->incident}}</td>
+                            <td>{{$incident->action_taken}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                @endforeach
             </div>
             @else
-            <p>No incidents were recorded during the specified time period</p>
+            <p>No incidents were recorded for this site during the specified time period</p>
             @endif
           </td>  
+          @endforeach
       </tr>
       <tr>
           <td>
-            <h2>
+            <h5>
                 Attendance Reports
-            </h2>
-            <p>These were the guards that <b>checked in </b> with our biometric time attendance system </p>
-            @foreach($attendances as $attendance)
-            <h4>{{$attendance->name}}</h4>
-            <table>
-                <thead>
-                    <th>Guard Name</th>
-                    <th>Time In</th>
-                </thead>
-                <tbody>
-                    @foreach($attendance->attendances as $attendance)
-                        <tr>
-                            <td>
-                                {{$attendance->owner_guard->name}}
-                            </td>
-                            <td>
-                                {{$attendance->date_time}}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @endforeach
+            </h5>
+            
           </td>
       </tr>
   </table>

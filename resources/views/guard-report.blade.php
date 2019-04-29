@@ -1,0 +1,1 @@
+@extends('layouts.main-layout', ['page_title' => 'Guard Reports'])

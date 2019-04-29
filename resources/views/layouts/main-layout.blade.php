@@ -9,9 +9,10 @@
 
     
 -->
+<?php $user = Auth::user(); ?>
+
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>{{$page_title}} | GUARD ATTENDANCE MANAGEMENT SYSTEM</title>
@@ -123,7 +124,7 @@
                             <ul class="submenu">
                                 <li><a href="/guards">View Guards</a></li>
                                 <li><a href="/guards/add">New Guard</a></li>
-                                <li><a href="#">Guard Reports</a></li>
+                                <li><a href="/guards/reports">Guard Reports</a></li>
                             </ul>
                         </li>
 
