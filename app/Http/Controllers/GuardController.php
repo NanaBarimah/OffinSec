@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Guard;
 use App\Fingerprint;
 use App\Guarantor;
+use App\Client;
+use App\Site;
+
 use DB;
 
 use App\Utils;
@@ -307,6 +310,67 @@ class GuardController extends Controller
     }
 
     public function reports(){
-        return view('guard-report');
+        $clients = Client::with('sites')->get();
+        return view('guard-report', compact('clients'));
+    }
+
+    public function getGuardsByGender(){
+        $guards = DB::select("SELECT count(id) as total, gender from guards group by gender");
+        return response()->json([
+            'error' => false,
+            'data' => $guards
+        ]);
+    }
+
+    public function getGuardsByAgeRange(){
+        $guards = DB::select("SELECT SUM(IF(age < 20,1,0)) as 'Under 20', SUM(IF(age BETWEEN 20 and 29,1,0)) as '20 - 29',
+        SUM(IF(age BETWEEN 30 and 39,1,0)) as '30 - 39', SUM(IF(age BETWEEN 40 and 49,1,0)) as '40 - 49', SUM(IF(age BETWEEN 50 and 149,1,0)) as 'Over 50'
+        FROM (SELECT TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS age FROM guards) as derived");
+
+        return response()->json([
+            'error' => false,
+            'data' => $guards
+        ]);
+    }
+
+    public function getGuardsBySite(){
+        $sites = Site::with('duty_roster', 'duty_roster.guards')->get();
+        
+        foreach($sites as $site){
+            if($site->duty_roster == null){
+                $site->guard_count = 0;
+            }else{
+                $site->guard_count = $site->duty_roster->guards->count();
+            }
+        }
+
+        return response()->json([
+            'error' => false,
+            'data' => $sites
+        ]);
+    }
+
+    public function getSiteReport(Request $request){
+        $request->validate([
+            'site_id' => 'required',
+            'start' => 'required', 
+            'end' => 'required'
+        ]);
+        $start = date('Y-m-d', strtotime($request->start));
+        $end = date('Y-m-d', strtotime($request->end));
+        $site_id = $request->site_id;
+
+        $site = Site::with(['attendances' => function($q) use ($start, $end){
+            $q->whereRaw("date_time BETWEEN DATE('$start') and DATE('$end')");
+        }])->with(['occurrences' => function($q) use ($start, $end){
+            $q->whereRaw("created_at BETWEEN DATE('$start') and DATE('$end')");
+        }])->with(['incidents' => function($q) use ($start, $end){
+            $q->whereRaw("created_at BETWEEN DATE('$start') and DATE('$end')");
+        }])->with('attendances.guard')->where('id', $site_id)->get();
+
+        return response()->json([
+            'error' => false,
+            'data' => $site
+        ]);
     }
 }

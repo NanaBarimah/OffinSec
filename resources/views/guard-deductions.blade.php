@@ -1,7 +1,6 @@
 @extends('layouts.main-layout', ['page_title' => 'Guard Deductions']);
 @section('styles')
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet" />
 <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 <style>
     .hideable{
