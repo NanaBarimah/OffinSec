@@ -17,6 +17,7 @@ class CreateAccessCodesTable extends Migration
             $table->increments('id');
             $table->string('client_id');
             $table->string('access_code');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

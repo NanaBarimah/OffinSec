@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Access_Code;
 use App\Client;
+use Mail;
 use Illuminate\Http\Request;
 
 class AccessCodeController extends Controller
@@ -40,10 +41,22 @@ class AccessCodeController extends Controller
             'client_id' => 'required',
         ]);
 
+        $date = date('Y-m-d');
+        
+        if(Access_Code::whereRaw("client_id='$request->client_id' AND DATE(expires_at) >= '$date'")->get()->count() > 0){
+            return response()->json([
+                'error' => true,
+                'message' => "A valid access token exists for this client"
+            ]);
+        }
+
         $access_code = new Access_Code();
 
         $access_code->client_id = $request->client_id;
         $access_code->access_code = $this->generateCode(24);
+
+        $client = Client::findOrFail($request->client_id);
+        $access_code->expires_at = date('Y-m-d', strtotime($client->end_date));
 
         if($access_code->save()){
             return response()->json([
@@ -112,9 +125,69 @@ class AccessCodeController extends Controller
         $id  = '';
 
         for ($i = 0; $i < $length; $i++) {
-                $id .= $chars[mt_rand(0,$clen)];
+                $id .= $str[mt_rand(0, $strcode)]; 
         }
 
         return $id;
+    }
+
+    public function sendToken(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required',
+            'email' => 'required',
+        ]);
+
+        $date = date('Y-m-d');
+
+        $access = Access_Code::with('client')->whereRaw("client_id='$request->client_id' && DATE(expires_at) >= '$date'")->first();
+        
+        $data = array('access_code' => $access->access_code);
+
+        $to_name = $access->client->name;
+        $to_email = $request->email;
+
+        Mail::send('email_templates.token', $data, function($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                    ->subject('Client Access');
+            $message->from('noreply@offinsecuritygh.com','Offin Security');
+        });
+
+        if(count(Mail::failures()) > 0){
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not send the mail'
+            ]);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Client URL sent successfully'
+            ]);
+        }
+    }
+
+    public function resetCode(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required'
+        ]);
+
+        $date = date('Y-m-d');
+
+        $access = Access_Code::whereRaw("client_id='$request->client_id' && DATE(expires_at) >= '$date'")->first();
+
+        $access->access_code = $this->generateCode(24);
+
+        if($access->save()){
+            return response()->json([
+                'error' => false,
+                'message' => 'Access Code reset successfully'
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not reset access code'
+            ]);
+        }
     }
 }

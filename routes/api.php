@@ -41,6 +41,7 @@ Route::post('/offences/add', 'DeductionController@store')->name('offences.add');
 Route::put('/offence/update', 'DeductionController@update')->name('offence.update');
 Route::delete('/offence/delete/{deduction}', 'DeductionController@destroy')->name('offence.delete');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
+Route::post('/permission/approve-permission', 'PermissionController@reliever')->name('permissions.approve-guard');
 Route::post('/report/send-report', 'ReportController@generateReport');
 Route::get('/deductions/view', 'DeductionController@viewMonthly');
 
@@ -51,3 +52,7 @@ Route::post('/report/send-mail', 'ReportController@sendMail');
 Route::get('/guards/reports/age', 'GuardController@getGuardsByAgeRange');
 Route::get('/guards/reports/gender', 'GuardController@getGuardsByGender');
 Route::get('/guards/reports/site', 'GuardController@getGuardsBySite');
+
+Route::post('/access-code/add', 'AccessCodeController@store')->name('access_code.add');
+Route::post('/access-code/send-token', 'AccessCodeController@sendToken');
+Route::put('/access-code/reset', 'AccessCodeController@resetCode')->name('access_code.reset');

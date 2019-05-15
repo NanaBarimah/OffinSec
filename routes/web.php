@@ -38,4 +38,5 @@ Route::middleware('auth')->group(function(){
     Route::get('/send-report', 'ReportController@send')->name('report.send');
     Route::get('/view-deductions', 'DeductionController@guardDeductions')->name('offences.view');
     Route::get('/view-reports', 'ReportController@index')->name('reports.view');
+    Route::get('/client-access', 'ClientController@clientAccess')->name('client-access.view');
 });
