@@ -29,7 +29,7 @@ class Client extends Model
 
     public function access_codes()
     {
-        return $this->hasMany('App\Acces_Code', 'client_id');
+        return $this->hasMany('App\Access_Code', 'client_id');
     }
 
 }

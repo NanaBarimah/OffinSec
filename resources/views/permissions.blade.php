@@ -2,6 +2,7 @@
 
 @section('styles')
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 @endsection
 @section('content')
     @php
@@ -80,7 +81,8 @@
                                         {{$permission->reason}}
                                     </td>
 
-                                    <td>
+                                    
+                                    <td id="reliever-cell">
 										@if($permission->relieving_guard != null)
                                         <a href="javascript: void(0);">
                                         <img src="{{$permission->relieving_guard->photo == '' || $permission->relieving_guard->photo == null ? asset('assets/images/avatar.jpg') : asset('assets/images/guards/'.$permission->relieving_guard->photo)}}" onerror="this.src={{asset('assets/images/avatar.jpg')}}" class="rounded-circle thumb-sm" alt="friend" />
@@ -112,7 +114,7 @@
                                         <div class="btn-group dropdown">
                                             <a href="javascript: void(0);" class="table-action-btn dropdown-toggle arrow-none btn btn-light btn-sm {{$permisson_date->isPast() ? 'disabled' : ''}}" data-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="javascript: void(0);" onclick="changeStatus(1, {{$permission->id}}, this)"><i class="mdi mdi-check-all mr-2 text-muted font-18 vertical-middle"></i>Approve</a>
+                                                <a class="dropdown-item" href="javascript: void(0);" onclick="approval({{$permission->id}}, this)"><i class="mdi mdi-check-all mr-2 text-muted font-18 vertical-middle"></i>Approve</a>
                                                 <a class="dropdown-item" href="javascript: void(0);" onclick="changeStatus(0, {{$permission->id}}, this)"><i class="mdi mdi-delete mr-2 text-muted font-18 vertical-middle"></i>Reject</a>
                                             </div>
                                         </div>
@@ -125,9 +127,42 @@
                     </div><!-- end col -->
                 </div>
 @endsection
+@section('modals')
+<div id="approvePermission" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select a reliever for this guard</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+            <form id="permission-approval"> 
+            @csrf 
+                <label for="reliever" class="col-form-label">Reliever</label>
+                <select class="selectpicker show-tick form-control" data-style="btn-primary" 
+                title="Reliever" id="reliever" name="reliever" data-live-search="true" required>
+                    @foreach($guards as $guard)
+                    <option value="{{$guard->id}}" data-subtext="{{$guard->phone_number}}">{{$guard->firstname.' '.$guard->lastname}}</option>
+                    @endforeach
+                </select>
+                <input type="hidden" id="approve-guard" name="permission_id"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger" id="btn-approve">Approve</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
 @section('scripts')
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+<!--Bootstrap Select-->
+<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
+
 <script>
     table = $('table').DataTable();
 
@@ -162,5 +197,64 @@
         });
 
     }
+
+    var el;
+
+    function approval(permission, element) {
+        $('#approve-guard').val(permission);
+
+        el = $(element);
+
+        $('#approvePermission').modal('show');
+    }
+
+    $('#permission-approval').on('submit', function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        var btn = $(this).find('[type="submit"]');
+        var initial = btn.html();
+
+         $.ajax({
+            url: '/api/permission/approve-permission',
+            method: 'POST',
+            data: data,
+            success: function(data){
+                removeLoading(btn, initial);
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+
+                        status_badge = el.closest('tr').find('#status-badge');
+                        reliever_cell = el.closest('tr').find('#reliever-cell');
+
+                        table.cell(status_badge).data('<span class="badge badge-success">Accepted</span>').draw();
+                        table.cell(reliever_cell).data('<a href="javascript: void(0);"><img src="/assets/images/guards/'+data.guard.photo +'" onerror="this.src=\'assets/images/avatar.jpg\'" class="rounded-circle thumb-sm" alt="friend"/><span class="ml-2">'+data.guard.firstname+' '+data.guard.lastname+'</span></a>').draw();
+                    }
+            },
+            error: function(err){
+                removeLoading(btn, initial);
+                $.toast({
+                    text : 'Network error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        });
+    });
 </script>
 @endsection

@@ -16,7 +16,7 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('guard_id');
-            $table->string('reliever');
+            $table->string('reliever')->nullable();
             $table->text('reason');
             $table->timestamp('date')->nullable();
             $table->boolean('approval')->default(0);
@@ -24,6 +24,8 @@ class CreatePermissionsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('guard_id')->references('id')->on('guards')
+                  ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('reliever')->references('id')->on('guards')
                   ->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -9,6 +9,8 @@ class Access_Code extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'access_codes';
+
     protected $fillable = [
         'client_id', 'access_code'
     ];

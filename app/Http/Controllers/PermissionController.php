@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Permission;
+use App\Guard;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -15,8 +16,9 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::with('owner_guard', 'relieving_guard')->get();
+        $guards = Guard::all();
 
-        return view('permissions', compact('permissions'));
+        return view('permissions', compact('permissions', 'guards'));
         /*return response()->json([
             'permission' =>  $permissions
         ]);*/
@@ -165,5 +167,35 @@ class PermissionController extends Controller
                 'message' => 'Error approving permission'
             ]);
         }
+    }
+
+    public function reliever(Request $request)
+    {
+        $request->validate([
+            'permission_id' => 'required', 
+            'reliever' => 'required', 
+        ]);
+
+        $permission = Permission::where('id', $request->permission_id)->first();
+
+        $permission->approval = 1;
+
+        $permission->reliever = $request->reliever;
+
+        $guard = Guard::where('id', $request->reliever)->first();
+
+        if($permission->save()){
+            return response()->json([
+                'error' => false,
+                'message' => 'Permission approved successfully',
+                'guard' => $guard
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Permission could not be approved'
+            ]);
+        }
+        
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Guard;
 use App\Site;
+use App\Access_Code;
 
 use DB;
 
@@ -261,5 +262,30 @@ class ClientController extends Controller
             ]);
         }
 
+    }
+
+    public function clientAccess(Request $request)
+    {
+        $date = date('Y-m-d');
+
+        $client = Access_Code::whereRaw("access_code='$request->token' AND DATE(expires_at) >= '$date'")->first();
+
+        if($client == null){
+            return abort(403);
+        }
+        $client = Client::where('id', $client->client_id)->with('sites', 'sites.duty_roster.guards')->first();
+        $assigned_guards = array();
+
+        foreach($client->sites as $site){
+            if($site->duty_roster != null){
+                foreach($site->duty_roster->guards as $guard){
+                    array_push($assigned_guards, $guard);
+                }
+            }
+        }
+
+        $client->guards = collect($assigned_guards)->unique('id');
+
+        return view('client-access')->with('client', $client);
     }
 }

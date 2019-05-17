@@ -11,6 +11,10 @@
     .text-tiny{
         font-size: 12px;
     }
+
+    .text-black{
+        color: black;
+    }
 </style>
 @endsection
 @section('content')
@@ -30,7 +34,8 @@
                             <button type="button" class="btn btn-light waves-effect" data-toggle="modal" data-target="#edit-client">
                                 Edit Client
                             </button><br/>
-                            <a href="" class="text-small text-white" data-toggle="modal" data-target="#change-duration"><b>Change contract duration</b></a>
+                            <a href="" class="text-small text-white" data-toggle="modal" data-target="#change-duration"><b>Change contract duration</b></a><br/>
+                            <a href="" class="text-small text-white" data-toggle="modal" data-target="#generate-code"><b>Manage Access Code</b></a>
                         </div>
                     </div>
                 </div>
@@ -336,6 +341,37 @@
                         <div class="text-right">
                             <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger ml-1 waves-effect waves-light save-category">Yes, I understand</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="generate-code" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header text-center border-bottom-0 d-block">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title mt-2">Generate and Send Access Code</h4>
+                </div>
+                <div class="modal-body p-4">
+                    <p>Generate access code for client. Send this code to client via client's email address to help the client access their page.</p>
+                    <form role="form">
+                        
+                    @csrf
+                        <div class="form-row mb-2">
+                            <div class="col-md-6 col-sm-12">
+                                <input class="form-control resetable" type="text" id="token_email" placeholder="info@codbitgh.com" name="email" value="{{$client->email}}">
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <input class="form-control resetable" type="text" id="code" placeholder="offfinsec.test/123456" name="code" readonly>
+                            </div>
+                        </div>
+                        <div class="text-right mt-2">
+                            <button type="button" class="btn btn-light waves-effect"  id="btn_generate">Generate Code</button>
+                            <button type="button" class="btn btn-icon ml-1 waves-effect waves-light btn-success" id="btn_send">Send</button>
+                            <button type="button" class="btn btn-danger ml-1 waves-effect waves-light save-category" id="btn_reset"> Reset Code</button>
                         </div>
                         
                     </form>
@@ -804,6 +840,150 @@
                     }
                 });
             }            
+        });
+
+        $('#btn_generate').on('click', function(){
+            var error = false;
+            var data = "client_id={{$client->id}}"
+            var btn = $(this);
+            var initial = btn.html();
+            
+            if(!error){
+                applyLoading(btn);
+
+                $.ajax({
+                    url: '/api/access-code/add',
+                    method: 'POST',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, initial);
+                            if(data.error){
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+
+                                $('#code').val("{{url('/')}}/client-access?token="+data.data.access_code);
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, initial);
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#btn_send').on('click', function(){
+            var error = false;
+            var data = "client_id={{$client->id}}&email="+$('#token_email').val()
+            var btn = $(this);
+            var initial = btn.html();
+
+            if(!error){
+                applyLoading(btn);
+
+                $.ajax({
+                    url: '/api/access-code/send-token',
+                    method: 'POST',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, initial);
+                            if(data.error){
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, initial);
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#btn_reset').on('click', function(){
+            var error = false;
+            var data = "client_id={{$client->id}}";
+            var btn = $(this);
+            var initial = btn.html();
+
+            if(!error){
+                applyLoading(btn);
+
+                $.ajax({
+                    url: '/api/access-code/reset',
+                    method: 'PUT',
+                    data: data,
+                    success: function(data){
+                        removeLoading(btn, initial);
+                            if(data.error){
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Error',
+                                    position: 'top-right',
+                                    showHideTransition : 'slide', 
+                                    bgColor: '#d9534f'
+                                });
+                            }else{
+                                $.toast({
+                                    text : data.message,
+                                    heading : 'Done',
+                                    position: 'top-right',
+                                    bgColor : '#5cb85c',
+                                    showHideTransition : 'slide'
+                                });
+                            }
+                    },
+                    error: function(err){
+                        removeLoading(btn, initial);
+                        $.toast({
+                            text : 'Network error',
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }
+                });
+            }
         });
     </script>
 @endsection
