@@ -157,15 +157,28 @@ class ReportController extends Controller
         $end_date = date('Y-m-d', strtotime($request->end_date));
         
         $client = Client::where('id', $request->client_id)->first();
+        
         $sites = Site::where('client_id', $request->client_id)->with(['attendances'=>function($q) use ($start_date, $end_date){
-            $q->whereRaw("DATE(date_time) BETWEEN DATE('$start_date') AND DATE('$end_date')");
-        }])->with('attendances.owner_guard')->with(['incidents' => function($q) use ($start_date, $end_date){
+            $q->whereRaw("DATE(date_time) BETWEEN DATE('$start_date') AND DATE('$end_date') AND type = 1");
+        }])->with(['incidents' => function($q) use ($start_date, $end_date){
             $q->whereRaw("DATE(created_at) BETWEEN DATE('$start_date') AND DATE('$end_date')");
         }])->with(['occurrences' => function($q) use ($start_date, $end_date){
             $q->whereRaw("DATE(created_at) BETWEEN DATE('$start_date') AND DATE('$end_date')");
         }])->get();
         
+
+        foreach($sites as $site){
+            $sorted = array();
+            foreach($site->attendances as $attendance){
+                $sorted[date('Y-m-d', strtotime($attendance->date_time))][] = $attendance;
+            }
+            $site->sorted = $sorted;
+        }
+        
+
         $client->sites = $sites;
+
+        
         
         $incidents = $request->incidents;
         
@@ -230,4 +243,5 @@ class ReportController extends Controller
             ]);
         }
     }
+    
 }

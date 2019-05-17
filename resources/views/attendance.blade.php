@@ -110,6 +110,7 @@
                                     id="record_type" name="type" data-live-search="true">
                                     <option value="1">Time In</option>
                                     <option value="0">Time Out</option>
+                                    <option value="2">Random Check</option>
                                 </select>
                             </div>
                             <div class="form-row mb-4">
@@ -269,7 +270,10 @@
                                         type = "Check out";
                                     }else if(data.data[i].type == 1){
                                         type = "Check in";
+                                    }else if(data.data[i].type == 2){
+                                        type = "Random check";
                                     }
+
                                     table.row.add([
                                         data.data[i].owner_guard.firstname + ' ' + data.data[i].owner_guard.lastname,
                                         data.data[i].date_time,

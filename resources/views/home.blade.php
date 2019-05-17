@@ -88,6 +88,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+							@if($best_guards->count() < 1)
+								<p class="text-center text-muted mt-4">No attendance recorded this month</p>
+							@endif
                         </div>
                     </div>
 

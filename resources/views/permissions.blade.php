@@ -81,10 +81,14 @@
                                     </td>
 
                                     <td>
+										@if($permission->relieving_guard != null)
                                         <a href="javascript: void(0);">
                                         <img src="{{$permission->relieving_guard->photo == '' || $permission->relieving_guard->photo == null ? asset('assets/images/avatar.jpg') : asset('assets/images/guards/'.$permission->relieving_guard->photo)}}" onerror="this.src={{asset('assets/images/avatar.jpg')}}" class="rounded-circle thumb-sm" alt="friend" />
                                             <span class="ml-2">{{ucwords($permission->relieving_guard->firstname.' '.$permission->relieving_guard->lastname)}}</span>
                                         </a>
+										@else
+											<span class="text-small text-muted">No reliever assigned</span>
+										@endif
                                     </td>
 
                                     <td id="status-badge">

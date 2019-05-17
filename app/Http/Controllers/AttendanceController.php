@@ -46,8 +46,19 @@ class AttendanceController extends Controller
         $request->validate([
             'guard_id' => 'required',
             'site_id' => 'required',
-            'date_time' => 'required'
+            'date_time' => 'required',
+            'type' => 'required'
         ]);
+
+        
+        if($request->type!= 2){
+            if(Attendance::where([['guard_id', $request->guard_id], ['site_id', $request->site_id], ['type', $request->type]])->whereDate('created_at', date('Y-m-d'))->get()->count() > 0){
+                return response()->json([
+                    'error' => true,
+                    'message' => $request->type == 1 ? "This guard has already checked in" : "This guard has already checked out"
+                ]);
+            }
+        }
 
         
         $count = DB::select(DB::raw("SELECT count(`guard_roster`.id) as kount FROM `guard_roster`, `duty_rosters` WHERE guard_id ='$request->guard_id' AND site_id='$request->site_id' AND `duty_rosters`.id = `guard_roster`.duty_roster_id"));
