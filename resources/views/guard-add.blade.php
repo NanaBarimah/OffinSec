@@ -439,93 +439,93 @@
             $('#current_status').html("Connecting to the fingerprint server...");
 
             try {
-                webSocket = new WebSocket(host)
+                webSocket = new WebSocket(host);
+                
+                webSocket.onopen = function () {
+                    $('#current_status').html('');
+                    $('#current_status').css('display', 'none');
+                }
+
+                webSocket.onmessage = function (evt) {
+                    var obj = eval("(" + evt.data + ")");
+                    var status = document.getElementById("action");
+                    var scanResult = document.getElementById("scanResult");
+                    switch (obj.workmsg) {
+                        case 1:
+                            status.innerHTML = "Enable the device and refresh the page";
+                            break;
+                        case 2:
+                            status.innerHTML = "Place Finger";
+                            break;
+                        case 3:
+                            status.innerHTML = "Lift Finger";
+                            break;
+                        case 4:
+                            status.innerHTML = "Please";
+                            break;
+                        case 5:
+                            if (obj.retmsg == 1) {
+                                status.value = "Fingerprint retrieved";
+                                //data1 returns the base64 print of the image
+                                if (obj.data1 != "null") {
+                                    comparingFingerprint = obj.data1;
+                                }
+
+                                //data2 returns ISO template of the print. will be saving base64;
+                                /*if (obj.data2 != "null") {
+                                    scanResult.innerHTML += '<p>Result2: ' + obj.data2 + '</p>';
+                                }*/
+                            } else {
+                                status.value = "Could not get the fingerprint. Try again";
+                            }
+                            break;
+                        case 6:
+                            if (obj.retmsg == 1) {
+                                status.innerHTML = "Fingerprint retrieved";
+                                if (obj.data1 != "null") {
+                                    $('#template').val(obj.data1);
+                                    guardFingerprint = obj.data1;
+                                }
+                                /*
+                                if (obj.data2 != "null") {
+                                    scanResult.innerHTML += '<p>Result2: ' + obj.data2 + '</p>';
+                                }*/
+                            } else {
+                                status.value = "There was a problem retrieving the fingerprint. Try again";
+                            }
+                            break;
+                        case 7:
+                            if (obj.image != "null") {
+                                var img = document.getElementById("imgPlaceholder");
+                                img.src = "data:image/png;base64," + obj.image;
+                                //var en3 = document.getElementById("e3");
+                                //en3.value = obj.image;
+                            }
+                            break;
+                        case 8:
+                            status.innerHTML = "There was a problem retrieving the fingerprint. Try again";
+                            break;
+                        case 9:
+                            //status.innerHTML = "This is how accurate of a liar you're not: " + obj.retmsg;
+                            //this is for testing purposes. This was to compare fingerprints
+                            if (obj.retmsg >= 60) {
+                                match = true;
+                                console.log("match found");
+                            }
+                            console.log(obj.retmsg);
+                            break;
+                        case 0x10:
+                            /*status.value = "Card SN:" + obj.data1;*/
+                            break;
+                    }
+                };
+
+                webSocket.onclose = function () {
+                    $('#current_status').html("Connection to the fingerprint server was closed!");
+                };
             } catch (err) {
                 $('#current_status').html(err);
             }
-
-            webSocket.onopen = function () {
-                $('#current_status').html('');
-                $('#current_status').css('display', 'none');
-            }
-
-            webSocket.onmessage = function (evt) {
-                var obj = eval("(" + evt.data + ")");
-                var status = document.getElementById("action");
-                var scanResult = document.getElementById("scanResult");
-                switch (obj.workmsg) {
-                    case 1:
-                        status.innerHTML = "Enable the device and refresh the page";
-                        break;
-                    case 2:
-                        status.innerHTML = "Place Finger";
-                        break;
-                    case 3:
-                        status.innerHTML = "Lift Finger";
-                        break;
-                    case 4:
-                        status.innerHTML = "Please";
-                        break;
-                    case 5:
-                        if (obj.retmsg == 1) {
-                            status.value = "Fingerprint retrieved";
-                            //data1 returns the base64 print of the image
-                            if (obj.data1 != "null") {
-                                comparingFingerprint = obj.data1;
-                            }
-
-                            //data2 returns ISO template of the print. will be saving base64;
-                            /*if (obj.data2 != "null") {
-                                scanResult.innerHTML += '<p>Result2: ' + obj.data2 + '</p>';
-                            }*/
-                        } else {
-                            status.value = "Could not get the fingerprint. Try again";
-                        }
-                        break;
-                    case 6:
-                        if (obj.retmsg == 1) {
-                            status.innerHTML = "Fingerprint retrieved";
-                            if (obj.data1 != "null") {
-                                $('#template').val(obj.data1);
-                                guardFingerprint = obj.data1;
-                            }
-                            /*
-                            if (obj.data2 != "null") {
-                                scanResult.innerHTML += '<p>Result2: ' + obj.data2 + '</p>';
-                            }*/
-                        } else {
-                            status.value = "There was a problem retrieving the fingerprint. Try again";
-                        }
-                        break;
-                    case 7:
-                        if (obj.image != "null") {
-                            var img = document.getElementById("imgPlaceholder");
-                            img.src = "data:image/png;base64," + obj.image;
-                            //var en3 = document.getElementById("e3");
-                            //en3.value = obj.image;
-                        }
-                        break;
-                    case 8:
-                        status.innerHTML = "There was a problem retrieving the fingerprint. Try again";
-                        break;
-                    case 9:
-                        //status.innerHTML = "This is how accurate of a liar you're not: " + obj.retmsg;
-                        //this is for testing purposes. This was to compare fingerprints
-                        if (obj.retmsg >= 60) {
-                            match = true;
-                            console.log("match found");
-                        }
-                        console.log(obj.retmsg);
-                        break;
-                    case 0x10:
-                        /*status.value = "Card SN:" + obj.data1;*/
-                        break;
-                }
-            };
-
-            webSocket.onclose = function () {
-                $('#current_status').html("Connection to the fingerprint server was closed!");
-            };
         }
 
         
