@@ -170,6 +170,17 @@
                         <li>
                             <a href="/users">Users</a>
                         </li>
+                        <li class="has-submenu">
+                            <a href="javascript:void(0)">Back Office</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="/upload">Upload CSV</a>
+                                </li>
+                                <li>
+                                    <a href="/biometrics">Update Guard Biometrics</a>
+                                </li>
+                            </ul>
+                        </li>
                         @endif
                     </ul>
                 </div>

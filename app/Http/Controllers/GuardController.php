@@ -105,7 +105,6 @@ class GuardController extends Controller
         $guard->phone_number = $request->phone_number;
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
-        $guard->id = md5(microtime().$request->firstname);
         $guard->bank_name = $request->bank_name;
         $guard->account_number = $request->account_number;
         
@@ -371,6 +370,140 @@ class GuardController extends Controller
         return response()->json([
             'error' => false,
             'data' => $site
+        ]);
+    }
+
+    public function uploadExcel(){
+        return view('csv-upload');
+    }
+
+    public function uploadToDb(Request $request){
+        if($request->file('csvfile') != null){
+            //handle save data from csv
+            $file = $request->file('csvfile');
+
+            // File Details 
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $tempPath = $file->getRealPath();
+            $fileSize = $file->getSize();
+            $mimeType = $file->getMimeType();
+
+            // Valid File Extensions
+            $valid_extension = array("csv");
+
+            // 4.96MB in Bytes
+            $maxFileSize = 5097152;
+            
+            if(in_array(strtolower($extension), $valid_extension)){
+                if($fileSize <= $maxFileSize){
+                    $location = "docs";
+                    // Upload file
+                    $file->move($location,$filename);
+
+                    // get path of csv file
+                    $filepath = public_path($location."/".$filename);
+
+                    // Reading file
+                    $file = fopen($filepath,"r");
+
+                    $data_array = array();
+                    $insert_data = array();
+                    $i = 0;
+
+                    while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+                        $num = count($filedata);
+                        
+                        for ($c=0; $c < $num; $c++) {
+                           $data_array[$i][] = $filedata [$c];
+                        }
+                        $i++;
+                    }
+                    fclose($file);
+
+                    foreach($data_array as $data){
+                        array_push($insert_data, array(
+                            "id" => md5(microtime().$data[1]),
+                            "firstname" => $data[0],
+                            "lastname" => $data[1],
+                            "dob" => date('Y-m-d', strtotime($data[2])),
+                            "gender" => $data[3],
+                            "marital_status" => $data[4],
+                            "occupation" => $data[5],
+                            "address" => $data[6],
+                            "national_id" => $data[7],
+                            "phone_number" => $data[8],
+                            "SSNIT" => $data[9],
+                            "emergency_contact" => $data[10],
+                            "welfare" => 1,
+                            "bank_name" => $data[11],
+                            "account_number" => $data[12]
+                        ));
+                    }
+
+                    Guard::insert($insert_data);
+
+                    return response()->json([
+                        'error' => false,
+                        "message" => "Data retrieved",
+                        "data" => $insert_data
+                    ]);
+                }else{
+                    return responose()->json([
+                        "error" => true, 
+                        "message" => "The provided file is too large"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "error" => true,
+                    "message" => 'Invalid file format received'
+                ]);
+            }
+        }else{
+            return response()->json([
+                "error" => true,
+                "message" => 'No file received'
+            ]);
+        }
+    }
+
+    public function uploadBios(){
+        $guards = Guard::all();
+
+        return view('biometrics')->with('guards', $guards);
+    }
+
+    public function updateBio(Request $request){
+        $request->validate([
+            "guard_id" => "required", 
+            "RTB64" => "required",
+            "image" => "required"
+        ]);
+
+        $guard = Guard::where('id', $request->guard_id)->first();
+
+        $fileName = Utils::saveBase64Image($request->image, microtime().'-'.$guard->firstname, 'assets/images/guards/');
+        $guard->photo = $fileName;
+
+        $fingerprint = new Fingerprint();
+
+        $fingerprint->guard_id = $guard->id;
+        $fingerprint->RTB64 = $request->RTB64;
+        $fingerprint->LTB64 = $request->RTB64;
+        $fingerprint->RTISO = $request->RTB64;
+        $fingerprint->LTISO = $request->RTB64;
+
+        if($fingerprint->save() && $guard->save()){
+            return response()->json([
+                "error" => false,
+                "message" => "Guard updated"
+            ]);
+        }
+
+        return response()->json([
+            "error" => true,
+            "message" => "Could not update the guard data"
         ]);
     }
 }

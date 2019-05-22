@@ -82,8 +82,12 @@
                                             </div>
                                             <div class="form-row mb-4">
                                                 <div class="form-group col-md-4">
-                                                    <label for="phone_number" class="col-form-label"><b>Occupation</b></label>
-                                                    <input type="text" class="form-control required" id="occupation" name="occupation">
+                                                    <label for="phone_number" class="col-form-label"><b>Role</b></label>
+                                                    <select class="selectpicker show-tick required" data-style="btn-custom" title="Role"
+                                                        id="occupation" name="occupation">
+                                                        <option>Security Guard</option>
+                                                        <option>Patrol Officer</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="marital" class="col-form-label"><b>&nbsp;</b></label>
