@@ -482,13 +482,16 @@ class GuardController extends Controller
         ]);
 
         $guard = Guard::where('id', $request->guard_id)->first();
+        $fingerprint = Fingerprint::where('guard_id', $request->guard_id)->first();
 
         $fileName = Utils::saveBase64Image($request->image, microtime().'-'.$guard->firstname, 'assets/images/guards/');
         $guard->photo = $fileName;
 
-        $fingerprint = new Fingerprint();
+        if($fingerprint == null){
+            $fingerprint = new Fingerprint();
+            $fingerprint->guard_id = $guard->id;
+        }
 
-        $fingerprint->guard_id = $guard->id;
         $fingerprint->RTB64 = $request->RTB64;
         $fingerprint->LTB64 = $request->RTB64;
         $fingerprint->RTISO = $request->RTB64;
