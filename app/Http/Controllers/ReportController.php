@@ -9,6 +9,7 @@ use App\Site;
 use PDF;
 
 use Mail;
+use Storage;
 
 use Illuminate\Http\Request;
 
@@ -183,13 +184,14 @@ class ReportController extends Controller
         $incidents = $request->incidents;
         
         $pdf = PDF::loadView('report_template', compact('client', 'start_date', 'end_date', 'incidents'));
-        $link = storage_path().'/docs'.'/'.microtime().'-'.$client->name.'['.$start_date.'].pdf';
+        $filename = microtime().'-'.$client->name.'['.$start_date.'].pdf';
+        $link = storage_path().'/docs'.'/'.$filename;
         $pdf->save($link);
-        $pdf->stream('download.pdf');
+        $pdf->stream($filename);
 
         $report = new Report();
         $report->client_id = $client->id;
-        $report->template = $link;
+        $report->template = $filename;
         
 
         if($report->save()){
@@ -244,4 +246,19 @@ class ReportController extends Controller
         }
     }
     
+    public function getDownloadLink(Request $request){
+        $request->validate([
+            "file" => "required"
+        ]);
+
+        $file = urldecode($request->file);
+        $report = Report::where('template', $file)->first();
+        if($report == null){
+            return response()->json([
+                'error' => true, 
+                'message' => "Invalid download link"
+            ]);
+        }
+        
+    }
 }

@@ -409,7 +409,7 @@ class GuardController extends Controller
 
                     $data_array = array();
                     $insert_data = array();
-                    $i = 0;
+                    $i = 1;
 
                     while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
                         $num = count($filedata);
