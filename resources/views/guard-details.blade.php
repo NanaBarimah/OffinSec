@@ -49,6 +49,8 @@
 
                                 <p class="text-muted font-13"><strong>Residential Address :</strong> <span class="m-l-15">{{$guard->address}}</span></p>
 
+                                <p class="text-muted font-13"><strong>ID Number: {{$guard->national_id}}</strong></p>
+
                                 <p class="text-muted font-13"><strong>Current Site :</strong> <span class="m-l-15">
                                 @php 
                                     if($guard->duty_rosters->count() > 0){
@@ -75,7 +77,30 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Personal-Information -->
+                    <!-- Guarantor-Information -->
+                    <div class="card-box mt-4">
+                        <h4 class="header-title mt-0 m-b-20">Guarantors</h4>
+                        <div class="panel-body">
+                            <hr />
+                            
+                            @foreach($guard->guarantors as $guarantor)
+                            <div class="text-left mb-3">
+                                <h6>{{ucwords($guarantor->firstname.' '.$guarantor->lastname)}}</h6>
+                                <p class="text-muted font-13"><strong>Mobile Number:</strong><span class="m-l-15">{{$guarantor->phone_number}}</span></p>
+
+                                <p class="text-muted font-13"><strong>Gender :</strong> <span class="m-l-15">{{$guarantor->gender}}</span></p>
+
+                                <p class="text-muted font-13"><strong>Date of birth :</strong> <span class="m-l-15">{{Carbon\Carbon::parse($guarantor->dob)->format('jS F Y')}}</span></p>
+
+                                <p class="text-muted font-13"><strong>Residential Address :</strong> <span class="m-l-15">{{$guarantor->address}}</span></p>
+
+                                <p class="text-muted font-13"><strong>Occupation :</strong> <span class="m-l-15">{{$guarantor->occupation}}</span></p>
+
+                                <p class="text-muted font-13"><strong>ID Number :</strong> <span class="m-l-15">{{$guarantor->national_id}}</span></p>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
 
@@ -86,91 +111,91 @@
                 <hr/>
                 <form method="post" action = "#" id="edit_guard_form">
                 @csrf
-                <div id="personal_information">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="firstname" class="col-form-label"><b>First</b> Name</label>
-                                                    <input type="text" class="form-control required" id="firstname" name="firstname" value="{{$guard->firstname}}">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="lastname" class="col-form-label"><b>Last</b> Name</label>
-                                                    <input type="text" class="form-control required" id="lastname" name="lastname" value="{{$guard->lastname}}">
-                                                </div>
-                                                <input type="hidden" name="id" value="{{$guard->id}}"/>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label for="dob" class="col-form-label"><b>Date of</b> Birth</label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control required" id="dob" autocomplete="false" name="dob"  value="{{$guard->dob}}">
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="phone_number" class="col-form-label"><b>Phone</b></label>
-                                                    <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control required" name="phone_number" value="{{$guard->phone_number}}">
-                                                    <span class="font-10 text-muted">(233) 244-500500</span>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="gender" class="col-form-label"><b>&nbsp;</b></label>
-                                                    <select class="selectpicker show-tick required" data-style="btn-custom" title="Gender"
-                                                        id="gender" name="gender">
-                                                        <option <?php if($guard->gender == 'Male'){echo 'selected';} ?>>Male</option>
-                                                        <option <?php if($guard->gender == 'Female'){echo 'selected';} ?>>Female</option>
-                                                        <option <?php if($guard->gender == 'Transgender'){echo 'selected';} ?>>Transgender</option>
-                                                        <option <?php if($guard->gender == 'Rather not say'){echo 'selected';} ?>>Rather not say</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-row mb-4">
-                                                <div class="form-group col-md-4">
-                                                    <label for="phone_number" class="col-form-label"><b>Occupation</b></label>
-                                                    <input type="text" class="form-control required" id="occupation" name="occupation" value="{{$guard->occupation}}">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="marital" class="col-form-label"><b>&nbsp;</b></label>
-                                                    <select class="selectpicker show-tick required" data-style="btn-custom" title="Marital Status"
-                                                        id="marital" name="marital_status">
-                                                        <option <?php if($guard->marital_status == 'Single'){echo 'selected';} ?>>Single</option>
-                                                        <option <?php if($guard->marital_status == 'Married'){echo 'selected';} ?>>Married</option>
-                                                        <option <?php if($guard->marital_status == 'Divorced'){echo 'selected';} ?>>Divorced</option>
-                                                        <option <?php if($guard->marital_status == 'Widowed'){echo 'selected';} ?>>Widowed</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="residential" class="col-form-label"><b>Residential</b>
-                                                        Address</label>
-                                                    <input type="text" class="form-control required" id="residential" name="address" value="{{$guard->address}}">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label for="bank_name" class="col-form-label"><b>Bank</b> Name</label>
-                                                    <input type="text" class="form-control required" id="bank_name" name="bank_name" value="{{$guard->bank_name}}">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
-                                                    <input type="text" class="form-control required" id="account_number" name="account_number" value="{{$guard->account_number}}">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Emergency Contact</label>
-                                                    <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control" value="{{$guard->emergency_contact}}"/>
-                                                    <span class="font-10 text-muted">(233) 244-500500</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-12">
-                                                    <label for="bank_name" class="col-form-label"><b>SSNIT</b> Number</label>
-                                                    <input type="text" class="form-control required" id="SSNIT" name="SSNIT" value="{{$guard->SSNIT}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light edit-guard" disabled="true">Save</button>
-                                        </div>
+                    <div id="personal_information">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstname" class="col-form-label"><b>First</b> Name</label>
+                                <input type="text" class="form-control required" id="firstname" name="firstname" value="{{$guard->firstname}}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastname" class="col-form-label"><b>Last</b> Name</label>
+                                <input type="text" class="form-control required" id="lastname" name="lastname" value="{{$guard->lastname}}">
+                            </div>
+                            <input type="hidden" name="id" value="{{$guard->id}}"/>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="dob" class="col-form-label"><b>Date of</b> Birth</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control required" id="dob" autocomplete="false" name="dob"  value="{{$guard->dob}}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="phone_number" class="col-form-label"><b>Phone</b></label>
+                                <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control required" name="phone_number" value="{{$guard->phone_number}}">
+                                <span class="font-10 text-muted">(233) 244-500500</span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="gender" class="col-form-label"><b>&nbsp;</b></label>
+                                <select class="selectpicker show-tick required" data-style="btn-custom" title="Gender"
+                                    id="gender" name="gender">
+                                    <option <?php if($guard->gender == 'Male'){echo 'selected';} ?>>Male</option>
+                                    <option <?php if($guard->gender == 'Female'){echo 'selected';} ?>>Female</option>
+                                    <option <?php if($guard->gender == 'Transgender'){echo 'selected';} ?>>Transgender</option>
+                                    <option <?php if($guard->gender == 'Rather not say'){echo 'selected';} ?>>Rather not say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <div class="form-group col-md-4">
+                                <label for="phone_number" class="col-form-label"><b>Occupation</b></label>
+                                <input type="text" class="form-control required" id="occupation" name="occupation" value="{{$guard->occupation}}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="marital" class="col-form-label"><b>&nbsp;</b></label>
+                                <select class="selectpicker show-tick required" data-style="btn-custom" title="Marital Status"
+                                    id="marital" name="marital_status">
+                                    <option <?php if($guard->marital_status == 'Single'){echo 'selected';} ?>>Single</option>
+                                    <option <?php if($guard->marital_status == 'Married'){echo 'selected';} ?>>Married</option>
+                                    <option <?php if($guard->marital_status == 'Divorced'){echo 'selected';} ?>>Divorced</option>
+                                    <option <?php if($guard->marital_status == 'Widowed'){echo 'selected';} ?>>Widowed</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="residential" class="col-form-label"><b>Residential</b>
+                                    Address</label>
+                                <input type="text" class="form-control required" id="residential" name="address" value="{{$guard->address}}">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="bank_name" class="col-form-label"><b>Bank</b> Name</label>
+                                <input type="text" class="form-control required" id="bank_name" name="bank_name" value="{{$guard->bank_name}}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
+                                <input type="text" class="form-control required" id="account_number" name="account_number" value="{{$guard->account_number}}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Emergency Contact</label>
+                                <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control" value="{{$guard->emergency_contact}}"/>
+                                <span class="font-10 text-muted">(233) 244-500500</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="bank_name" class="col-form-label"><b>SSNIT</b> Number</label>
+                                <input type="text" class="form-control required" id="SSNIT" name="SSNIT" value="{{$guard->SSNIT}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light edit-guard" disabled="true">Save</button>
+                    </div>
                 </form>
             </div>
         </div>

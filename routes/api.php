@@ -58,3 +58,4 @@ Route::post('/access-code/send-token', 'AccessCodeController@sendToken');
 Route::put('/access-code/reset', 'AccessCodeController@resetCode')->name('access_code.reset');
 Route::post('/guards/upload-csv', 'GuardController@uploadToDb');
 Route::post('/guard/update-bio', 'GuardController@updateBio');
+Route::post('/guarantor/add', 'GuarantorController@store');

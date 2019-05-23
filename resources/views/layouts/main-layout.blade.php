@@ -46,7 +46,7 @@
 
                 <!-- Logo container-->
                 <div class="logo">
-                    <a href="index.html" class="logo">
+                    <a href="/" class="logo">
                         <img src="{{asset('assets/images/offin-logo.png')}}" alt="" height="48" class="logo-small">
                         <img src="{{asset('assets/images/offin-logo.png')}}" alt="" height="42" class="logo-large">
                     </a>
@@ -178,6 +178,9 @@
                                 </li>
                                 <li>
                                     <a href="/biometrics">Update Guard Biometrics</a>
+                                </li>
+                                <li>
+                                    <a href="/add-guarantors">Add Guarantors</a>
                                 </li>
                             </ul>
                         </li>

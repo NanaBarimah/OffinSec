@@ -37,6 +37,39 @@ class GuarantorController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            "firstname" => "required",
+            "guard_id" => "required",
+            "lastname" => "required",
+            "dob" => "required",
+            "gender" => "required",
+            "occupation" => "required",
+            "address" => "required",
+            "phone" => "required",
+            "national_id" => "required"
+        ]);
+        $guarantor = new Guarantor();
+        $guarantor->guard_id = $request->guard_id;
+        $guarantor->firstname = $request->firstname;
+        $guarantor->lastname = $request->lastname;
+        $guarantor->dob = date('Y-m-d', strtotime($request->dob));
+        $guarantor->gender = $request->gender;
+        $guarantor->occupation = $request->occupation;
+        $guarantor->address = $request->address;
+        $guarantor->phone_number = $request->phone;
+        $guarantor->national_id = $request->national_id;
+
+        if($guarantor->save()){
+            return response()->json([
+                'error' => false,
+                'message' => "Guarantor added"
+            ]);
+        }
+
+        return response()->json([
+            'error' => true,
+            'message' => "Could not save guarantor"
+        ]);
     }
 
     /**

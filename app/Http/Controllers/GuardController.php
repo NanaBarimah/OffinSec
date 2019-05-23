@@ -21,11 +21,18 @@ class GuardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $guards = Guard::with('duty_rosters', 'duty_rosters.site')->paginate(15);
+        if($request->q != null){
+            $term = $request->q;
+            $guards = Guard::where('firstname', 'LIKE', $term)->orWhere('lastname', 'LIKE', $term)->with('duty_rosters', 'duty_rosters.site')->paginate(15);
+            $searching = true;
+        }else{
+            $guards = Guard::with('duty_rosters', 'duty_rosters.site')->paginate(15);
+            $searching = false;
+        }
 
-        return view('guards')->with('guards', $guards);
+        return view('guards')->with('guards', $guards)->with('searching', $searching);
         /*return response()->json([
             'guards' => $guards
         ]);*/
@@ -292,7 +299,7 @@ class GuardController extends Controller
     }
 
     public function view(Request $request){
-        $guard = Guard::with('duty_rosters', 'duty_rosters.site', 'duty_rosters.site.client')->where('id', $request->id)->first();
+        $guard = Guard::with('duty_rosters', 'duty_rosters.site', 'duty_rosters.site.client', 'guarantors')->where('id', $request->id)->first();
         //$guard = DB::select("SELECT sites.name, guards.* FROM guard_roster, duty_rosters, guards, sites WHERE guard_roster.guard_id = guards.id AND guard_roster.duty_roster_id = duty_rosters.id AND sites.id = duty_rosters.site_id AND guards.id = '$request->id' group by guards.id, sites.name ");
 
         return view('guard-details')->with('guard', $guard);
@@ -508,5 +515,10 @@ class GuardController extends Controller
             "error" => true,
             "message" => "Could not update the guard data"
         ]);
+    }
+
+    public function addGuarantors(){
+        $guards = Guard::all();
+        return view('guarantor-add')->with('guards', $guards);
     }
 }
