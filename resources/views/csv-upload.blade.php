@@ -32,11 +32,33 @@
                 processData: false,
                 success: function(data){
                     removeLoading(btn, initial);
-                    console.log(data);
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#5cb85c'
+                        });
+                    }
                 },
                 error:function(err){
                     removeLoading(btn, initial);
-                    console.log(err);
+                    $.toast({
+                        text : "Network error",
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
                 }
             });
         })
