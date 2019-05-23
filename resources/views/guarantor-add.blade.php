@@ -83,7 +83,7 @@
                         </div>
                         <div class="form-group text-center ">
                             <div class="col-12">
-                                <button class="btn w-lg btn-custom waves-effect waves-light" type="submit">Add
+                                <button class="btn w-lg btn-custom waves-effect waves-light" id="submit_guarantor" type="submit">Add
                                     Guarantor</button>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
             }
         });
 
-        var btn = $(this).find(['type="submit"']);
+        var btn = $(this).find(['#submit_guarantor']);
         var data = $(this).serialize();
         var initial = btn.html();
 
