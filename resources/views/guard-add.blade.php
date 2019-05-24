@@ -105,6 +105,8 @@
                                                     <input type="text" class="form-control required" id="residential" name="address">
                                                 </div>
                                             </div>
+                                            
+                                            <div class="form-row" style="margin-top:120px;"></div>
                                         </div>
                                     </section>
                                     <h3>ID and Biometrics</h3>
