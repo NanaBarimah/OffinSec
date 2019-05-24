@@ -82,8 +82,12 @@
                                             </div>
                                             <div class="form-row mb-4">
                                                 <div class="form-group col-md-4">
-                                                    <label for="phone_number" class="col-form-label"><b>Occupation</b></label>
-                                                    <input type="text" class="form-control required" id="occupation" name="occupation">
+                                                    <label for="phone_number" class="col-form-label"><b>Role</b></label>
+                                                    <select class="selectpicker show-tick required" data-style="btn-custom" title="Role"
+                                                        id="occupation" name="occupation">
+                                                        <option>Security Guard</option>
+                                                        <option>Patrol Officer</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="marital" class="col-form-label"><b>&nbsp;</b></label>
@@ -243,7 +247,7 @@
                         <input class="form-control required" type="text" id="garuantor_firstname" placeholder="Kwame" name="firstname"/>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <label for="garuantor_lastname">Email address</label>
+                        <label for="garuantor_lastname">Last Name</label>
                         <input class="form-control" type="text" id="garuantor_lastname" placeholder="Attah" name="lastname">
                     </div>
                 </div>
@@ -439,7 +443,7 @@
             $('#current_status').html("Connecting to the fingerprint server...");
 
             try {
-                webSocket = new WebSocket(host)
+                webSocket = new WebSocket(host);
             } catch (err) {
                 $('#current_status').html(err);
             }

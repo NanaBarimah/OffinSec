@@ -8,9 +8,12 @@
                 <div class="col-sm-8">
                     <div class="project-sort float-right">
                         <div class="project-sort-item">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input class="form-control ml-2 form-control-sm" id="search" placeholder="Search"/>
+                            <form class="form-inline" action="/guards">
+                                <div class="input-group">
+                                    <input type="text" class="form-control required" id="dob" name="q" autocomplete="false" required>
+                                    <div class="input-group-append">
+                                        <button class="input-group-text btn-custom" type="submit" style="cursor:pointer"><i class="mdi mdi-magnify"></i></button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -21,10 +24,10 @@
             <div class="row">
                 @if($guards->count() < 1)
                     <div class="jumbotron p-4">
-                        <h1 class="display-4">No guards yet :( </h1>
-                        <p class="lead">You haven't registered any guards yet. Add a new guard to view and manage.</p>
+                        <h1 class="display-4">{{$searching == false ? 'No guards yet' : 'No results found'}} :( </h1>
+                        <p class="lead">{{$searching == false ? 'You haven\'t registered any guards yet. Add a new guard to view and manage.' : 'Your search query did not produce any results. Try another search.'}}</p>
                         <hr class="my-4">
-                        <p>Simply use the "Add New" button to begin registering a new guard.</p>
+                        <p>{{$searching == false ? 'Simply use the "Add New" button to begin registering a new guard.' : 'Enter a new search query in the search box'}}</p>
                     </div>
                 @endif
                 @foreach($guards as $guard)

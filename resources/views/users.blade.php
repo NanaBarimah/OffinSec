@@ -107,7 +107,7 @@
                         <input class="form-control resetable" type="text" id="firstname" placeholder="Kwasi" name="firstname">
                     </div>
                     <div class="col-md-4 col-sm-12">
-                        <label for="email">Last address</label>
+                        <label for="email">Last Name</label>
                         <input class="form-control resetable" type="text" id="lastname" placeholder="Koomson" name="lastname">
                     </div>
                     <div class="col-md-4 col-sm-12">

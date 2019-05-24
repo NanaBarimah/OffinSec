@@ -79,7 +79,7 @@
                             @foreach($client->sites as $site)
                             <a href="#">
                                 <div class="inbox-item">
-                                    <p class="inbox-item-author">{{$site->name}}</p>
+                                    <p class="inbox-item-author">{{$site->name}} - [<b>{{$site->access_code}}</b>]</p>
                                     <p class="inbox-item-text">{{$site->location}}</p>
                                     <p class="inbox-item-date m-t-10">
                                         <button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success" onclick="siteEdit({{$site}})">
@@ -509,9 +509,9 @@
                 success: function(data){
                     $('.loader').css('display', 'none');
                     $('#lineChart').css('display', 'block');
-
+                    
                     var dataset = [];
-                    for(var i = 0; i <= 6; i++){
+                    for(var i = 1; i <= 7; i++){
                         var found = false;
                         for(var k = 0; k < data.sites.length; k++){
                             if(data.sites[k].day == i){
