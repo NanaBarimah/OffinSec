@@ -15,7 +15,7 @@ class Guard extends Model
     public $incrementing  = false;
 
     protected $fillable = [
-        'firstname', 'lastname', 'dob', 'gender', 'marital_status', 'occupation', 'address', 'national_id', 'ID_type', 'phone_number', 'SSNIT', 'emergency_contact', 'photo'
+        'firstname', 'lastname', 'dob', 'gender', 'marital_status', 'occupation', 'address', 'national_id', 'id_type', 'phone_number', 'SSNIT', 'emergency_contact', 'photo'
     ];
 
     public function fingerprint()

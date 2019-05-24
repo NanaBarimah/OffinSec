@@ -114,7 +114,7 @@
                                                 <div class="form-group col-md-4">
                                                     <label for="id_type" class="col-form-label"><b>ID </b>Type</label>
                                                     <select class="selectpicker show-tick required" data-style="btn-custom" title="ID Type"
-                                                        id="type" name="type">
+                                                        id="type" name="id_type">
                                                         <option>Voter's ID</option>
                                                         <option>National ID</option>
                                                         <option>NHIS</option>
