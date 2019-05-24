@@ -79,7 +79,7 @@
                             @foreach($client->sites as $site)
                             <a href="#">
                                 <div class="inbox-item">
-                                    <p class="inbox-item-author">{{$site->name}}</p>
+                                    <p class="inbox-item-author">{{$site->name}} - [<b>{{$site->access_code}}</b>]</p>
                                     <p class="inbox-item-text">{{$site->location}}</p>
                                     <p class="inbox-item-date m-t-10">
                                         <button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success" onclick="siteEdit({{$site}})">

@@ -2,6 +2,13 @@
 @section('styles')
 
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
+<style>
+    .abs{
+        display:absolute;
+        position: right;
+        float: right;
+    }
+</style>
 @endsection
 @section('content')
                 <div class="row">
@@ -85,7 +92,7 @@
                             
                             @foreach($guard->guarantors as $guarantor)
                             <div class="text-left mb-3">
-                                <h6>{{ucwords($guarantor->firstname.' '.$guarantor->lastname)}}</h6>
+                                <h6>{{ucwords($guarantor->firstname.' '.$guarantor->lastname)}} <span class="abs"><a href="javascript:void(0)" onclick="editGuarantor({{$guarantor}})">Edit</a></span></h6>
                                 <p class="text-muted font-13"><strong>Mobile Number:</strong><span class="m-l-15">{{$guarantor->phone_number}}</span></p>
 
                                 <p class="text-muted font-13"><strong>Gender :</strong> <span class="m-l-15">{{$guarantor->gender}}</span></p>
@@ -219,6 +226,76 @@
             </div>
         </div>
     </div>
+    <div id="editGuarantorModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Guarantor</h4>	
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <form id="edit_guarantor_form">
+                    <div class="modal-body">
+                        <div class="form-row m-b-25">
+                            <div class="col-md-6 col-sm-12">
+                                <label for="guarantor_firstname">First Name</label>
+                                <input class="form-control required" type="text" id="guarantor_firstname" placeholder="Kwame" name="firstname"  required/>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <label for="guarantor_lastname">Last Name</label>
+                                <input class="form-control required" type="text" id="guarantor_lastname" placeholder="Attah" name="lastname" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label for="guarantor_dob" class="col-form-label"><b>Date of</b> Birth</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control required" id="guarantor_dob" name="dob" autocomplete="false" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" id="guarantor_id"/>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label for="guarantor_phone_number" class="col-form-label"><b>Phone</b></label>
+                                <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control required" id="guarantor_phone" name="phone_number" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="guarantor_gender" class="col-form-label"><b>&nbsp;</b></label>
+                                <select class="selectpicker show-tick" data-style="btn-custom" title="Gender" id="guarantor_gender" name="gender" required>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Transgender</option>
+                                    <option>Rather not say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <div class="col-md-4 col-sm-12">
+                                <label for="guarantor_occupation">Occupation</label>
+                                <input class="form-control required" type="text" id="guarantor_occupation" placeholder="Seamstress" name="occupation" required>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <label for="guarantor_residential">Residential address</label>
+                                <input class="form-control required" type="text" id="guarantor_residential" placeholder="21 Ledzekuku St."
+                                    name="address" required>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <label for="guarantor_residential">National ID</label>
+                                <input class="form-control required" type="text" id="guarantor_national" placeholder="C019382190931"
+                                    name="national_id" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-custom">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
@@ -333,5 +410,73 @@
             }
         });
     });
+
+    function editGuarantor(g){
+        $('#guarantor_firstname').val(g.firstname);
+        $('#guarantor_lastname').val(g.lastname);
+        $('#guarantor_occupation').val(g.occupation);
+        $('#guarantor_residential').val(g.address);
+        $('#guarantor_national').val(g.national_id);
+        $('#guarantor_dob').val(g.dob);
+        $('#guarantor_phone').val(g.phone_number);
+        $('#guarantor_id').val(g.id);
+        $('#guarantor_gender').find('option').each(function(){
+            if($(this).val() == g.gender){
+                $(this).prop('selected', true);
+                $('#guarantor_gender').val(g.gender);
+                $('.selectpicker').selectpicker('refresh');
+            }
+        });
+
+        $('#editGuarantorModal').modal('show');
+    }
+
+    $('#edit_guarantor_form').on('submit', function(e){
+        e.preventDefault();
+
+        var btn = $(this).find('[type="submit"]');
+        var initial = btn.html();
+        var data = $(this).serialize();
+        console.log(data);
+        applyLoading(btn);
+        
+        $.ajax({
+            url : '/api/guarantor/update/'+$('#guarantor_id').val(),
+            method : 'PUT',
+            data : data, 
+            success : function(data){
+                    removeLoading(btn, initial);
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#5cb85c'
+                        });
+                        
+                        setTimeout(location.reload(), 500);
+                    }
+                },
+                error : function(err){
+                    removeLoading(btn, 'Save');
+                    $.toast({
+                        text : 'Server error',
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }
+        })
+    })
 </script>
 @endsection

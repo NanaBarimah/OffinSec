@@ -116,12 +116,14 @@ class GuarantorController extends Controller
             'national_id' => 'required'
         ]);
 
-        if(Guarantor::where('national_id', $request->national_id)->get()->count() > 0){
-            return response()->json([
-                'error' => $result,
-                'message' => 'National ID number already exists'
-            ]);
-        }
+        /*if(Guarantor::where('national_id', $request->national_id)->get()->count() > 0){
+            if($guarantor->national_id != $request->national_id){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'National ID number already exists'
+                ]);
+            }
+        }*/
 
         $guarantor = Guarantor::where('id', $request->id)->first();
         

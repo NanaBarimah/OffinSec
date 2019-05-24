@@ -59,3 +59,6 @@ Route::put('/access-code/reset', 'AccessCodeController@resetCode')->name('access
 Route::post('/guards/upload-csv', 'GuardController@uploadToDb');
 Route::post('/guard/update-bio', 'GuardController@updateBio');
 Route::post('/guarantor/add', 'GuarantorController@store');
+Route::post('/incidents/add', 'IncidentController@store');
+Route::post('/occurences/add', 'OccurenceController@store');
+Route::put('/guarantor/update/{id}', 'GuarantorController@update');
