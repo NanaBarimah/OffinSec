@@ -111,11 +111,21 @@
                                     <section>
                                         <div id="identification">
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-4">
+                                                    <label for="id_type" class="col-form-label"><b>ID </b>Type</label>
+                                                    <select class="selectpicker show-tick required" data-style="btn-custom" title="ID Type"
+                                                        id="type" name="type">
+                                                        <option>Voter's ID</option>
+                                                        <option>National ID</option>
+                                                        <option>NHIS</option>
+                                                        <option>Passport</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-4">
                                                     <label for="national_id" class="col-form-label"><b>National </b>ID</label>
                                                     <input type="text" class="form-control required" id="national_id" name="national_id">
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-4">
                                                     <label for="ssnit" class="col-form-label"><b>SSNIT </b>Number</label>
                                                     <input type="text" class="form-control required" id="ssnit" minlength="13"
                                                         maxlength="13" name="SSNIT"/>
