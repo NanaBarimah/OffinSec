@@ -509,9 +509,9 @@
                 success: function(data){
                     $('.loader').css('display', 'none');
                     $('#lineChart').css('display', 'block');
-
+                    
                     var dataset = [];
-                    for(var i = 0; i <= 6; i++){
+                    for(var i = 1; i <= 7; i++){
                         var found = false;
                         for(var k = 0; k < data.sites.length; k++){
                             if(data.sites[k].day == i){
