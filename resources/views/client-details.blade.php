@@ -175,7 +175,7 @@
                     <div class="form-row m-b-25">
                         <div class="col-md-6 col-sm-12">
                             <label for="name">Site Name</label>
-                            <input class="form-control required" type="text" id="name" placeholder="Codbit ADC" name="name">
+                            <input class="form-control required" type="text" placeholder="Codbit ADC" name="name">
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="location">Site Location</label>
@@ -249,7 +249,7 @@
                     <div class="form-row mb-4">
                         <div class="col-md-4 col-sm-12">
                             <label for="contact_person">Contact Person Name</label>
-                            <input class="form-control resetable" type="text" id="email" placeholder="Abraham Attah" name="contact_person_name" value="{{$client->contact_person_name}}">
+                            <input class="form-control resetable" type="text" placeholder="Abraham Attah" name="contact_person_name" value="{{$client->contact_person_name}}">
                         </div>
                         <div class="col-md-8 col-sm-12">
                             <label for="no_of_guards">No. of Guards</label>
@@ -285,11 +285,11 @@
                     <div class="form-row mb-2">
                         <div class="col-md-6 col-sm-12">
                             <label for="name">Site name</label>
-                            <input class="form-control resetable" type="text" id="name" placeholder="Codbit ADC" name="name">
+                            <input class="form-control resetable" type="text" placeholder="Codbit ADC" name="name">
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="name">Site Location</label>
-                            <input class="form-control resetable" type="text" id="name" placeholder="Ring Road Central" name="location">
+                            <input class="form-control resetable" type="text" placeholder="Ring Road Central" name="location">
                         </div>
                     </div>
                     <div class="form-row">
