@@ -23,7 +23,7 @@ class CreateGuardsTable extends Migration
             $table->string('occupation');
             $table->string('address');
             $table->string('national_id');
-            $table->string('ID_type');
+            $table->string('id_type');
             $table->string('phone_number');
             $table->string('SSNIT')->nullable();
             $table->string('emergency_contact');
