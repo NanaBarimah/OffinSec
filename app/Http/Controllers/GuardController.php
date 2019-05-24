@@ -68,6 +68,7 @@ class GuardController extends Controller
             'occupation' => 'required|string',
             'address' => 'required|string',
             'national_id' => 'required|string',
+            'ID_type' => 'required|string',
             'phone_number' => 'required|string',
             'SSNIT' => 'required|string',
             'emergency_contact' => 'required|string',
@@ -102,6 +103,7 @@ class GuardController extends Controller
         $guard->occupation = $request->occupation;
         $guard->address = $request->address;
         $guard->national_id = $request->national_id;
+        $guard->ID_type = $request->ID_type;
         $guard->phone_number = $request->phone_number;
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;

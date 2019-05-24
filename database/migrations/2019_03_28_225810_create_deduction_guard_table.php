@@ -18,6 +18,7 @@ class CreateDeductionGuardTable extends Migration
             $table->integer('deduction_id')->unsigned();
             $table->string('guard_id');
             $table->timestamp('date')->nullable();
+            $table->decimal('amount', 10, 2);
             $table->text('details');
             $table->timestamps();
             $table->softDeletes();
