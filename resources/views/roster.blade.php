@@ -643,7 +643,7 @@
         })
     });
 
-    switchShift(id){
+    function switchShift(id){
 
     }
 </script>
