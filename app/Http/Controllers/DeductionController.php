@@ -19,7 +19,14 @@ class DeductionController extends Controller
         $deductions = Deduction::all();
         return view('deduction-types')->with('deductions', $deductions);
     }
-
+	
+	public function listAll()
+	{
+		$deductions = Deduction::all();
+		return response()->json([
+			'offences' => $deductions
+		]);
+	}
     /**
      * Show the form for creating a new resource.
      *
