@@ -61,5 +61,5 @@ Route::post('/guards/upload-csv', 'GuardController@uploadToDb');
 Route::post('/guard/update-bio', 'GuardController@updateBio');
 Route::post('/guarantor/add', 'GuarantorController@store');
 Route::post('/incidents/add', 'IncidentController@store');
-Route::post('/occurrences/add', 'OccurenceController@store');
+Route::post('/occurrences/add', 'OccurrenceController@store');
 Route::put('/guarantor/update/{id}', 'GuarantorController@update');
