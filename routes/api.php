@@ -38,6 +38,7 @@ Route::post('/duty_roster/add_to_roster', 'DutyRosterController@add_guard')->nam
 Route::delete('/remove-shift/delete', 'DutyRosterController@removeRoster')->name('duty_roster.remove');
 Route::post('/offences/record', 'DeductionController@deductGuard')->name('offences.record');
 Route::post('/offences/add', 'DeductionController@store')->name('offences.add');
+Route::get('/offences/get', 'DeductionController@listAll')->name('offences.get');
 Route::put('/offence/update', 'DeductionController@update')->name('offence.update');
 Route::delete('/offence/delete/{deduction}', 'DeductionController@destroy')->name('offence.delete');
 Route::post('/permission/approval', 'PermissionController@approval')->name('permissions.approval');
