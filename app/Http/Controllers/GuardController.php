@@ -80,6 +80,7 @@ class GuardController extends Controller
             'SSNIT' => 'required|string',
             'emergency_contact' => 'required|string',
             'bank_name' => 'required|string',
+            'bank_branch' => 'required|string',
             'account_number' => 'required|string'
         ]);
         
@@ -115,6 +116,7 @@ class GuardController extends Controller
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
         $guard->bank_name = $request->bank_name;
+        $guard->bank_branch = $request->bank_branch;
         $guard->account_number = $request->account_number;
         
         if($request->welfare == 'on'){
@@ -232,6 +234,7 @@ class GuardController extends Controller
             'SSNIT' => 'required|string',
             'emergency_contact' => 'required|string',
             'bank_name' => 'required|string',
+            'bank_branch' => 'required|string',
             'account_number' => 'required|string'
         ]);
         
@@ -247,6 +250,7 @@ class GuardController extends Controller
         $guard->SSNIT = $request->SSNIT;
         $guard->emergency_contact = $request->emergency_contact;
         $guard->bank_name = $request->bank_name;
+        $guard->bank_branch = $request->bank_branch;
         $guard->account_number = $request->account_number;
 
         if($guard->update()){

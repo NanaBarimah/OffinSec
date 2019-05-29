@@ -191,4 +191,32 @@ class SiteController extends Controller
             'guards' => $guards
         ]);
     }
+
+    /* public function getGuards(Request $request){
+        $request->validate([
+            'site' => 'required'
+        ]);
+
+        $site = Site::where('id', $request->site)->with('duty_roster')->with(['duty_roster.guards' => function($q){
+            $q->groupBy('guard_id');
+        }])->first();
+
+        return response()->json([
+            'data' => $site
+        ]);
+    } */
+
+    public function viewSite(Request $request)
+    {
+        $site = Site::where('id', $request->id)->with('client', 'supervisor')->with('duty_roster')->with(['duty_roster.guards' => function($q){
+            $q->groupBy('guard_id');
+        }])->first();
+
+        $guards = Guard::all();
+
+        return view('site-details')->with('site', $site)->with('guards', $guards);
+        /* return response()->json([
+            'site' => $site
+        ]); */
+    }
 }
