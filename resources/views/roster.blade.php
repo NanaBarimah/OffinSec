@@ -130,7 +130,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Monday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Monday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                            <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -154,7 +155,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Tuesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Tuesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                            <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -178,7 +180,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Wednesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Wednesday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                            <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -202,7 +205,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Thursday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Thursday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                            <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -226,7 +230,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Friday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Friday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                            <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -250,7 +255,8 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Saturday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Saturday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                             <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -274,7 +280,10 @@
                                                         <tr>
                                                             <td>{{ucwords($guard->firstname.' '.$guard->lastname)}}</td>
                                                             <td>{{$guard->pivot->shift_type_name}}</td>
-                                                            <td><a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Sunday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a></td>
+                                                            <td>
+                                                                <a href="javascript:void(0)" class="text-danger text-small" id="remove-{{$guard->id}}" class="remove" onclick="removeShift('{{$guard->id}}', '{{$site->id}}', 'Sunday', '{{$guard->pivot->shift_type_id}}', this)">Remove From Shift</a>
+                                                                 <a href="javascript:void(0)" class="text-primary text-small ml-2" id="switch-{{$guard->id}}" onclick="switchShift('{{$guard->id}}')">Switch Shift</a>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
@@ -332,6 +341,54 @@
                         </div>
                         <div class="modal-body">
                             <p>Do you really want to remove this guard from this shift? This process cannot be undone.</p>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="checkbox-g" type="checkbox" name="complete">
+                                    <label for="checkbox-g">
+                                        Remove this guard entirely from the roster.
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="hidden" id="delete-shift-id"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="btn-delete-shift">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="switchShiftModal" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Switch Shift</h4>	
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Select a new shift</p>
+                            <select class="selectpicker show-tick" data-style="btn-custom" title="Select shift to continue"
+                                id="shift_type" name="shift_type_id">
+                                @foreach($shift_types as $shift_type)
+                                    <option value="{{$shift_type->id}}">{{$shift_type->name}}</option>
+                                @endforeach
+                            </select>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="checkbox-g" type="checkbox" name="complete">
+                                    <label for="checkbox-g">
+                                        Apply this shift for all duty days.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="checkbox-g" type="checkbox" name="complete">
+                                    <label for="checkbox-g">
+                                        Apply this shift for all duty days.
+                                    </label>
+                                </div>
+                            </div>
                             <input type="hidden" id="delete-shift-id"/>
                         </div>
                         <div class="modal-footer">
@@ -542,8 +599,9 @@
         btn = $(this);
         var data = JSON.parse($('#delete-shift-id').val());
 
+        data.complete_delete = $('#checkbox-g').prop('checked')
+        
         applyLoading(btn);
-
         $.ajax({
             url: '/api/remove-shift/delete',
             data : data,
@@ -566,7 +624,7 @@
                             bgColor : '#5cb85c',
                             showHideTransition : 'slide'
                         });
-
+                        
                         setTimeout(function(){
                             location.reload();
                         }, 500);
@@ -584,5 +642,9 @@
             }
         })
     });
+
+    switchShift(id){
+
+    }
 </script>
 @endsection

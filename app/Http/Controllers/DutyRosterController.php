@@ -214,20 +214,29 @@ class DutyRosterController extends Controller
             'guard_id' => 'required',
             'site_id' => 'required',
             'day' => 'required',
-            'shift_type_id' => 'required'
+            'shift_type_id' => 'required',
+            'complete_delete' => 'required'
          ]);
 
         $duty_roster = Duty_Roster::where('site_id', $request->site_id)->first();
         $guard = Guard::findOrFail($request->guard_id);
 
-        $guard->duty_rosters()->newPivotStatement()
-              ->where('guard_id', $request->guard_id)
-              ->where('duty_roster_id', $duty_roster->id)
-              ->where('day', $request->day)
-              ->where('shift_type_id', $request->shift_type_id)->delete();
+        if($request->complete_delete === "false"){
+            $guard->duty_rosters()->newPivotStatement()
+            ->where('guard_id', $request->guard_id)
+            ->where('duty_roster_id', $duty_roster->id)
+            ->where('day', $request->day)
+            ->where('shift_type_id', $request->shift_type_id)->delete();
+        }else{
+            $guard->duty_rosters()->newPivotStatement()
+            ->where('guard_id', $request->guard_id)
+            ->where('duty_roster_id', $duty_roster->id)->delete();
+        }
+        
         
         return response()->json([
             'status' => $guard,
+            'complete_delete' => $request->complete_delete,
             'message' => $guard ? 'Guard removed from shift sucessfully' : 'Error removing guard from shift'
         ]);
     }

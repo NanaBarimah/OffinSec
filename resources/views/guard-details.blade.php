@@ -8,6 +8,20 @@
         position: right;
         float: right;
     }
+
+    .thumb-lg{
+        object-fit:cover;
+        cursor: pointer;
+        transition:0.3s;
+    }
+
+    .thumb-lg:hover{
+        opacity: 0.8;
+    }
+
+    .imgModal{
+        background-color: black;
+    }
 </style>
 @endsection
 @section('content')
@@ -17,7 +31,7 @@
                         <div class="profile-user-box card-box bg-custom">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <span class="float-left mr-3"><img src="{{$guard->photo == '' || $guard->photo == null ? asset('assets/images/avatar.jpg') : asset('assets/images/guards/'.$guard->photo)}}" alt="" class="thumb-lg rounded-circle"></span>
+                                    <span class="float-left mr-3"><img src="{{$guard->photo == '' || $guard->photo == null ? asset('assets/images/avatar.jpg') : asset('assets/images/guards/'.$guard->photo)}}" alt="" class="thumb-lg rounded-circle" onclick="enlarge(this)"></span>
                                     <div class="media-body text-white">
                                         <h4 class="mt-1 mb-1 font-18">{{$guard->firstname.' '.$guard->lastname}}</h4>
                                         <p class="font-13 text-light"> {{$guard->phone_number}}</p>
@@ -222,6 +236,15 @@
                 <div class="modal-footer">
                     <button type="button" class="btn" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" id="btn-delete-guard">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="enlargeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content modal-md" style="background-color:transparent;">
+                <div class="modal-body">
+                    <img id="enlargedImage" style="min-width: 450px;"/>
                 </div>
             </div>
         </div>
@@ -477,6 +500,11 @@
                     });
                 }
         })
-    })
+    });
+
+    function enlarge(element){
+        $('#enlargeModal').find('#enlargedImage').attr('src', $(element).attr('src'));
+        $('#enlargeModal').modal('show');
+    }
 </script>
 @endsection
