@@ -25,7 +25,7 @@ class GuardController extends Controller
     {
         if($request->q != null){
             $term = $request->q;
-            $guards = Guard::where('firstname', 'LIKE', $term)->orWhere('lastname', 'LIKE', $term)->with('duty_rosters', 'duty_rosters.site')->paginate(15);
+            $guards = Guard::where('firstname', 'LIKE', $term)->orWhere('lastname', 'LIKE', $term)->orWhere(DB::raw("CONCAT(firstname,' ', lastname)"), "LIKE", $term)->with('duty_rosters', 'duty_rosters.site')->paginate(15);
             $searching = true;
         }else{
             $guards = Guard::with('duty_rosters', 'duty_rosters.site')->paginate(15);
@@ -491,14 +491,15 @@ class GuardController extends Controller
         $request->validate([
             "guard_id" => "required", 
             "RTB64" => "required",
-            "image" => "required"
         ]);
 
         $guard = Guard::where('id', $request->guard_id)->first();
         $fingerprint = Fingerprint::where('guard_id', $request->guard_id)->first();
 
-        $fileName = Utils::saveBase64Image($request->image, microtime().'-'.$guard->firstname, 'assets/images/guards/');
-        $guard->photo = $fileName;
+        if($request->image != null){
+            $fileName = Utils::saveBase64Image($request->image, microtime().'-'.$guard->firstname, 'assets/images/guards/');
+            $guard->photo = $fileName;
+        }
 
         if($fingerprint == null){
             $fingerprint = new Fingerprint();
@@ -526,5 +527,18 @@ class GuardController extends Controller
     public function addGuarantors(){
         $guards = Guard::all();
         return view('guarantor-add')->with('guards', $guards);
+    }
+
+    public function getGuard(Request $request){
+        $request->validate([
+            'guard_id' => 'required'
+        ]);
+
+        $guard = Guard::where('id', $request->guard_id)->first();
+
+        return response()->json([
+            'error' => false,
+            'guard' => $guard
+        ]);
     }
 }

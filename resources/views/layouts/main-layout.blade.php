@@ -182,6 +182,9 @@
                                 <li>
                                     <a href="/add-guarantors">Add Guarantors</a>
                                 </li>
+                                <li>
+                                    <a href="/">Generate Salary Report</a>
+                                </li>
                             </ul>
                         </li>
                         @endif

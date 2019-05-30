@@ -288,4 +288,8 @@ class ClientController extends Controller
 
         return view('client-access')->with('client', $client);
     }
+
+    public function manageSalaries(Request $request){
+        
+    }
 }
