@@ -56,4 +56,9 @@ class Guard extends Model
     {
         return $this->hasMany('App\Site', 'guard_id');
     }
+
+    public function salary()
+    {
+        return $this->hasOne('App\Salary');
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Salary;
+use App\ClientSalary;
 use Illuminate\Http\Request;
 
-class SalaryController extends Controller
+class ClientSalaryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,43 +36,37 @@ class SalaryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'guard_id' => 'required',
-            'amount' => 'required',
-            'bank_name' => 'required',
-            'bank_branch' => 'required',
-            'total_deductions' => 'required', 
-            'month' => 'required'
+            'site_id' => 'required',
+            'role' => 'required',
+            'amount' => 'required'
         ]);
 
-        $salary = new Salary();
+        $client_salary = new ClientSalary();
 
-        $salary->guard_id = $request->guard_id;
-        $salary->amount = $request->amount;
-        $salary->bank_name = $request->bank_name;
-        $salary->bank_branch = $request->bank_branch;
-        $salary->total_deductions = $request->total_deductions;
-        $salary->month = date('Y-m-d', strtotime($request->month));
+        $client_salary->site_id = $request->site_id;
+        $client_salary->role = $request->role;
+        $client_salary->amount = $request->amount;
 
-        if($salary->save()){
+        if($client_salary->save()){
             return response()->json([
                 'error' => false,
-                'message' => 'Salary Added Successfully!'
+                'message' => "Client's Salaries Added Successfully!"
             ]);
         }
 
         return response()->json([
             'error' => true,
-            'message' => 'Could not add salary'
+            'message' => "Error adding client's salaries."
         ]);
-     }
+    }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Salary  $salary
+     * @param  \App\ClientSalary  $clientSalary
      * @return \Illuminate\Http\Response
      */
-    public function show(Salary $salary)
+    public function show(ClientSalary $clientSalary)
     {
         //
     }
@@ -80,10 +74,10 @@ class SalaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Salary  $salary
+     * @param  \App\ClientSalary  $clientSalary
      * @return \Illuminate\Http\Response
      */
-    public function edit(Salary $salary)
+    public function edit(ClientSalary $clientSalary)
     {
         //
     }
@@ -92,10 +86,10 @@ class SalaryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Salary  $salary
+     * @param  \App\ClientSalary  $clientSalary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Salary $salary)
+    public function update(Request $request, ClientSalary $clientSalary)
     {
         //
     }
@@ -103,10 +97,10 @@ class SalaryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Salary  $salary
+     * @param  \App\ClientSalary  $clientSalary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Salary $salary)
+    public function destroy(ClientSalary $clientSalary)
     {
         //
     }

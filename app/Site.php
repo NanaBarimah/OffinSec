@@ -37,9 +37,13 @@ class Site extends Model
         return $this->hasMany('App\Occurrence', 'site_id');
     }
 
-    function supervisor() 
+    public function supervisor() 
     {
         return $this->belongsTo('App\Guard', 'guard_id');
     }
 
+    public function client_salary()
+    {
+        return $this->hasMany('App\ClientSalary');
+    }
 }
