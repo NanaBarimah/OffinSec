@@ -53,6 +53,7 @@ Route::post('/report/send-mail', 'ReportController@sendMail');
 Route::get('/guards/reports/age', 'GuardController@getGuardsByAgeRange');
 Route::get('/guards/reports/gender', 'GuardController@getGuardsByGender');
 Route::get('/guards/reports/site', 'GuardController@getGuardsBySite');
+Route::get('/guards/get', 'GuardController@getGuard');
 
 Route::post('/access-code/add', 'AccessCodeController@store')->name('access_code.add');
 Route::post('/access-code/send-token', 'AccessCodeController@sendToken');
@@ -63,3 +64,5 @@ Route::post('/guarantor/add', 'GuarantorController@store');
 Route::post('/incidents/add', 'IncidentController@store');
 Route::post('/occurrences/add', 'OccurrenceController@store');
 Route::put('/guarantor/update/{id}', 'GuarantorController@update');
+Route::get('/roster/getswappers', 'DutyRosterController@getSwappers');
+Route::post('/roster/swap', 'DutyRosterController@swap');

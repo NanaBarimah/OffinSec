@@ -240,4 +240,48 @@ class DutyRosterController extends Controller
             'message' => $guard ? 'Guard removed from shift sucessfully' : 'Error removing guard from shift'
         ]);
     }
+
+    public function getSwappers(Request $request){
+        $request->validate([
+            'guard' => 'required',
+            'roster' => 'required'
+        ]);
+
+        $guard = $request->guard;
+        $roster = $request->roster;
+        
+
+        $guards = DB::select(DB::raw("SELECT guard_id from guard_roster where shift_type_id <> (SELECT DISTINCT(shift_type_id) from guard_roster where guard_id = '$guard') and duty_roster_id = '$roster'"));
+        $temp = array();
+
+        foreach($guards as $guard){
+            array_push($temp, $guard->guard_id);
+        }
+
+        $guards = Guard::find($temp);
+
+        return response()->json([
+            'error' => false,
+            'guards' => $guards
+        ]);
+    }
+
+    public function swap(Request $request){
+        $request->validate([
+            'swap_with' => 'required',
+            'guard_id' => 'required',
+            'roster_id' => 'required'
+        ]);
+
+        $swap_with = $request->swap_with;
+        $guard = $request->guard_id;
+        $roster_id = $request->roster_id;
+
+        $query = DB::statement("UPDATE guard_roster SET guard_id = (case when guard_id = '$swap_with' then '$guard' else '$swap_with' end) where guard_id in ('$guard', '$swap_with') and duty_roster_id='$roster_id'");
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Shifts swapped'
+        ]);
+    }
 }

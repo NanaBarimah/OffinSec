@@ -4,8 +4,9 @@
 <link href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('plugins/spinkit/spinkit.css')}}" rel="stylesheet" />
 <style>
-    .text-small{
-        font-size: 14px;
+    p.badge{
+        font-size: 12px;
+        padding: 12px;
     }
 
     .text-tiny{
@@ -33,17 +34,32 @@
                         <div class="text-right">
                             <button type="button" class="btn btn-light waves-effect" data-toggle="modal" data-target="#edit-client">
                                 Edit Client
-                            </button><br/>
-                            <a href="" class="text-small text-white" data-toggle="modal" data-target="#change-duration"><b>Change contract duration</b></a><br/>
-                            <a href="" class="text-small text-white" data-toggle="modal" data-target="#generate-code"><b>Manage Access Code</b></a>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-                    <!--/ meta -->
         </div>
+                    <!--/ meta -->
+            <div class="row text-right">
+                <div class="col-sm-12">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#change-duration">
+                        <p class="badge badge-pill">
+                            Edit contract duration
+                        </p>
+                    </a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#generate-code">
+                        <p class="badge badge-pill">
+                            Manage access codes
+                        </p>
+                    </a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#generate-code">
+                        <p class="badge badge-pill">
+                            Manage salaries
+                        </p>
+                    </a>
+                </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-xl-4">
                     <!-- Personal-Information -->
                     <div class="card-box">
@@ -162,7 +178,20 @@
                     </div>
                 </div>
                 <div class="loader">
-                    <div class="sk-rotating-plane"></div>
+                    <div class="sk-circle loader">
+                        <div class="sk-circle1 sk-child"></div>
+                        <div class="sk-circle2 sk-child"></div>
+                        <div class="sk-circle3 sk-child"></div>
+                        <div class="sk-circle4 sk-child"></div>
+                        <div class="sk-circle5 sk-child"></div>
+                        <div class="sk-circle6 sk-child"></div>
+                        <div class="sk-circle7 sk-child"></div>
+                        <div class="sk-circle8 sk-child"></div>
+                        <div class="sk-circle9 sk-child"></div>
+                        <div class="sk-circle10 sk-child"></div>
+                        <div class="sk-circle11 sk-child"></div>
+                        <div class="sk-circle12 sk-child"></div>
+                    </div>
                 </div>
                 <canvas id="lineChart" height="350" class="mt-4" style="display:none;"></canvas>
                 <div id="chartError"></div>
@@ -361,11 +390,8 @@
                         
                     @csrf
                         <div class="form-row mb-2">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-12 col-sm-12">
                                 <input class="form-control resetable" type="text" id="token_email" placeholder="info@codbitgh.com" name="email" value="{{$client->email}}">
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <input class="form-control resetable" type="text" id="code" placeholder="offfinsec.test/123456" name="code" readonly>
                             </div>
                         </div>
                         <div class="text-right mt-2">
@@ -873,8 +899,6 @@
                                     bgColor : '#5cb85c',
                                     showHideTransition : 'slide'
                                 });
-
-                                $('#code').val("{{url('/')}}/client-access?token="+data.data.access_code);
                             }
                     },
                     error: function(err){
