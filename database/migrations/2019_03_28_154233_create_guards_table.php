@@ -29,6 +29,7 @@ class CreateGuardsTable extends Migration
             $table->string('emergency_contact');
             $table->string('photo');
             $table->string('bank_name');
+            $table->string('bank_branch');
             $table->string('account_number');
             $table->boolean('welfare')->default(0);
             $table->timestamps();

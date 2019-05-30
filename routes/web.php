@@ -42,4 +42,5 @@ Route::middleware('auth')->group(function(){
     Route::get('/upload', 'GuardController@uploadExcel')->name('guard.upload');
     Route::get('/biometrics', 'GuardController@uploadBios')->name('guard.bios');
     Route::get('/add-guarantors', 'GuardController@addGuarantors')->name('guard.add-guarantors');
+    Route::get('/site/{id}', 'SiteController@viewSite')->name('site.view');
 });

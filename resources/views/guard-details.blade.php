@@ -198,19 +198,23 @@
                                 <input type="text" class="form-control required" id="bank_name" name="bank_name" value="{{$guard->bank_name}}">
                             </div>
                             <div class="form-group col-md-4">
+                                <label for="account_number" class="col-form-label"><b>Branch</b> Name</label>
+                                <input type="text" class="form-control required" id="account_number" name="account_number" value="{{$guard->bank_branch}}">
+                            </div>
+                            <div class="form-group col-md-4">
                                 <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
                                 <input type="text" class="form-control required" id="account_number" name="account_number" value="{{$guard->account_number}}">
                             </div>
-                            <div class="form-group col-md-4">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="bank_name" class="col-form-label"><b>SSNIT</b> Number</label>
+                                <input type="text" class="form-control required" id="SSNIT" name="SSNIT" value="{{$guard->SSNIT}}">
+                            </div>
+                            <div class="form-group col-md-6">
                                 <label>Emergency Contact</label>
                                 <input type="tel" name="emergency_contact"  placeholder="" data-mask="(999) 999-999999" class="form-control" value="{{$guard->emergency_contact}}"/>
                                 <span class="font-10 text-muted">(233) 244-500500</span>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="bank_name" class="col-form-label"><b>SSNIT</b> Number</label>
-                                <input type="text" class="form-control required" id="SSNIT" name="SSNIT" value="{{$guard->SSNIT}}">
                             </div>
                         </div>
                     </div>

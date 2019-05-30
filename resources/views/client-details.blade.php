@@ -93,17 +93,15 @@
                         <div class="clearfix"></div>
                         <div class="inbox-widget">
                             @foreach($client->sites as $site)
-                            <a href="#">
                                 <div class="inbox-item">
                                     <p class="inbox-item-author">{{$site->name}} - [<b>{{$site->access_code}}</b>]</p>
                                     <p class="inbox-item-text">{{$site->location}}</p>
                                     <p class="inbox-item-date m-t-10">
-                                        <button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success" onclick="siteEdit({{$site}})">
-                                            Edit </button>
+                                        <a href="/site/{{$site->id}}"><button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">
+                                            View </button></a>
                                         <br/><span class="text-tiny"><a href="/roster/{{$site->id}}">Duty Roster</a></span>
                                     </p>
                                 </div>
-                            </a>
                             @endforeach
                             @if($client->sites->count() < 1)
                                 <p class="text-muted">No sites for this client yet. Add one.</p>
@@ -301,51 +299,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="edit-site" tabindex="-1">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header text-center border-bottom-0 d-block">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title mt-2">Edit Site</h4>
-                </div>
-                <div class="modal-body p-4">
-                    <form role="form" id="edit_site_form">   
-                    @csrf
-                    <div class="form-row mb-2">
-                        <div class="col-md-6 col-sm-12">
-                            <label for="name">Site name</label>
-                            <input class="form-control resetable" type="text" placeholder="Codbit ADC" name="name">
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <label for="name">Site Location</label>
-                            <input class="form-control resetable" type="text" placeholder="Ring Road Central" name="location">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6 col-sm-12">
-                            <label for="email">Contact Number</label>
-                            <input type="tel" placeholder="" data-mask="(999) 999-999999" class="form-control resetable" name="phone_number">
-                            <input type="hidden" name="id"/>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <label for="supervisor" class="col-form-label">Supervisor</label>
-                            <select class="selectpicker show-tick form-control" data-style="btn-primary" 
-                            title="Supervisor" id="edit-supervisor" name="guard_id" data-live-search="true">
-                                @foreach($guards as $guard)
-                                <option value="{{$guard->id}}" data-subtext="{{$guard->phone_number}}">{{$guard->firstname.' '.$guard->lastname}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                        <div class="text-right">
-                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-custom ml-1 waves-effect waves-light save-category">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="change-duration" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
@@ -434,7 +387,6 @@
         $('#date-range, #date-range-2').datepicker({
             toggleActive: true
         });
-
         
         $('#new_site_form').on('submit', function(e){
             $(this).find('.text-danger').css('display', 'none');
@@ -786,86 +738,6 @@
                 });
             }
             
-        });
-
-        function siteEdit(site)
-        {
-            $('#edit-site').find('[name="name"]').val(site.name);
-            $('#edit-site').find('[name="location"]').val(site.location);
-            $('#edit-site').find('[name="phone_number"]').val(site.phone_number);
-            $('#edit-site').find('[name="id"]').val(site.id);
-
-            $('#edit-supervisor').find('option').each(function(){
-                if($(this).val() == site.guard_id){
-                    $(this).prop('selected', true);
-                    $('#edit-supervisor').val(site.guard_id);
-                    $('.selectpicker').selectpicker('refresh');
-                }
-            });
-
-            $('#edit-site').modal('show');
-        }
-
-        $('#edit_site_form').on('submit', function(e){
-            e.preventDefault();
-            var btn = $(this).find('[type="submit"]');
-            
-            data = $(this).serialize();
-
-            var error = false;
-
-            $(this).find('.resetable').each(function(){
-                if($(this).val() == '' || $(this).val() == null){
-                    error = true;
-                    $(this).closest('div').append('<span class="text-danger text-small">This field is required</span>')
-                }
-            })
-
-            if(!error){
-                $(this).find('.text-danger').css('display', 'none');
-
-                applyLoading(btn);
-
-                $.ajax({
-                    url: '/api/site/update',
-                    method: 'PUT',
-                    data: data+'&client_id={{$client->id}}',
-                    success: function(data){
-                        removeLoading(btn, 'Save');
-                            if(data.error){
-                                $.toast({
-                                    text : data.message,
-                                    heading : 'Error',
-                                    position: 'top-right',
-                                    showHideTransition : 'slide', 
-                                    bgColor: '#d9534f'
-                                });
-                            }else{
-                                $.toast({
-                                    text : data.message,
-                                    heading : 'Done',
-                                    position: 'top-right',
-                                    bgColor : '#5cb85c',
-                                    showHideTransition : 'slide'
-                                });
-
-                                setTimeout(function(){
-                                    location.reload();
-                                }, 500);
-                            }
-                    },
-                    error: function(err){
-                        removeLoading(btn, 'Save');
-                        $.toast({
-                            text : 'Network error',
-                            heading : 'Error',
-                            position: 'top-right',
-                            showHideTransition : 'slide', 
-                            bgColor: '#d9534f'
-                        });
-                    }
-                });
-            }            
         });
 
         $('#btn_generate').on('click', function(){

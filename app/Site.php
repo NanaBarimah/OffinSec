@@ -10,7 +10,7 @@ class Site extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'client_id', 'name', 'location', 'phone_number', 'access_code'
+        'client_id', 'guard_id', 'name', 'location', 'phone_number', 'access_code',
     ];
 
     public function client()
@@ -35,5 +35,15 @@ class Site extends Model
     public function occurrences()
     {
         return $this->hasMany('App\Occurrence', 'site_id');
+    }
+
+    public function supervisor() 
+    {
+        return $this->belongsTo('App\Guard', 'guard_id');
+    }
+
+    public function client_salary()
+    {
+        return $this->hasMany('App\ClientSalary');
     }
 }
