@@ -52,7 +52,7 @@
                             Manage access codes
                         </p>
                     </a>
-                    <a href="/client/manage-salaries/{{client->id}}">
+                    <a href="/client/manage-salaries/{{$client->id}}">
                         <p class="badge badge-pill">
                             Manage salaries
                         </p>
