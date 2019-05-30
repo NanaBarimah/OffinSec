@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\ClientSalary;
+use App\Role;
 use Illuminate\Http\Request;
 
-class ClientSalaryController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class ClientSalaryController extends Controller
      */
     public function create()
     {
-        //
+        return view('add-role');
     }
 
     /**
@@ -36,37 +36,33 @@ class ClientSalaryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'site_id' => 'required',
-            'guard_id' => 'required',
-            'amount' => 'required'
+            'name' => 'required'
         ]);
 
-        $client_salary = new ClientSalary();
+        $role = new Role();
 
-        $client_salary->site_id = $request->site_id;
-        $client_salary->guard_id = $request->guard_id;
-        $client_salary->amount = $request->amount;
+        $role->name = $request->name;
 
-        if($client_salary->save()){
+        if($role->save()){
             return response()->json([
                 'error' => false,
-                'message' => "Client's Salaries Added Successfully!"
+                'message' => 'Guard Role Created Successfully!'
             ]);
         }
 
         return response()->json([
             'error' => true,
-            'message' => "Error adding client's salaries."
+            'message' => 'Could not add guard role, try again!'
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\ClientSalary  $clientSalary
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(ClientSalary $clientSalary)
+    public function show(Role $role)
     {
         //
     }
@@ -74,10 +70,10 @@ class ClientSalaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ClientSalary  $clientSalary
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClientSalary $clientSalary)
+    public function edit(Role $role)
     {
         //
     }
@@ -86,21 +82,39 @@ class ClientSalaryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ClientSalary  $clientSalary
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClientSalary $clientSalary)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $role = Role::where('id', $request->id)->first();
+
+        $role->name = $request->name;
+
+        if($role->update()){
+            return response()->json([
+                'error' => false,
+                'message' => 'Role Updated Successfully!'
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not update role'
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ClientSalary  $clientSalary
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ClientSalary $clientSalary)
+    public function destroy(Role $role)
     {
         //
     }

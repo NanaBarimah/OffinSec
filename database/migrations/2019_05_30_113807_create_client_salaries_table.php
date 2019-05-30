@@ -16,12 +16,14 @@ class CreateClientSalariesTable extends Migration
         Schema::create('client_salaries', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('site_id')->unsigned();
-            $table->string('role');
+            $table->string('guard_id');
             $table->decimal('amount', 10, 2);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('site_id')->references('id')->on('sites')
+                  ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('guard_id')->references('id')->on('guards')
                   ->onUpdate('cascade')->onDelete('cascade');
         });
     }

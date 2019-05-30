@@ -18,6 +18,11 @@ class Guard extends Model
         'firstname', 'lastname', 'dob', 'gender', 'marital_status', 'occupation', 'address', 'national_id', 'id_type', 'phone_number', 'SSNIT', 'emergency_contact', 'photo', 'bank_name', 'bank_branch', 'account_number',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
+    }
+
     public function fingerprint()
     {
         return $this->hasOne('App\Fingerprint');
@@ -60,5 +65,10 @@ class Guard extends Model
     public function salary()
     {
         return $this->hasOne('App\Salary');
+    }
+
+    public function client_salary()
+    {
+        return $this->hasOne('App\ClientSalary');
     }
 }
