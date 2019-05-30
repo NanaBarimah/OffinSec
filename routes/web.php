@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/users', 'UserController@index')->name('user.index');
     Route::get('/clients', 'ClientController@index')->name('clients');
     Route::get('/client/{id}', 'ClientController@view')->name('client');
+    Route::get('/client/manage-salaries/{id}', 'ClientController@manageSalaries')->name('client.manage-salaries');
     
     Route::get('/attendance', 'AttendanceController@view')->name('view.attendance');
     Route::get('/guards', 'GuardController@index')->name('guards');

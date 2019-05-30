@@ -52,7 +52,7 @@
                             Manage access codes
                         </p>
                     </a>
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#generate-code">
+                    <a href="/client/manage-salaries/{{client->id}}">
                         <p class="badge badge-pill">
                             Manage salaries
                         </p>
