@@ -116,7 +116,7 @@
                                                     <select class="selectpicker show-tick required" data-style="btn-custom" title="ID Type"
                                                         id="type" name="id_type">
                                                         <option>Voter's ID</option>
-                                                        <option>National ID</option>
+                                                        <option>Ghana Card</option>
                                                         <option>NHIS</option>
                                                         <option>Passport</option>
                                                     </select>
@@ -209,6 +209,10 @@
                                             <div class="form-group col-md-6">
                                                 <label for="bank_name" class="col-form-label"><b>Bank</b> Name</label>
                                                 <input type="text" class="form-control required" id="bank_name" name="bank_name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="bank_branch" class="col-form-label"><b>Bank</b> Branch</label>
+                                                <input type="text" class="form-control required" id="bank_branch" name="bank_branch">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
