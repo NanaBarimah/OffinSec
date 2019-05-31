@@ -7,6 +7,7 @@ use App\Fingerprint;
 use App\Guarantor;
 use App\Client;
 use App\Site;
+use App\Role;
 
 use DB;
 
@@ -53,7 +54,9 @@ class GuardController extends Controller
      */
     public function create()
     {
-        return view('guard-add');
+        $roles = Role::all();
+
+        return view('guard-add')->with('roles', $roles);
     }
 
     
@@ -72,7 +75,7 @@ class GuardController extends Controller
             'dob' => 'required|string',
             'gender' => 'required|string',
             'marital_status' => 'required|string',
-            'occupation' => 'required|string',
+            'occupation' => 'required',
             'address' => 'required|string',
             'national_id' => 'required|string',
             'id_type' => 'required|string',

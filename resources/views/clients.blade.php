@@ -267,7 +267,7 @@
 @endsection
 @section('scripts')
 
-
+    
     <!--Animations-->
     <script src="{{asset('plugins/custombox/js/custombox.min.js')}}"></script>
     <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
@@ -282,16 +282,6 @@
     <!--JQUERY toast-->
 
     <script>
-        jQuery.browser = {};
-        (function () {
-            jQuery.browser.msie = false;
-            jQuery.browser.version = 0;
-            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
-                jQuery.browser.msie = true;
-                jQuery.browser.version = RegExp.$1;
-            }
-        })();
-
         jQuery('#date-range, #date-range-2').datepicker({
             toggleActive: true
         });
@@ -507,6 +497,16 @@
                 }
             });
         });
+
+        jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
 
     </script>
 @endsection
