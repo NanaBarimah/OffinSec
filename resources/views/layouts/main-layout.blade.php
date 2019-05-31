@@ -167,6 +167,17 @@
                             </ul>
                         </li>
                         @if(strtolower(Auth::user()->role) == 'admin')
+                        <li class="has-submenu">
+                            <a href="javascript:void(0)">Salaries</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="#">Manage Salaries</a>
+                                </li>
+                                <li>
+                                    <a href="#">Generate Salary Report</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="/users">Users</a>
                         </li>
@@ -181,9 +192,6 @@
                                 </li>
                                 <li>
                                     <a href="/add-guarantors">Add Guarantors</a>
-                                </li>
-                                <li>
-                                    <a href="/">Generate Salary Report</a>
                                 </li>
                             </ul>
                         </li>
