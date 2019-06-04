@@ -67,3 +67,5 @@ Route::post('/occurrences/add', 'OccurrenceController@store');
 Route::put('/guarantor/update/{id}', 'GuarantorController@update');
 Route::get('/roster/getswappers', 'DutyRosterController@getSwappers');
 Route::post('/roster/swap', 'DutyRosterController@swap');
+
+Route::post('/salaries/edit', 'ClientSalaryController@runUpdate');

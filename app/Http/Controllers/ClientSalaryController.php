@@ -145,4 +145,21 @@ class ClientSalaryController extends Controller
             'message' => $guard_salary ? 'Salary Updated Successfully!' : 'Could not update salary. Try Again!'
         ]);
     }
+
+    public function runUpdate(Request $request){
+        $request->validate([
+            "client_id" => "required",
+            "guard_id" => "required",
+            "amount" => "required"
+        ]);
+
+        $client_salary = ClientSalary::where([['client_id', $request->client_id], ['guard_id', $request->guard_id], ['active', 1]])->first();
+
+        if($client_salary !== null){
+            $this->updateSalary($request);
+        }else{
+            $this->store($request);
+        }
+
+    }
 }

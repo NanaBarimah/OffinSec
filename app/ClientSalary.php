@@ -15,11 +15,11 @@ class ClientSalary extends Model
 
     public function client()
     {
-        return $this->belongsTo('App\Client');
+        return $this->belongsTo('App\Client', 'client_id');
     }
 
     public function guard_clientSalary()
     {
-        return $this->belongsTo('App\Guard');
+        return $this->belongsTo('App\Guard', 'guard_id');
     }
 }

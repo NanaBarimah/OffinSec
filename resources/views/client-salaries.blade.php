@@ -163,8 +163,33 @@
         let parent = $(element).closest('tr');
         parent.find('.update, .cancel').css('display', 'none');
 
-        $(element).closest('td').append('<span class="text-muted text-small">Loading</span>');
+        let textbox = parent.find('.salary-box');
 
+        $(element).closest('td').append('<span class="text-muted text-small">Loading</span>');
+        
+        let data = {
+            client_id : '{{$client->id}}',
+            guard_id : id,
+            amount :  textbox.val()
+        }
+
+        $.ajax({
+            url : '/api/salaries/edit',
+            method : 'POST',
+            data : data,
+            success : (response) => {
+                parent.find('span.text-muted').css('display', 'none');
+                parent.find('.edit').css('display', 'inline');
+                
+                console.log(response);
+            },
+            error : (err) => {
+                parent.find('span.text-muted').css('display', 'none');
+                parent.find('.update, .cancel').css('display', 'inline');
+
+                console.log(err);
+            }
+        });
     }    
 </script>
 @endsection
