@@ -290,6 +290,10 @@ class ClientController extends Controller
     }
 
     public function manageSalaries(Request $request){
-        
+        $client = Client::where('id', $request->id)->with('sites', 'sites.duty_roster')->with(['sites.duty_roster.guards' => function($q){
+            $q->groupBy('guard_id');
+        }])->first();
+
+        return view('client-salaries')->with('client', $client);
     }
 }

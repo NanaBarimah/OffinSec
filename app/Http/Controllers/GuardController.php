@@ -308,10 +308,11 @@ class GuardController extends Controller
     }
 
     public function view(Request $request){
-        $guard = Guard::with('duty_rosters', 'duty_rosters.site', 'duty_rosters.site.client', 'guarantors')->where('id', $request->id)->first();
+        $guard = Guard::with('duty_rosters', 'duty_rosters.site', 'duty_rosters.site.client', 'guarantors', 'role')->where('id', $request->id)->first();
+        $roles = Role::all();
         //$guard = DB::select("SELECT sites.name, guards.* FROM guard_roster, duty_rosters, guards, sites WHERE guard_roster.guard_id = guards.id AND guard_roster.duty_roster_id = duty_rosters.id AND sites.id = duty_rosters.site_id AND guards.id = '$request->id' group by guards.id, sites.name ");
 
-        return view('guard-details')->with('guard', $guard);
+        return view('guard-details')->with('guard', $guard)->with('roles', $roles);
         /*return response()->json([
             'data' => $guard
         ]);*/
@@ -445,7 +446,7 @@ class GuardController extends Controller
                             "dob" => date('Y-m-d', strtotime($data[2])),
                             "gender" => $data[3],
                             "marital_status" => $data[4],
-                            "occupation" => $data[5],
+                            "occupation" => 1,
                             "address" => $data[6],
                             "national_id" => $data[7],
                             "phone_number" => $data[8],
@@ -453,7 +454,8 @@ class GuardController extends Controller
                             "emergency_contact" => $data[10],
                             "welfare" => 1,
                             "bank_name" => $data[11],
-                            "account_number" => $data[12]
+                            "account_number" => $data[12],
+                            "bank_branch" => "N/A"
                         ));
                     }
 

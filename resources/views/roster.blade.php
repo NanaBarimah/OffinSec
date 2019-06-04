@@ -663,7 +663,7 @@
         $('#swap-shift-id').val(id);
         
         $.ajax({
-            url: '/api/roster/getswappers?guard='+id+'&roster={{$site->roster->id}}',
+            url: '/api/roster/getswappers?guard='+id+'&roster={{$site->roster != null ? $site->roster->id : null}}',
             method: 'GET',
             success: function(data){
                 if(!data.error){
@@ -695,7 +695,7 @@
         $(this).find('text-danger').css('display', 'none');
         var btn = $('#btn-swap');
         var initial = btn.html();
-        var data = $(this).serialize() + '&roster_id={{$site->roster->id}}';
+        var data = $(this).serialize() + '&roster_id={{$site->roster != null ? $site->roster->id : null}}';
 
         if($('#swap_with').val() == null || $('#swap_with').val() == ''){
             $('#swap_with').closest('div').append('<p class="text-danger text-small">Select a guard to swap with</p>');

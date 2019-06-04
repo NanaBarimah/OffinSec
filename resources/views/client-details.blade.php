@@ -19,7 +19,7 @@
 </style>
 @endsection
 @section('content')
-<div class="row">
+    <div class="row">
         <div class="col-sm-12">
                     <!-- meta -->
             <div class="profile-user-box card-box bg-custom">
