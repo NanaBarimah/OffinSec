@@ -20,7 +20,7 @@ class Guard extends Model
 
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo('App\Role', 'occupation');
     }
 
     public function fingerprint()
@@ -45,6 +45,11 @@ class Guard extends Model
     public function attendances()
     {
         return $this->hasMany('App\Attendance', 'guard_id');
+    }
+
+    public function attendance_requests()
+    {
+        return $this->hasMany('App\AttendanceRequests', 'guard_id');
     }
 
     public function deductions()

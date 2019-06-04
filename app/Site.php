@@ -27,6 +27,11 @@ class Site extends Model
         return $this->hasMany('App\Attendance');
     }
 
+    public function attendance_requests()
+    {
+        return $this->hasMany('App\AttendanceRequests');
+    }
+
     public function incidents()
     {
         return $this->hasMany('App\Incident', 'site_id');
@@ -40,10 +45,5 @@ class Site extends Model
     public function supervisor() 
     {
         return $this->belongsTo('App\Guard', 'guard_id');
-    }
-
-    public function client_salary()
-    {
-        return $this->hasMany('App\ClientSalary');
     }
 }

@@ -10,12 +10,12 @@ class ClientSalary extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'site_id', 'guard_id', 'amount'
+        'client_id', 'guard_id', 'amount',
     ];
 
-    public function site()
+    public function client()
     {
-        return $this->belongsTo('App\Site');
+        return $this->belongsTo('App\Client');
     }
 
     public function guard_clientSalary()
