@@ -69,11 +69,11 @@ class Guard extends Model
 
     public function salary()
     {
-        return $this->hasOne('App\Salary');
+        return $this->hasMany('App\Salary');
     }
 
     public function client_salary()
     {
-        return $this->hasOne('App\ClientSalary');
+        return $this->hasMany('App\ClientSalary');
     }
 }
