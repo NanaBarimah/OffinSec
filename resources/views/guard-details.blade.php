@@ -173,7 +173,13 @@
                         <div class="form-row mb-4">
                             <div class="form-group col-md-4">
                                 <label for="phone_number" class="col-form-label"><b>Occupation</b></label>
-                                <input type="text" class="form-control required" id="occupation" name="occupation" value="{{$guard->occupation}}">
+                                <!--input type="text" class="form-control required" id="occupation" name="occupation" value="{{$guard->occupation}}"-->
+                                <select class="selectpicker show-tick required" data-style="btn-custom" title="Occupation"
+                                    id="occupation" name="occupation">
+                                    @foreach($roles as $role)
+                                    <option value="{{$role->id}}" <?php if($guard->occupation == $role->id){echo 'selected';} ?>>{{$role->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="marital" class="col-form-label"><b>&nbsp;</b></label>
@@ -199,7 +205,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="account_number" class="col-form-label"><b>Branch</b> Name</label>
-                                <input type="text" class="form-control required" id="account_number" name="account_number" value="{{$guard->bank_branch}}">
+                                <input type="text" class="form-control required" id="bank_branch" name="bank_branch" value="{{$guard->bank_branch}}">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="account_number" class="col-form-label"><b>Account</b> Number</label>
