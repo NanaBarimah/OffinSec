@@ -13,6 +13,6 @@ class Role extends Model
 
     public function guard_role()
     {
-        return $this->hasMany('App\Guard');
+        return $this->hasMany('App\Guard', 'occupation');
     }
 }
