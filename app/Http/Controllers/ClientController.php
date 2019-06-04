@@ -6,6 +6,7 @@ use App\Client;
 use App\Guard;
 use App\Site;
 use App\Access_Code;
+use App\Role;
 
 use DB;
 
@@ -294,6 +295,8 @@ class ClientController extends Controller
             $q->groupBy('guard_id');
         }])->first();
 
-        return view('client-salaries')->with('client', $client);
+        $ranks = Role::all();
+
+        return view('client-salaries')->with('client', $client)->with('ranks', $ranks);
     }
 }
