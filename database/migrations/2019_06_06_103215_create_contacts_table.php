@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReportsTable extends Migration
+class CreateContactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('client_id');
-            $table->text('template');
-            $table->string('fileName');
+            $table->string('contact_name');
+            $table->string('contact_number');
+            $table->integer('site_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('client_id')->references('id')->on('clients')
+            $table->foreign('site_id')->references('id')->on('sites')
                   ->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -33,6 +33,6 @@ class CreateReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('contacts');
     }
 }

@@ -34,7 +34,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{$report->template}}">{{$report->template}}</a>
+                                        <a href="/download/{{$report->fileName}}">{{$report->template}}</a>
                                     </td>
                                 </tr>
                                 @endforeach
