@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('auth/login');
 })->middleware('guest');
@@ -45,4 +44,5 @@ Route::middleware('auth')->group(function(){
     Route::get('/add-guarantors', 'GuardController@addGuarantors')->name('guard.add-guarantors');
     Route::get('/site/{id}', 'SiteController@viewSite')->name('site.view');
     Route::get('/salaries', 'SalaryController@all')->name('salaries.all');
+    Route::get('/download/{file}', 'ReportController@download');
 });

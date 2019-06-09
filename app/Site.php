@@ -46,4 +46,9 @@ class Site extends Model
     {
         return $this->belongsTo('App\Guard', 'guard_id');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany('App\Contact');
+    }
 }
