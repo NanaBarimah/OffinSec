@@ -291,14 +291,15 @@ class ClientController extends Controller
     }
 
     public function manageSalaries(Request $request){
-        /*$client = Client::where('id', $request->id)->with('sites', 'sites.duty_roster')->with(['sites.duty_roster.guards' => function($q){
-            $q->groupBy('guard_id');
+        $client = $request->id;
+        $client = Client::where('id', $client)->with('sites', 'sites.duty_roster')->with(['sites.duty_roster.guards' => function($q) use ($client){
+            $q->with(['client_salary' => function($query) use ($client){
+                $query->where([['client_id', $client], ['active', 1]]);
+            }])->groupBy('guard_id');
         }])->first();
 
         $ranks = Role::all();
 
-        return view('client-salaries')->with('client', $client)->with('ranks', $ranks);*/
-
-        $guards = Guard::with('client_salary')->get();
+        return view('client-salaries')->with('client', $client)->with('ranks', $ranks);
     }
 }

@@ -69,3 +69,5 @@ Route::get('/roster/getswappers', 'DutyRosterController@getSwappers');
 Route::post('/roster/swap', 'DutyRosterController@swap');
 
 Route::post('/salaries/edit', 'ClientSalaryController@runUpdate');
+Route::post('/salaries/apply', 'ClientSalaryController@applyToMultiple');
+Route::post('/salaries/reset', 'ClientSalaryController@reset');

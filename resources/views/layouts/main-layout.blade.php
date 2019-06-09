@@ -125,6 +125,20 @@
                                 <li><a href="/guards">View Guards</a></li>
                                 <li><a href="/guards/add">New Guard</a></li>
                                 <li><a href="/guards/reports">Guard Reports</a></li>
+                                <li class="has-submenu">
+                                    <a href="javascript:void(0)">Back Office</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a href="/upload">Upload CSV</a>
+                                        </li>
+                                        <li>
+                                            <a href="/biometrics">Update Guard Biometrics</a>
+                                        </li>
+                                        <li>
+                                            <a href="/add-guarantors">Add Guarantors</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
 
@@ -174,21 +188,7 @@
                             <a href="javascript:void(0)">Salaries</a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="/">Generate Salary Report</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="javascript:void(0)">Back Office</a>
-                            <ul class="submenu">
-                                <li>
-                                    <a href="/upload">Upload CSV</a>
-                                </li>
-                                <li>
-                                    <a href="/biometrics">Update Guard Biometrics</a>
-                                </li>
-                                <li>
-                                    <a href="/add-guarantors">Add Guarantors</a>
+                                    <a href="/salaries">Generate Salary Report</a>
                                 </li>
                             </ul>
                         </li>

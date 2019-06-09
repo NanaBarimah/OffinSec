@@ -110,4 +110,8 @@ class SalaryController extends Controller
     {
         //
     }
+
+    public function all(){
+        return view('salaries');
+    }
 }

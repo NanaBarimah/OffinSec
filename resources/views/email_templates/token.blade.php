@@ -119,7 +119,7 @@ bgcolor="#f6f6f6">
                                 style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                 valign="top">
                                 Please, find attached to this email a URL to view your site activity. </br>  
-								<a><b>{{url('/')}}/client-access?token={{$access_code}}</b></a>
+								<a href="{{url('/')}}/client-access?token={{$access_code}}"><b>{{url('/')}}/client-access?token={{$access_code}}</b></a>
                             </td>
                         </tr>
                         <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -131,7 +131,7 @@ bgcolor="#f6f6f6">
                         </tr>
                         <tr>
                             <td>
-                                <i>This email was automatically sent because you are a client of Offin Security. However, if this was sent as a mistake please disregard this email and send a report to info@offinsecuritygh.com</i>
+                                <i>This email was automatically sent because you are a client of Offin Security. However, if this was sent as a mistake please disregard this email and send a report to support@offinghana.com</i>
                             </td>
                         </tr>
                     </table>

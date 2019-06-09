@@ -49,13 +49,13 @@
                             </select>
                         </div>
                         <div class="text-right mt-2">
-                            <button type="button" id="apply" class="btn btn-custom">Apply</button>
+                            <button type="button" id="apply" class="btn btn-custom" onclick="apply()">Apply</button>
                         </div>
                         <div class="col-sm-12 mt-2">
                             <label for="reset">Reset All Guard Salaries</label>
                             <p>Be sure you want to reset salaries before you take this action.</p>
                             <div class="text-right">
-                                <button type="button" id="reset" class="btn btn-dark">Reset</button>
+                                <button type="button" id="reset" class="btn btn-dark" onclick = "reset()">Reset</button>
                             </div>
                         </div> 
                     </div>
@@ -80,7 +80,7 @@
                                 <tr>
                                     <td>{{$guard->firstname.' '.$guard->lastname}}</td>
                                     <td>{{$site->name}}</td>
-                                    <td class="text-right"><input type="number" class="salary-box" value="0.00" data-placeholder="0.00" step="0.01" readonly/></td>
+                                    <td class="text-right"><input type="number" class="salary-box" value="{{$guard->client_salary->count() > 0 ? $guard->client_salary[0]->amount : '0.00'}}" step="0.01" readonly/></td>
                                     <td><a href="javascript:void(0)"><i class="dripicons-pencil edit" onclick = "update(this)"></i></a>
                                     &nbsp;<a href="javascript:void(0)" class="text-success update" style="display:none" onclick = "edit(this, '{{$guard->id}}')"><i class="dripicons-checkmark"></i></a>
                                     &nbsp;<a href="javascript:void(0)" class="text-danger cancel" style="display:none" onclick = "cancel(this)"><i class="dripicons-wrong"></i></a></td>
@@ -181,15 +181,153 @@
                 parent.find('span.text-muted').css('display', 'none');
                 parent.find('.edit').css('display', 'inline');
                 
-                console.log(response);
+                if(data.error){
+                    $.toast({
+                        text : data.message,
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }else{
+                    $.toast({
+                        text : data.message,
+                        heading : 'Done',
+                        position: 'top-right',
+                        bgColor : '#5cb85c',
+                        showHideTransition : 'slide'
+                    });
+                }
             },
             error : (err) => {
                 parent.find('span.text-muted').css('display', 'none');
                 parent.find('.update, .cancel').css('display', 'inline');
 
-                console.log(err);
+                $.toast({
+                    text : 'Network Error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
             }
         });
+    }
+
+    const apply = () => {
+        let btn = $('#apply');
+        let initial = btn.html();
+
+        $('#apply_to_all').closest('div').find('.error-msg').css('display', 'none');
+
+        if($('#apply_to_all').val() == null || $('#apply_to_all').val() == ''){
+            $('#apply_to_all').closest('div').append('<p class="text-small text-danger error-msg">Enter an amount</p>')
+        }else{
+            applyLoading(btn);
+
+            let data = {
+                client_id : '{{$client->id}}',
+                amount : $('#apply_to_all').val(),
+                is_entire : $('#checkbox-g').prop('checked')
+            }
+
+            if(!data.is_entire){
+                data.role = $('#role').val();
+            }
+
+            console.log(data);
+
+            $.ajax({
+                url : '/api/salaries/apply',
+                method : 'POST',
+                data : data,
+                success : (response) => {
+                    removeLoading(btn, initial);
+
+                    if(response.error){
+                        $.toast({
+                            text : response.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : response.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+                    }
+                },
+                error : (err) => {
+                    removeLoading(btn, initial);
+                    
+                    $.toast({
+                        text : 'Network Error',
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }
+            })
+        }
+    }
+
+    const reset = () => {
+        let btn = $('#reset');
+        let initial = btn.html();
+
+        applyLoading(btn);
+
+        let data = {
+            client_id : '{{$client->id}}'
+        }
+
+        $.ajax({
+            url : '/api/salaries/reset',
+            method : 'POST',
+            data : data,
+            success : (response) => {
+                removeLoading(btn, initial);
+
+                if(response.error){
+                    $.toast({
+                        text : response.message,
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }else{
+                    $.toast({
+                        text : response.message,
+                        heading : 'Done',
+                        position: 'top-right',
+                        bgColor : '#5cb85c',
+                        showHideTransition : 'slide'
+                    });
+
+                    setTimeout(() => {
+                        window.reload();
+                    }, 500);
+                }
+            },
+            error : (err) => {
+                removeLoading(btn, initial);
+                
+                $.toast({
+                    text : 'Network Error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        })
     }    
 </script>
 @endsection
