@@ -76,16 +76,18 @@
                         </thead>
                         <tbody>
                             @foreach($client->sites as $site)
-                                @foreach($site->duty_roster->guards as $guard)
-                                <tr>
-                                    <td>{{$guard->firstname.' '.$guard->lastname}}</td>
-                                    <td>{{$site->name}}</td>
-                                    <td class="text-right"><input type="number" class="salary-box" value="{{$guard->client_salary->count() > 0 ? $guard->client_salary[0]->amount : '0.00'}}" step="0.01" readonly/></td>
-                                    <td><a href="javascript:void(0)"><i class="dripicons-pencil edit" onclick = "update(this)"></i></a>
-                                    &nbsp;<a href="javascript:void(0)" class="text-success update" style="display:none" onclick = "edit(this, '{{$guard->id}}')"><i class="dripicons-checkmark"></i></a>
-                                    &nbsp;<a href="javascript:void(0)" class="text-danger cancel" style="display:none" onclick = "cancel(this)"><i class="dripicons-wrong"></i></a></td>
-                                </tr>
-                                @endforeach
+                                @if($site->duty_roster != null)
+                                    @foreach($site->duty_roster->guards as $guard)
+                                    <tr>
+                                        <td>{{$guard->firstname.' '.$guard->lastname}}</td>
+                                        <td>{{$site->name}}</td>
+                                        <td class="text-right"><input type="number" class="salary-box" value="{{$guard->client_salary->count() > 0 ? $guard->client_salary[0]->amount : '0.00'}}" step="0.01" readonly/></td>
+                                        <td><a href="javascript:void(0)"><i class="dripicons-pencil edit" onclick = "update(this)"></i></a>
+                                        &nbsp;<a href="javascript:void(0)" class="text-success update" style="display:none" onclick = "edit(this, '{{$guard->id}}')"><i class="dripicons-checkmark"></i></a>
+                                        &nbsp;<a href="javascript:void(0)" class="text-danger cancel" style="display:none" onclick = "cancel(this)"><i class="dripicons-wrong"></i></a></td>
+                                    </tr>
+                                    @endforeach
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

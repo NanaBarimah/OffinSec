@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Client;
 
 use App\Salary;
+use App\Guard;
+
 use Illuminate\Http\Request;
 
 class SalaryController extends Controller
@@ -112,6 +115,76 @@ class SalaryController extends Controller
     }
 
     public function all(){
-        return view('salaries');
+        $clients = Client::orderBy('name', 'ASC')->get();
+        return view('salaries', compact('clients'));
+    }
+
+    public function getAll(Request $request){
+        $request->validate([
+            'date' => 'required'
+        ]);
+        
+        $month = date('m', strtotime($request->date));
+        $year = date('Y', strtotime($request->date));
+        $salaries = Salary::with('guard_salary')->whereYear('month', $year)->whereMonth('month', $month)->get();
+        return response()->json([
+            'salaries' => $salaries,
+            'date' => $request->date
+        ]);
+    }
+
+    public function generate(Request $request){
+        
+        $request->validate([
+            'date' => 'required'
+        ]);
+        
+        $month = date('m', strtotime($request->date));
+        $year = date('Y', strtotime($request->date));
+
+        $guards = Guard::whereHas('client_salary', function($q) use ($month, $year){
+            $q->whereYear('created_at', '<=', $year)->whereMonth('created_at', '<=', $month)->where('active', 1);
+        })->with(['client_salary' => function($query){
+            $query->orderBy('created_at', 'DESC');
+        }])->with(['deductions' => function($stmt) use ($month, $year){
+            $stmt->whereYear('date', $year)->whereMonth('date', $month);
+        }])->get();
+
+        $salaries = array();
+
+        foreach($guards as $guard){
+            
+            $total_deduction = 0;
+
+            foreach($guard->deductions as $deduction){
+                $total_deduction+= $deduction->pivot->amount;
+            }
+
+            $salary = array(
+                "guard_id" => $guard->id,
+                "amount" => $guard->client_salary[0]->amount,
+                "bank_name" => $guard->bank_name,
+                "bank_branch" => $guard->bank_branch,
+                "account_number" => $guard->account_number,
+                "total_deductions" => $total_deduction,
+                "month" => date('Y-m-d', strtotime($request->date)),
+                "created_at" => date('Y-m-d'),
+                "status" => 0
+            );
+
+            array_push($salaries, $salary);
+        }
+
+        if(Salary::insert($salaries)){
+            return response()->json([
+                'error' => false,
+                'message' => 'Salaries generated'
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Could not generate salaries list'
+            ]);
+        }
     }
 }

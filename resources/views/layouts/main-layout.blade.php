@@ -172,11 +172,22 @@
                         <li class="has-submenu">
                             <a href="javascript:void(0)">Reports</a>
                             <ul class="submenu">
-                                <li>
-                                    <a href="/send-report">New Report</a>
+                                <li class="has-submenu">
+                                    <a href="javascript:void(0)">Client Reports</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a href="/send-report">New Client Report</a>
+                                        </li>
+                                        <li>
+                                            <a href="/view-reports">View Generated Reports</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="/view-reports">View Reports</a>
+                                    <a href="javascript:void(0)">Incidents</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">Occurrences</a>
                                 </li>
                             </ul>
                         </li>

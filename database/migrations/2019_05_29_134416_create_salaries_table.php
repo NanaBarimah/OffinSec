@@ -21,6 +21,7 @@ class CreateSalariesTable extends Migration
             $table->string('bank_branch');
             $table->decimal('total_deductions');
             $table->date('month');
+            $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
 

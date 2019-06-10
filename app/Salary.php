@@ -15,6 +15,6 @@ class Salary extends Model
 
     public function guard_salary()
     {
-        return $this->belongsTo('App\Guard');
+        return $this->belongsTo('App\Guard', 'guard_id');
     }
 }

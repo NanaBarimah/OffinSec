@@ -23,7 +23,7 @@ class ReportController extends Controller
     public function index()
     {
         //
-        $reports = Report::with('client')->get();
+        $reports = Report::with('client')->paginate(18);
         return view('view-reports')->with('reports', $reports);
     }
 
