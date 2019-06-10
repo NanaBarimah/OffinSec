@@ -353,7 +353,7 @@ table.attendance th {
                 <h2 class="text-muted">Extra Notes:</h2>
 
                 <p>
-                    {{$incidents}}
+                    {{!! $incidents !!}}
                 </p>
             </div>
 
