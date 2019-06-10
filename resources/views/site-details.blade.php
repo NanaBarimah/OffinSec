@@ -32,7 +32,7 @@
                                 <div class="col-sm-6">
                                     <div class="media-body text-white">
                                         <h4 class="mt-1 mb-1 font-18">{{$site->name}}</h4>
-                                        <p class="font-13 text-light">{{$site->phone_number}}</p>
+                                        <p class="font-13 text-light text-uppercase">{{$site->access_code}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">

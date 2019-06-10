@@ -22,7 +22,11 @@ class CreateSalariesTable extends Migration
             $table->string('account_number');
             $table->decimal('total_deductions');
             $table->date('month');
+<<<<<<< HEAD
             $table->smallInteger('status')->default(0);
+=======
+            $table->tinyInteger('status');
+>>>>>>> 4b214da868a4c879b7cc551f12f008dc9a41006e
             $table->timestamps();
             $table->softDeletes();
 

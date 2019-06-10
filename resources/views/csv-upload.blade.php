@@ -43,11 +43,15 @@
                     }else{
                         $.toast({
                             text : data.message,
-                            heading : 'Error',
+                            heading : 'Done',
                             position: 'top-right',
                             showHideTransition : 'slide', 
                             bgColor: '#5cb85c'
                         });
+
+                        setTimeout(() => {
+                            window.location('/guards');
+                        }, 500);
                     }
                 },
                 error:function(err){

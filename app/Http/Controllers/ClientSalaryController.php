@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Guard;
 
 use App\ClientSalary;
 use Illuminate\Http\Request;
@@ -53,13 +54,13 @@ class ClientSalaryController extends Controller
         if($client_salary->save()){
             return response()->json([
                 'error' => false,
-                'message' => "Client's Salaries Added Successfully!"
+                'message' => "Salary successfully recorded"
             ]);
         }
 
         return response()->json([
             'error' => true,
-            'message' => "Error adding client's salaries."
+            'message' => "Could not update salary records. Try again."
         ]);
     }
 
@@ -123,26 +124,75 @@ class ClientSalaryController extends Controller
             return response()->json([
                 'error' => false,
                 'Client Salary' => $client_salary,
-                'message' => 'Guard Salary Updated Successfully!'
+                'message' => 'Salary successfully recorded'
             ]);
         }else{
             return response()->json([
                 'error' => true,
-                'message' => 'Could not update guard salary. Try Again!'
+                'message' => 'Could not update salary records. Try again.'
             ]);
         }
     }
 
-    public function salaryRole(Request $request)
+    public function salaryByRole(Request $request)
     {
-        $guard_salary = ClientSalary::whereHas('guard_clientSalary', function($q) {
-            $q->where('occupation', $request->occupation);
-        })->where('client_id', $request->client_id)->update(['amount' => $request->amount]);
+        /*$guard_salary = ClientSalary::whereHas('guard_clientSalary', function($q) use ($request){
+            $q->where('occupation', $request->role);
+        })->where('client_id', $request->client_id)->update(['amount' => $request->amount]);*/
+
+        ClientSalary::whereHas('guard_clientSalary', function($q) use ($request){
+            $q->where('occupation', $request->role);
+        })->where('client_id', $request->client_id)->update(['active']);
+
+        $guards = Guard::where('occupation', $request->role)->whereHas('duty_rosters', function($q) use ($request){
+            $q->whereHas('site', function($query) use ($request){
+                $query->where('client_id', $request->client_id);
+            });
+        })->get();
+        
+        $salaries = array();
+        
+        foreach($guards as $guard){
+            $guard_salary = array("guard_id" => $guard->id, "amount" => $request->amount, "client_id" => $request->client_id, "active" => 1, "created_at" => now());
+         
+            array_push($salaries, $guard_salary);
+        }
+
+        if(ClientSalary::insert($salaries)){
+            return response()->json([
+                'error' => false,
+                'message' =>'Salaries updated'
+            ]);
+        }
+
+        return response()->json([
+            'error' => true, 
+            'message' => 'Could not update guard salaries'
+        ]);
+    }
+
+    public function salaryByClient(Request $request){
+
+        ClientSalary::where('client_id', $request->client_id)->forceDelete();
+
+        $guards = Guard::whereHas('duty_rosters', function($q) use ($request){
+            $q->whereHas('site', function($query) use ($request){
+                $query->where('client_id', $request->client_id);
+            });
+        })->get();
+        $salaries = array();
+        
+        foreach($guards as $guard){
+            $guard_salary = array("guard_id" => $guard->id, "amount" => $request->amount, "client_id" => $request->client_id, "active" => 1, "created_at" => now());
+            
+            array_push($salaries, $guard_salary);
+        }
+
+        $clients = ClientSalary::insert($salaries);
 
         return response()->json([
             'error' => false,
-            'data' => $guard_salary,
-            'message' => $guard_salary ? 'Salary Updated Successfully!' : 'Could not update salary. Try Again!'
+            'message' =>'Salaries updated'
         ]);
     }
 
@@ -156,10 +206,37 @@ class ClientSalaryController extends Controller
         $client_salary = ClientSalary::where([['client_id', $request->client_id], ['guard_id', $request->guard_id], ['active', 1]])->first();
 
         if($client_salary !== null){
-            $this->updateSalary($request);
+            return $this->updateSalary($request);
         }else{
-            $this->store($request);
+            return $this->store($request);
         }
 
+    }
+
+    public function applyToMultiple(Request $request){
+        $request->validate([
+            "client_id" => "required",
+            "amount" => "required",
+            "is_entire" => "required"
+        ]);
+
+        if($request->is_entire === "true" || $request->is_entire === true){
+            return $this->salaryByClient($request);
+        }else{
+            return $this->salaryByRole($request);
+        }
+    }
+
+    public function reset(Request $request){
+        $request->validate([
+            'client_id' => 'required'
+        ]);
+
+        $reset = ClientSalary::where([['client_id', $request->client_id], ['active', 1]])->update(['amount' => 0]);
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Salaries reset'
+        ]);
     }
 }
