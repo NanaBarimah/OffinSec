@@ -133,7 +133,7 @@ class SalaryController extends Controller
         ]);
     }
 
-    public function generate(Request $request){
+    public function generate(Request $request){ 
         
         $request->validate([
             'date' => 'required'

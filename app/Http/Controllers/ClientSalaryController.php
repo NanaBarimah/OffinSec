@@ -142,7 +142,7 @@ class ClientSalaryController extends Controller
 
         ClientSalary::whereHas('guard_clientSalary', function($q) use ($request){
             $q->where('occupation', $request->role);
-        })->where('client_id', $request->client_id)->update(['active']);
+        })->where('client_id', $request->client_id)->update(['active' => 0]);
 
         $guards = Guard::where('occupation', $request->role)->whereHas('duty_rosters', function($q) use ($request){
             $q->whereHas('site', function($query) use ($request){
