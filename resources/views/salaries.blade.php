@@ -182,6 +182,7 @@ const view = (e) => {
 }
 
 const generate = () => {
+
     $.ajax({
         url : '/api/salaries/generate',
         method : 'POST',

@@ -83,9 +83,21 @@
                 <div class="col-xl-8">
 
             <div class="card-box">
-                <h4 class="header-title mt-0 mb-3">Guards</h4>
-                <hr/>
-                <div class="col-sm-12">
+                <ul class="nav nav-tabs tabs-bordered">
+                    <li class="nav-item">
+                        <a href="#guards" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <i class="fi-head mr-2"></i> Guards
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contacts" data-toggle="tab" aria-expanded="true" class="nav-link">
+                            <i class="mdi mdi-phone mr-2"></i> Emergency Contacts
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="guards">
+                        <div class="col-sm-12">
                             <div class="col-12">
                                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width:100%;">
                                     <thead>
@@ -106,7 +118,34 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
                     </div>
+                    <div class="tab-pane" id="contacts">
+                        <div class="col-sm-12">
+                            <div class="col-12">
+                                <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Contact Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @if($site->duty_roster != null)
+                                        @foreach($site->contacts as $contact)
+                                        <tr>
+                                            <td>{{$contact->contact_name}}</td>
+                                            <td>{{$contact->contact_number}}</td>
+                                        </tr>
+                                        @endforeach
+                                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
 @endsection
@@ -194,7 +233,7 @@
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js')}}" type="text/javascript"></script>
 <script>
-    $('#datatable').DataTable();
+    $('.table').DataTable();
 
     jQuery.browser = {};
         (function () {
@@ -320,6 +359,9 @@
                             showHideTransition : 'slide'
                         });
 
+                        setTimeout(function(){
+                            location.reload();
+                        }, 500);
                     }
                 },
                 error: function(err){
