@@ -208,7 +208,7 @@ class SiteController extends Controller
 
     public function viewSite(Request $request)
     {
-        $site = Site::where('id', $request->id)->with('client', 'supervisor')->with('duty_roster')->with(['duty_roster.guards' => function($q){
+        $site = Site::where('id', $request->id)->with('client', 'supervisor', 'contacts')->with('duty_roster')->with(['duty_roster.guards' => function($q){
             $q->groupBy('guard_id');
         }])->first();
 

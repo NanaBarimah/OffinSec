@@ -51,7 +51,7 @@ class AttendanceController extends Controller
         ]);
 
         
-        if($request->type!= 2){
+        if($request->type != 2){
             if(Attendance::where([['guard_id', $request->guard_id], ['site_id', $request->site_id], ['type', $request->type]])->whereDate('created_at', date('Y-m-d'))->get()->count() > 0){
                 return response()->json([
                     'error' => true,
