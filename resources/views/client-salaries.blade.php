@@ -314,7 +314,7 @@
                     });
 
                     setTimeout(() => {
-                        window.reload();
+                        location.reload();
                     }, 500);
                 }
             },

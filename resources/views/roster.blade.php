@@ -350,13 +350,16 @@
                         </div>
                         <div class="modal-body">
                             <p>Do you really want to remove this guard from this shift? This process cannot be undone.</p>
-                            <div class="col-lg-12 col-sm-12">
-                                <div class="checkbox checkbox-primary">
-                                    <input id="checkbox-g" type="checkbox" name="complete">
-                                    <label for="checkbox-g">
-                                        Remove this guard entirely from the roster.
-                                    </label>
-                                </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="complete" name="complete">
+                                <label class="custom-control-label" for="complete">Remove this guard entirely from the roster</label>
+                            </div>
+                            <div class="custom-control custom-checkbox" id="dismiss_guard_div" style="display:none">
+                                <input type="checkbox" class="custom-control-input checkbox-danger" id="dismiss" name="dismiss">
+                                <label class="custom-control-label text-danger" for="dismiss">This guard is being dismissed</label>
+                            </div>
+                            <div class="form-group mt-3">
+                                <input class="form-control" type="number" step="0.01" id="parting_salary" style="display:none" placeholder="Salary Due Guard"/>
                             </div>
                             <input type="hidden" id="delete-shift-id"/>
                         </div>
@@ -400,7 +403,6 @@
                                 </div>
                                 <div class="shift-error" style="display:none;">
                                     <p class="text-center">Could not get available guards for swap.</p>
-                                </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn" data-dismiss="modal">Cancel</button>
@@ -600,59 +602,76 @@
 
     function removeShift(guard_id, site_id, day, shift_type)
     {
-        var temp = { 'guard_id' : guard_id, 'site_id' : site_id, 'day' : day, 'shift_type_id' : shift_type};
-
+       var temp = { 'guard_id' : guard_id, 'site_id' : site_id, 'day' : day, 'shift_type_id' : shift_type};
+       $('#parting_salary').closest('div').find('.text-danger').css('display', 'none');
+       
+       $('#dismiss').prop('checked', false);
+       $('#complete').prop('checked', false);
+       
+       $('#dismiss_guard_div').css('display', 'none');
+       $('#parting_salary').css('display', 'none');
+              
        $('#delete-shift-id').val(JSON.stringify(temp));
 
        $('#deleteShiftModal').modal('show');
     }
 
     $('#btn-delete-shift').on('click', function(){
+        
+        $(this).closest('form').find('.text-danger').css('display', 'none');
+
         btn = $(this);
         var data = JSON.parse($('#delete-shift-id').val());
 
-        data.complete_delete = $('#checkbox-g').prop('checked')
+        data.complete_delete = $('#complete').prop('checked');
+        data.is_fired = $('#dismiss').prop('checked');
+        data.salary = $('#parting_salary').val();
         
-        applyLoading(btn);
-        $.ajax({
-            url: '/api/remove-shift/delete',
-            data : data,
-            method: 'DELETE',
-            success: function(data){
-                removeLoading(btn, 'Remove');
-                    if(data.error){
-                        $.toast({
-                            text : data.message,
-                            heading : 'Error',
-                            position: 'top-right',
-                            showHideTransition : 'slide', 
-                            bgColor: '#d9534f'
-                        });
-                    }else{
-                        $.toast({
-                            text : data.message,
-                            heading : 'Done',
-                            position: 'top-right',
-                            bgColor : '#5cb85c',
-                            showHideTransition : 'slide'
-                        });
-                        
-                        setTimeout(function(){
-                            location.reload();
-                        }, 500);
-                    }
-            },
-            error: function(err){
-                removeLoading(btn, 'Remove');
-                $.toast({
-                    text : 'Network error',
-                    heading : 'Error',
-                    position: 'top-right',
-                    showHideTransition : 'slide', 
-                    bgColor: '#d9534f'
-                });
-            }
-        })
+        if(data.is_fired && $('#parting_salary').val() != ""){
+            applyLoading(btn);
+            $.ajax({
+                url: '/api/remove-shift/delete',
+                data : data,
+                method: 'DELETE',
+                success: function(data){
+                    removeLoading(btn, 'Remove');
+                        if(data.error){
+                            $.toast({
+                                text : data.message,
+                                heading : 'Error',
+                                position: 'top-right',
+                                showHideTransition : 'slide', 
+                                bgColor: '#d9534f'
+                            });
+                        }else{
+                            $.toast({
+                                text : data.message,
+                                heading : 'Done',
+                                position: 'top-right',
+                                bgColor : '#5cb85c',
+                                showHideTransition : 'slide'
+                            });
+                            
+                            setTimeout(function(){
+                                location.reload();
+                            }, 500);
+                        }
+                },
+                error: function(err){
+                    removeLoading(btn, 'Remove');
+                    $.toast({
+                        text : 'Network error',
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }
+            })
+        }else{
+            $('#parting_salary').closest('div').append('<p class="text-small text-danger">Enter the salary due this guard at the time of dismissal</p>');
+        }
+        
     });
 
     function switchShift(id){
@@ -688,9 +707,6 @@
 
     $('#swap_shift_form').on('submit', function(e){
         e.preventDefault();
-        
-        console.log("works");
-
         var error = false;
         $(this).find('text-danger').css('display', 'none');
         var btn = $('#btn-swap');
@@ -738,5 +754,23 @@
             })
         }
     });
+
+    $('#dismiss').on('change', function(){
+        if($(this).prop('checked')){
+            $('#parting_salary').css('display', 'block');
+        }else{
+            $('#parting_salary').css('display', 'none');
+        }
+    });
+
+    $('#complete').on('change', function(){
+        if($(this).prop('checked')){
+            $('#dismiss_guard_div').css('display', 'block');
+        }else{
+            $('#dismiss').prop('checked', false)
+            $('#dismiss_guard_div').css('display', 'none');
+            $('#parting_salary').css('display', 'none');
+        }
+    })
 </script>
 @endsection
