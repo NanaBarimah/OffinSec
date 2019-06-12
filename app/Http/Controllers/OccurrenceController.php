@@ -15,8 +15,8 @@ class OccurrenceController extends Controller
     public function index()
     {
         //
-        $occurrences = Occurrence::all();
-        return view('occurrences');
+        $occurrences = Occurrence::with('site')->get();
+        return view('occurrences', compact('occurrences'));
     }
 
     /**

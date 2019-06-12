@@ -17,9 +17,8 @@ class IncidentController extends Controller
     public function index()
     {
         //
-        $incidents = Incident::all();
-        $clients = Client::with('sites')->get();
-        return view('incidents', compact('incidents', 'clients'));
+        $incidents = Incident::with('site')->get();
+        return view('incidents', compact('incidents'));
     }
 
     /**
