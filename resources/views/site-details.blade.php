@@ -9,6 +9,18 @@
         position: right;
         float: right;
     }
+    p.badge{
+        font-size: 12px;
+        padding: 12px;
+    }
+
+    .text-tiny{
+        font-size: 12px;
+    }
+
+    .text-black{
+        color: black;
+    }
 </style>
 @endsection
 @section('content')
@@ -20,7 +32,7 @@
                                 <div class="col-sm-6">
                                     <div class="media-body text-white">
                                         <h4 class="mt-1 mb-1 font-18">{{$site->name}}</h4>
-                                        <p class="font-13 text-light">{{$site->phone_number}}</p>
+                                        <p class="font-13 text-light text-uppercase">{{$site->access_code}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -33,6 +45,16 @@
                             </div>
                         </div>
                         <!--/ meta -->
+                           <!--/ meta -->
+                        <div class="row text-right">
+                            <div class="col-sm-12">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#add-contact">
+                                    <p class="badge badge-pill">
+                                        Add Emergency Contact
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -61,9 +83,21 @@
                 <div class="col-xl-8">
 
             <div class="card-box">
-                <h4 class="header-title mt-0 mb-3">Guards</h4>
-                <hr/>
-                <div class="col-sm-12">
+                <ul class="nav nav-tabs tabs-bordered">
+                    <li class="nav-item">
+                        <a href="#guards" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <i class="fi-head mr-2"></i> Guards
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contacts" data-toggle="tab" aria-expanded="true" class="nav-link">
+                            <i class="mdi mdi-phone mr-2"></i> Emergency Contacts
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="guards">
+                        <div class="col-sm-12">
                             <div class="col-12">
                                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width:100%;">
                                     <thead>
@@ -84,7 +118,32 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
                     </div>
+                    <div class="tab-pane" id="contacts">
+                        <div class="col-sm-12">
+                            <div class="col-12">
+                                <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Contact Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($site->contacts as $contact)
+                                        <tr>
+                                            <td>{{$contact->contact_name}}</td>
+                                            <td>{{$contact->contact_number}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
 @endsection
@@ -134,13 +193,55 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="add-contact" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header text-center border-bottom-0 d-block">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title mt-2">Add Emergency Contact</h4>
+                </div>
+                <div class="modal-body p-4">
+                    <form role="form" id="frm_add">
+                    @csrf
+                        <div class="form-row mb-2">
+                            <div class="col-md-6 col-sm-12">
+                                <label for="contact_number" class="col-form-label"><b>Contact Name</b></label>
+                                <input class="form-control resetable" type="text" id="contact_name" placeholder="Abraham Attah" name="contact_name" required>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <label for="contact_number" class="col-form-label"><b>Emergency Number</b></label>
+                                <input class="form-control resetable" type="tel" id="contact_number" placeholder="" name="contact_number" data-mask="(999) 999-999999" required>
+                                <span class="font-10 text-muted">(233) 244-500500</span>
+                            </div>
+                        </div>
+                        <div class="text-right mt-2">
+                            <button type="submit" class="btn btn-icon ml-1 waves-effect waves-light btn-success">Add</button>
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
 <script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js')}}" type="text/javascript"></script>
 <script>
-    $('#datatable').DataTable();
+    $('.table').DataTable();
+
+    jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
     function siteEdit(site)
         {
             $('#edit-site').find('[name="name"]').val(site.name);
@@ -219,6 +320,59 @@
                 }
             });
         }            
+    });
+
+    $('#frm_add').on('submit', function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        data+="&site_id={{$site->id}}";
+
+        var btn = $(this).find('[type="submit"]');
+        var initial = btn.html();
+
+        applyLoading(btn);
+
+        $.ajax({
+            url: '/api/contact/add',
+            method: 'POST',
+            data: data,
+            success: function(data){
+                removeLoading(btn, initial);
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $('#add-contact').modal('hide');
+                        $('#frm_add').trigger('reset');
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+
+                        setTimeout(function(){
+                            location.reload();
+                        }, 500);
+                    }
+                },
+                error: function(err){
+                    removeLoading(btn, initial);
+                    $.toast({
+                        text : 'Network error',
+                        heading : 'Error',
+                        position: 'top-right',
+                        showHideTransition : 'slide', 
+                        bgColor: '#d9534f'
+                    });
+                }
+            });
     });
 </script>
 @endsection

@@ -18,6 +18,11 @@ class Guard extends Model
         'firstname', 'lastname', 'dob', 'gender', 'marital_status', 'occupation', 'address', 'national_id', 'id_type', 'phone_number', 'SSNIT', 'emergency_contact', 'photo', 'bank_name', 'bank_branch', 'account_number',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo('App\Role', 'occupation');
+    }
+
     public function fingerprint()
     {
         return $this->hasOne('App\Fingerprint');
@@ -42,6 +47,11 @@ class Guard extends Model
         return $this->hasMany('App\Attendance', 'guard_id');
     }
 
+    public function attendance_requests()
+    {
+        return $this->hasMany('App\AttendanceRequests', 'guard_id');
+    }
+
     public function deductions()
     {
         return $this->belongsToMany('App\Deduction', 'deduction_guard')->withPivot('date', 'details', 'amount')->withTimestamps();
@@ -59,6 +69,11 @@ class Guard extends Model
 
     public function salary()
     {
-        return $this->hasOne('App\Salary');
+        return $this->hasMany('App\Salary');
+    }
+
+    public function client_salary()
+    {
+        return $this->hasMany('App\ClientSalary');
     }
 }

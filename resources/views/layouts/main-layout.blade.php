@@ -125,6 +125,20 @@
                                 <li><a href="/guards">View Guards</a></li>
                                 <li><a href="/guards/add">New Guard</a></li>
                                 <li><a href="/guards/reports">Guard Reports</a></li>
+                                <li class="has-submenu">
+                                    <a href="javascript:void(0)">Back Office</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a href="/upload">Upload CSV</a>
+                                        </li>
+                                        <li>
+                                            <a href="/biometrics">Update Guard Biometrics</a>
+                                        </li>
+                                        <li>
+                                            <a href="/add-guarantors">Add Guarantors</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
 
@@ -158,11 +172,22 @@
                         <li class="has-submenu">
                             <a href="javascript:void(0)">Reports</a>
                             <ul class="submenu">
-                                <li>
-                                    <a href="/send-report">New Report</a>
+                                <li class="has-submenu">
+                                    <a href="javascript:void(0)">Client Reports</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a href="/send-report">New Client Report</a>
+                                        </li>
+                                        <li>
+                                            <a href="/view-reports">View Generated Reports</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="/view-reports">View Reports</a>
+                                    <a href="/incidents">Incidents</a>
+                                </li>
+                                <li>
+                                    <a href="/occurrences">Occurrences</a>
                                 </li>
                             </ul>
                         </li>
@@ -182,16 +207,10 @@
                             <a href="/users">Users</a>
                         </li>
                         <li class="has-submenu">
-                            <a href="javascript:void(0)">Back Office</a>
+                            <a href="javascript:void(0)">Salaries</a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="/upload">Upload CSV</a>
-                                </li>
-                                <li>
-                                    <a href="/biometrics">Update Guard Biometrics</a>
-                                </li>
-                                <li>
-                                    <a href="/add-guarantors">Add Guarantors</a>
+                                    <a href="/salaries">Generate Salary Report</a>
                                 </li>
                             </ul>
                         </li>

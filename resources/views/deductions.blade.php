@@ -105,7 +105,7 @@
                     <p>
                         To add an offence type, click the button below to continue
                     </p>
-                    <a href="/offence-type" class="btn btn-custom waves">Add New</a>
+                    <a href="/offence-types" class="btn btn-custom waves">Add New</a>
                 </div>
             </div>
         @endif

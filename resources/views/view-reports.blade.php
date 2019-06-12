@@ -4,45 +4,35 @@
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
 @endsection
 @section('content')
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card-box">
-
-
-                            <table class="table table-hover m-0 permissions-list table-actions-bar dt-responsive nowrap" cellspacing="0" width="100%" id="datatable">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>Created At</th>
-                                    <th>Client Name</th>
-                                    <th>File Link</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                @foreach($reports as $report)
-                                <tr>
-                                    <td><b>#{{$report->id}}</b></td>
-                                    <td>
-                                        {{$report->created_at}}
-                                    </td>
-
-                                    <td>
-                                        {{$report->client->name}}
-                                    </td>
-
-                                    <td>
-                                        <a href="{{$report->template}}">{{$report->template}}</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+<div class="row">
+    <div class="col-12">
+        <div class="card-box">
+            <button type="button" class="btn btn-custom w-md waves-effect waves-light float-right">New Report</button>
+            <h4 class="header-title m-b-30">Generated Reports</h4>
+            
+            <div class="row">
+                @foreach($reports as $report)
+                <div class="col-lg-3 col-xl-2" title="{{$report->template}}">
+                    <div class="file-man-box">
+                        <small>{{$report->client->name}}</small>
+                        <div class="file-img-box">
+                            <img src="{{asset('assets/images/pdf.svg')}}" alt="icon">
                         </div>
-                    </div><!-- end col -->
+                        <a href="/download/{{$report->fileName}}" class="file-download"><i class="mdi mdi-download text-primary"></i> </a>
+                        <div class="file-man-title">
+                            <h5 class="mb-0 text-overflow">{{$report->template}}</h5>
+                            <p class="mb-0"><small>{{Carbon\Carbon::parse($report->created_at)->diffForHumans()}}</small></p>
+                        </div>
+                    </div>
                 </div>
+                @endforeach
+            </div>
+            <div class="row">
+                {{$reports->links()}}
+            </div>
+        </div>
+    </div><!-- end col -->
+</div>
 @endsection
 @section('scripts')
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>

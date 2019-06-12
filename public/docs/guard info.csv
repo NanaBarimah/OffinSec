@@ -1,42 +1,42 @@
 firstname,lastname,dob,gender,marital_status,occupation,address,national_id,phone_number,SNNIT,emergency_contact,bank_name,account_number
-Anthony,Amegbetsi Attiso,3/3/1957,Male,Widowed,Security Guard,NA,9148016133    ,(233) 543-774105,NA,NA,Fidelity,2100930436812
-Kofi,Kakari,10/25/1950,Male,Married,Security Guard,"A 10-Awudem, Tema Newtown",2539000832    ,(233) 248-259237,F015012250057,(233) 209-623096,Fidelity,2100762312517
-Samuel ,Ottinah Kofi,4/3/1959,Male,Married,Security Guard,Hse  No 14 Heaven Street New Sebrepor,7760041447    ,(233) 277-404627,NA,(233) 207-445007,Fidelity,2100762306015
-William,Ntiamoah Afriyie,6/16/1948,Male,Married,Security Guard,Ashiaman-Adjei kojo,3569009750    ,(233) 243-748230,NA,(233) 263-930730,Fidelity,2100762299612
-Stanislas,Dagawa,6/26/1957,Male,Married,Security Guard,NA,2170003673    ,(233) 248-790394,C015706260077,(233) 240-752276,Fidelity,2100762304519
-Robert,Tetteh,5/19/1996,Male,Single,Security Guard,NA,1209900305    ,(233) 552-738251,O8A19A01689,(233) 549-013048,Fidelity,2100762309918
-Yorku,Raymond,5/25/1973,Male,Married,Security Guard,katamanso New Bridge,8848001288    ,(233) 247-521703,NA,NA,Fidelity,2100762305511
-Clifford,Ankomah,3/22/1973,Male,Married,Security Guard,Adjei Kojo,667300301    ,(233) 570-260677,NA,NA,Fidelity,210 0762304213
-Dennis,Devor,6/10/1987,Male,Married,Security Guard,NO 22 Gbetsile Sanko,3422000178    ,(233) 240-548094,NA,NA,Fidelity,2100762305715
-Forgive,Vorsah,6/5/1995,Female,Single,Security Guard,Madela Park,7931006972    ,(233) 559-779192,NA,NA,Fidelity,2100762299918
-Jacob,Tetteh,8/18/1964,Male,Married,Security Guard,Kpone Shangai,4223023609    ,(233) 488-898968,C036408180018,(233) 246-830542,Fidelity,2100762304315
-Desouza,Dzrakasu,10/27/1996,Male,Single,Security Guard,Ho,2382800684    ,(233) 548-240964,NA,NA,Fidelity,2100762307415
-Dorgbadzi,Agbenyegah,8/4/1972,Male,Married,Security Guard,"Hse No 62, Tema C25",H107208130016,(233) 540-347546,H107208130016,(233) 245-879771,Fidelity,2100762310511
-Moses,Mba Jongban,5/21/1993,Male,Single,Security Guard,Sulu Investment Free Zone Shed 384,1422009934    ,(233) 206-400153,NA,NA,Fidelity,2100762305114
-Stephen,Bichetim,6/11/1986,Male,Married,Security Guard,NA,6285042765    ,(233) 247-616516,G018607110077,NA,Fidelity,2100762299816
-Solomon,Dompreh,1/1/1954,Male,Single,Security Guard,NA,6285014939    ,(233) 544-563091,NA,NA,Fidelity,2100762302717
-Rita,Hagble,8/4/1989,Female,Single,Security Guard,Madela Park,1113202046    ,(233) 246-547046,NA,NA,NA,NA
+Anthony,Amegbetsi Attiso,03/03/1957,Male,Widowed,Security Guard,NA,9148016133,(233) 543-774105,NA,NA,Fidelity,2100930436812
+Kofi,Kakari,10/25/1950,Male,Married,Security Guard,"A 10-Awudem, Tema Newtown",2539000832,(233) 248-259237,F015012250057,(233) 209-623096,Fidelity,2100762312517
+Samuel ,Ottinah Kofi,04/03/1959,Male,Married,Security Guard,Hse  No 14 Heaven Street New Sebrepor,7760041447,(233) 277-404627,NA,(233) 207-445007,Fidelity,2100762306015
+William,Ntiamoah Afriyie,6/16/1948,Male,Married,Security Guard,Ashiaman-Adjei kojo,3569009750,(233) 243-748230,NA,(233) 263-930730,Fidelity,2100762299612
+Stanislas,Dagawa,6/26/1957,Male,Married,Security Guard,NA,2170003673,(233) 248-790394,C015706260077,(233) 240-752276,Fidelity,2100762304519
+Robert,Tetteh,5/19/1996,Male,Single,Security Guard,NA,1209900305,(233) 552-738251,O8A19A01689,(233) 549-013048,Fidelity,2100762309918
+Yorku,Raymond,5/25/1973,Male,Married,Security Guard,katamanso New Bridge,8848001288,(233) 247-521703,NA,NA,Fidelity,2100762305511
+Clifford,Ankomah,3/22/1973,Male,Married,Security Guard,Adjei Kojo,667300301,(233) 570-260677,NA,NA,Fidelity,210 0762304213
+Dennis,Devor,06/10/1987,Male,Married,Security Guard,NO 22 Gbetsile Sanko,3422000178,(233) 240-548094,NA,NA,Fidelity,2100762305715
+Forgive,Vorsah,06/05/1995,Female,Single,Security Guard,Madela Park,7931006972,(233) 559-779192,NA,NA,Fidelity,2100762299918
+Jacob,Tetteh,8/18/1964,Male,Married,Security Guard,Kpone Shangai,4223023609,(233) 488-898968,C036408180018,(233) 246-830542,Fidelity,2100762304315
+Desouza,Dzrakasu,10/27/1996,Male,Single,Security Guard,Ho,2382800684,(233) 548-240964,NA,NA,Fidelity,2100762307415
+Dorgbadzi,Agbenyegah,08/04/1972,Male,Married,Security Guard,"Hse No 62, Tema C25",H107208130016,(233) 540-347546,H107208130016,(233) 245-879771,Fidelity,2100762310511
+Moses,Mba Jongban,5/21/1993,Male,Single,Security Guard,Sulu Investment Free Zone Shed 384,1422009934,(233) 206-400153,NA,NA,Fidelity,2100762305114
+Stephen,Bichetim,06/11/1986,Male,Married,Security Guard,NA,6285042765,(233) 247-616516,G018607110077,NA,Fidelity,2100762299816
+Solomon,Dompreh,01/01/1954,Male,Single,Security Guard,NA,6285014939,(233) 544-563091,NA,NA,Fidelity,2100762302717
+Rita,Hagble,08/04/1989,Female,Single,Security Guard,Madela Park,1113202046,(233) 246-547046,NA,NA,NA,NA
 Stephen,Abofoah,4/15/1964,Male,Married,Security Guard,Washington Ashiaman,NA,(233) 241-604397,76404030036,(233) 244-733470,Fidelity,2100906308713
-John,Afedu,5/30/1994,Male,Married,Security Guard,Tema Commmunity 25 Near D.P.S School,2609700733    ,(233) 555-661459,E059405300016,(233) 543-078250,Fidelity,2100762320118
-Emmanuel,Sey,10/29/1995,Male,Married,Security Guard,Tema Community 25,2708500125    ,(233) 551-199976,B229510290017,(233) 248-157674,Fidelity,2100762310418
+John,Afedu,5/30/1994,Male,Married,Security Guard,Tema Commmunity 25 Near D.P.S School,2609700733,(233) 555-661459,E059405300016,(233) 543-078250,Fidelity,2100762320118
+Emmanuel,Sey,10/29/1995,Male,Married,Security Guard,Tema Community 25,2708500125,(233) 551-199976,B229510290017,(233) 248-157674,Fidelity,2100762310418
 Sharon,Amego,4/26/1979,Female,Married,Security Guard,House No GB/65,NA,(233) 266-928395,D107804260021,NA,Fidelity,2100762311514
 Ransford,Inkoom,6/15/1996,Male,Single,Security Guard,Atta Nii's House Golf City,NA,(233) 243-802520,B089606150011,(233) 248-616421,Fidelity,2100762305817
-Daniel,Kwasi Eshun,5/15/1994,Male,Single,Security Guard,Community 25,1349901445    ,(233) 548-158997,C109405150012,(233) 573-146468,Fidelity,2100762306310
-Frederick,Lemini,4/13/1979,Male,Single,Security Guard,Kakasunaka Roman Church,1825008541    ,(233) 549-234249,K02904130012,(233) 243-367350,Fidelity,2100762309716
-George,Gunu,4/29/1962,Male,Married,Security Guard,SPZ 2/28 Sebrepor Michel Camp,2523620150    ,(233) 275-953772,D096404290019,(233) 208-115958,Fidelity,2100762300711
-Jacob,Fiadorfe,6/16/1988,Male,Married,Security Guard,P.O Box K.J 737 Kumasi,6285004096    ,(233) 248-287707,F018806160138,(233) 546-949530,Fidelity,2100762300019
-Sandra,Adzaklo,2/14/1994,Female,Single,Security Guard,Tafa DJ/150,1245004518    ,(233) 249-932836,D229402140024,NA,Fidelity,2100762300813
-Samuel,Bonto,5/24/1960,Male,Married,Security Guard,SPZ 2/28 Sebrepor,4165014343    ,(233) 245-900627,D176005240018,NA,Fidelity,2100762300618
-Matilda,Nortey,10/3/1983,Female,Widowed,Security Guard,Kpone,3944039027    ,(233) 249-375712,C018312030301,NA,Fidelity,2100762305613
-Kenneth,Ewudzie,8/14/1960,Male,Married,Security Guard,H/No 18 Abokyi Road-Saki,3620009538    ,(233) 245-936237,NA,NA,Fidelity,2100762304916
-Frank,Fummey,11/19/1989,Male,Married,Security Guard,Gbetsele Gbe S44,9300020105    ,(233) 545-248311,NA,NA,Fidelity,2100762310216
-Randolph,Kweku Antwi,10/26/1964,Male,Married,Security Guard,House No S/147 Sebrepor Zone 3,2379008028    ,(233) 555-557898,NA,(233) 201-343219,Fidelity,2100762362919
-Francis,Amoah,11/17/1974,Male,Married,Security Guard,K/87,6573000715    ,(233) 560-466458,43826890,(233) 245-325096,Fidelity,2100762327015
-Kennedy,Sarkodie,8/10/1989,Male,Single,Security Guard,Kpone No BI 560,2221025337    ,(233) 544-242350,NA,(233) 241-075779,Fidelity,2100762330712
-Emmanuel,Sewu,1/24/1979,Male,Married,Security Guard,Hse No 6 Mission Ave Golf,3931008175    ,(233) 540-228840,NA,(233) 249-756649,Fidelity,2100762327015
-Muntari,Mahama Fuseni,3/6/1995,Male,Single,Security Guard,Amasaman E.P.A,2347900140    ,(233) 543-280321,NA,NA,Fidelity,2100762332616
-Samuel,Owora Offei,9/20/1958,Male,Married,Security Guard,CV/93,6869010014    ,(233) 276-715911,NA,NA,Fidelity,2100762305318
-Christopher,Dogbey Selasi,5/26/1994,Male,Single,Security Guard,Gbetsile Pure Oil,2622506166    ,(233) 545-757509,C019405260376,(233) 246-924468,Fidelity,2100762322510
-John,Mordeka,8/1/1984,Male,Married,Security Guard,NA,2575006644    ,(233) 242-241774,NA,(233) 245-278788,Fidelity,2100762321518
-Dominic,Atwere,9/3/1990,Male,Single,Security Guard,Kpone Barrier,6324011748    ,(233) 241-075779,NA,NA,Fidelity,2100762332616
-Charles,Danso,2/6/1965,Male,Widowed,Security Guard,1/m92 Site 19,3921007724    ,(233) 502-432567,NA,NA,Fidelity,2030130316981
+Daniel,Kwasi Eshun,5/15/1994,Male,Single,Security Guard,Community 25,1349901445,(233) 548-158997,C109405150012,(233) 573-146468,Fidelity,2100762306310
+Frederick,Lemini,4/13/1979,Male,Single,Security Guard,Kakasunaka Roman Church,1825008541,(233) 549-234249,K02904130012,(233) 243-367350,Fidelity,2100762309716
+George,Gunu,4/29/1962,Male,Married,Security Guard,SPZ 2/28 Sebrepor Michel Camp,2523620150,(233) 275-953772,D096404290019,(233) 208-115958,Fidelity,2100762300711
+Jacob,Fiadorfe,6/16/1988,Male,Married,Security Guard,P.O Box K.J 737 Kumasi,6285004096,(233) 248-287707,F018806160138,(233) 546-949530,Fidelity,2100762300019
+Sandra,Adzaklo,2/14/1994,Female,Single,Security Guard,Tafa DJ/150,1245004518,(233) 249-932836,D229402140024,NA,Fidelity,2100762300813
+Samuel,Bonto,5/24/1960,Male,Married,Security Guard,SPZ 2/28 Sebrepor,4165014343,(233) 245-900627,D176005240018,NA,Fidelity,2100762300618
+Matilda,Nortey,10/03/1983,Female,Widowed,Security Guard,Kpone,3944039027,(233) 249-375712,C018312030301,NA,Fidelity,2100762305613
+Kenneth,Ewudzie,8/14/1960,Male,Married,Security Guard,H/No 18 Abokyi Road-Saki,3620009538,(233) 245-936237,NA,NA,Fidelity,2100762304916
+Frank,Fummey,11/19/1989,Male,Married,Security Guard,Gbetsele Gbe S44,9300020105,(233) 545-248311,NA,NA,Fidelity,2100762310216
+Randolph,Kweku Antwi,10/26/1964,Male,Married,Security Guard,House No S/147 Sebrepor Zone 3,2379008028,(233) 555-557898,NA,(233) 201-343219,Fidelity,2100762362919
+Francis,Amoah,11/17/1974,Male,Married,Security Guard,K/87,6573000715,(233) 560-466458,43826890,(233) 245-325096,Fidelity,2100762327015
+Kennedy,Sarkodie,08/10/1989,Male,Single,Security Guard,Kpone No BI 560,2221025337,(233) 544-242350,NA,(233) 241-075779,Fidelity,2100762330712
+Emmanuel,Sewu,1/24/1979,Male,Married,Security Guard,Hse No 6 Mission Ave Golf,3931008175,(233) 540-228840,NA,(233) 249-756649,Fidelity,2100762327015
+Muntari,Mahama Fuseni,03/06/1995,Male,Single,Security Guard,Amasaman E.P.A,2347900140,(233) 543-280321,NA,NA,Fidelity,2100762332616
+Samuel,Owora Offei,9/20/1958,Male,Married,Security Guard,CV/93,6869010014,(233) 276-715911,NA,NA,Fidelity,2100762305318
+Christopher,Dogbey Selasi,5/26/1994,Male,Single,Security Guard,Gbetsile Pure Oil,2622506166,(233) 545-757509,C019405260376,(233) 246-924468,Fidelity,2100762322510
+John,Mordeka,08/01/1984,Male,Married,Security Guard,NA,2575006644,(233) 242-241774,NA,(233) 245-278788,Fidelity,2100762321518
+Dominic,Atwere,09/03/1990,Male,Single,Security Guard,Kpone Barrier,6324011748,(233) 241-075779,NA,NA,Fidelity,2100762332616
+Charles,Danso,02/06/1965,Male,Widowed,Security Guard,1/m92 Site 19,3921007724,(233) 502-432567,NA,NA,Fidelity,2030130316981

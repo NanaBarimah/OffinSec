@@ -20,7 +20,7 @@ class CreateGuardsTable extends Migration
             $table->date('dob');
             $table->string('gender');
             $table->string('marital_status');
-            $table->string('occupation');
+            $table->integer('occupation')->unsigned();
             $table->string('address');
             $table->string('national_id');
             $table->string('id_type');
@@ -34,6 +34,9 @@ class CreateGuardsTable extends Migration
             $table->boolean('welfare')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('occupation')->references('id')->on('roles')
+                  ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

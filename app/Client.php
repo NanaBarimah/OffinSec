@@ -32,4 +32,8 @@ class Client extends Model
         return $this->hasMany('App\Access_Code', 'client_id');
     }
 
+    public function client_salary()
+    {
+        return $this->hasMany('App\ClientSalary');
+    }
 }

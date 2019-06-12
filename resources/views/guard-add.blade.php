@@ -98,8 +98,9 @@
                                                     <label for="phone_number" class="col-form-label"><b>Role</b></label>
                                                     <select class="selectpicker show-tick required" data-style="btn-custom" title="Role"
                                                         id="occupation" name="occupation">
-                                                        <option>Security Guard</option>
-                                                        <option>Patrol Officer</option>
+                                                        @foreach($roles as $role)
+                                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-4">

@@ -19,7 +19,7 @@
 </style>
 @endsection
 @section('content')
-<div class="row">
+    <div class="row">
         <div class="col-sm-12">
                     <!-- meta -->
             <div class="profile-user-box card-box bg-custom">
@@ -444,8 +444,8 @@
                             $('.inbox-widget').append('<a href="javascript:void(0)">'+
                             '<div class="inbox-item"><p class="inbox-item-author">'+data.data.name+'</p>'+
                             '<p class="inbox-item-text">'+data.data.location+'</p><p class="inbox-item-date m-t-10">'+
-                            '<button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success" onclick="siteEdit({\'id\' : '+data.data.id+', \'client_id\' : \''+data.data.client_id+'\', \'name\' : \''+data.data.name+'\', \'location\' : \''+data.data.location+'\', \'phone_number\' : \''+data.data.phone_number+'\', \'guard_id\' : \''+data.data.guard_id+'\'})">'+
-                            'Edit </button>'+
+                            '<a href="/site/'+data.data.id+'"><button type="button" class="btn btn-icon btn-sm waves-effect waves-light btn-success">'+
+                            'View </button></a>'+
                             '<br/><span class="text-tiny"><a href="/roster/'+data.data.id+'">Duty Roster</a></span></p></div></a>'); 
                                 
                         }

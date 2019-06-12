@@ -23,7 +23,7 @@ class ReportController extends Controller
     public function index()
     {
         //
-        $reports = Report::with('client')->get();
+        $reports = Report::with('client')->paginate(18);
         return view('view-reports')->with('reports', $reports);
     }
 
@@ -53,7 +53,8 @@ class ReportController extends Controller
         $report = new Report();
 
         $report->client_id = $request->client_id;
-        $report->template = $request->template;
+        $report->template  = $request->template;
+        $report->fileName  = md5($request->template.microtime());
 
         if($report->save()){
             return response()->json([
@@ -192,7 +193,7 @@ class ReportController extends Controller
         $report = new Report();
         $report->client_id = $client->id;
         $report->template = $filename;
-        
+        $report->fileName = md5($filename.microtime());
 
         if($report->save()){
             return response()->json([
@@ -208,6 +209,16 @@ class ReportController extends Controller
         }
     }
 
+    public function download(Request $request)
+    {
+        $report = Report::where('fileName', $request->file)->first();
+        if($report != null){
+            return response()->download(storage_path("docs/".$report->template));
+        }else{
+            return abort(403);
+        }
+    }
+
     public function sendMail(Request $request){
         $request->validate([
             'client_id' => 'required',
@@ -220,7 +231,7 @@ class ReportController extends Controller
         $report = Report::where('id', $request->report)->first();
         $client = Client::where('id', $request->client_id)->first();
 
-        $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $report->template);
+        $data = array('start_date' => $request->start_date, 'end_date' => $request->end_date, 'link' => $report->fileName);
         
 
         $to_name = $client->name;

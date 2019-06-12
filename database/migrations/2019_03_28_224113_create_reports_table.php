@@ -17,6 +17,7 @@ class CreateReportsTable extends Migration
             $table->increments('id');
             $table->string('client_id');
             $table->text('template');
+            $table->string('fileName');
             $table->timestamps();
             $table->softDeletes();
 

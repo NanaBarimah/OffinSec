@@ -6,6 +6,9 @@ use App\Duty_Roster;
 use App\Guard;
 use App\Site;
 use App\Shift_Type;
+use App\ClientSalary;
+use App\Client;
+use App\Salary;
 
 use DB;
 
@@ -218,8 +221,47 @@ class DutyRosterController extends Controller
             'complete_delete' => 'required'
          ]);
 
+
+
         $duty_roster = Duty_Roster::where('site_id', $request->site_id)->first();
-        $guard = Guard::findOrFail($request->guard_id);
+        
+        
+        if($request->is_fired === "true"){
+            $year = date('Y');
+            $month = date('m');
+
+            $guard = Guard::with(['deductions' => function($stmt) use ($month, $year){
+                $stmt->whereYear('date', $year)->whereMonth('date', $month);
+            }])->where('id', $request->guard_id)->first();
+            
+            $total_deduction = 0;
+            
+            foreach($guard->deductions as $deduction){
+                $total_deduction+= $deduction->pivot->amount;
+            }
+            
+            $s_salary = new Salary();
+            $s_salary->guard_id = $guard->id;
+            $s_salary->amount = $request->salary;
+            $s_salary->month = date('Y-m');
+            $s_salary->total_deductions = $total_deduction;
+            $s_salary->bank_name = $guard->bank_name;
+            $s_salary->bank_branch = $guard->bank_branch;
+            $s_salary->account_number = $guard->account_number;
+            $s_salary->status = 0;
+
+            $s_salary->save();
+                
+                
+            $client = Client::whereHas('sites', function($q) use ($request){
+                $q->where('id', $request->site_id); 
+            })->first();
+ 
+            $salary = ClientSalary::where('client_id', $client->id)->where('guard_id', $request->guard_id)->update(['active' => 0]);
+             
+        }else{
+            $guard = Guard::findOrFail($request->guard_id);
+        }
 
         if($request->complete_delete === "false"){
             $guard->duty_rosters()->newPivotStatement()
@@ -232,6 +274,7 @@ class DutyRosterController extends Controller
             ->where('guard_id', $request->guard_id)
             ->where('duty_roster_id', $duty_roster->id)->delete();
         }
+
         
         
         return response()->json([

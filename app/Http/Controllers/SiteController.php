@@ -178,7 +178,7 @@ class SiteController extends Controller
             $q->where('site_id', $site_id);
         };
 
-        $guards = DB::select(DB::raw("SELECT guards.id , guards.firstname, guards.lastname, fingerprints.rtb64 FROM guards, fingerprints, duty_rosters, sites, guard_roster 
+        $guards = DB::select(DB::raw("SELECT guards.*, fingerprints.rtb64 FROM guards, fingerprints, duty_rosters, sites, guard_roster 
         WHERE guards.id = fingerprints.guard_id and guard_roster.guard_id = guards.id and duty_rosters.site_id = sites.id and guard_roster.duty_roster_id = duty_rosters.id and sites.id = '$site_id'"));
 
         $guards = collect($guards);
@@ -208,7 +208,7 @@ class SiteController extends Controller
 
     public function viewSite(Request $request)
     {
-        $site = Site::where('id', $request->id)->with('client', 'supervisor')->with('duty_roster')->with(['duty_roster.guards' => function($q){
+        $site = Site::where('id', $request->id)->with('client', 'supervisor', 'contacts')->with('duty_roster')->with(['duty_roster.guards' => function($q){
             $q->groupBy('guard_id');
         }])->first();
 
