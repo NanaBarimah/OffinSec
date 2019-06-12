@@ -66,7 +66,7 @@
                 <p>No salary records have been generated for the selected month. Do you want to generate the records now?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-custom" onclick="generate()">Generate</button>
+                <button type="button" class="btn btn-custom" onclick="generate(this)">Generate</button>
             </div>
         </div>
     </div>
@@ -181,17 +181,47 @@ const view = (e) => {
     }
 }
 
-const generate = () => {
+const generate = (e) => {
+    let btn = $(e);
+
+    const initial = btn.html();
+
+    applyLoading(btn);
 
     $.ajax({
         url : '/api/salaries/generate',
         method : 'POST',
         data : 'date='+temp_date,
-        success : (response) => {
-            console.log(response);
+        success : (data) => {
+            removeLoading(btn, initial);
+            if(data.error){
+                $.toast({
+                    text : data.message,
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }else{
+                $('#emptySetModal').modal('hide');
+                $.toast({
+                    text : data.message,
+                    heading : 'Done',
+                    position: 'top-right',
+                    bgColor : '#5cb85c',
+                    showHideTransition : 'slide'
+                });
+            }
         },
         error : (error) => {
-            console.log(error);
+            removeLoading(btn, initial);
+            $.toast({
+                text : 'Network error',
+                heading : 'Error',
+                position: 'top-right',
+                showHideTransition : 'slide', 
+                bgColor: '#d9534f'
+            });
         }
     });
 }
