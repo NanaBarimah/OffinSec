@@ -184,10 +184,10 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Incidents</a>
+                                    <a href="/incidents">Incidents</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Occurrences</a>
+                                    <a href="/occurrences">Occurrences</a>
                                 </li>
                             </ul>
                         </li>

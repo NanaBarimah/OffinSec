@@ -45,4 +45,6 @@ Route::middleware('auth')->group(function(){
     Route::get('/site/{id}', 'SiteController@viewSite')->name('site.view');
     Route::get('/salaries', 'SalaryController@all')->name('salaries.all');
     Route::get('/download/{file}', 'ReportController@download');
+    Route::get('/incidents', 'IncidentController@index');
+    Route::get('/occurrences', 'OccurrenceController@index');
 });

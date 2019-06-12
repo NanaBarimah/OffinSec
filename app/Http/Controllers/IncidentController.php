@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Incident;
+use App\Client;
+
 use Illuminate\Http\Request;
 
 class IncidentController extends Controller
@@ -15,6 +17,9 @@ class IncidentController extends Controller
     public function index()
     {
         //
+        $incidents = Incident::all();
+        $clients = Client::with('sites')->get();
+        return view('incidents', compact('incidents', 'clients'));
     }
 
     /**
