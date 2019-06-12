@@ -131,14 +131,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @if($site->duty_roster != null)
                                         @foreach($site->contacts as $contact)
                                         <tr>
                                             <td>{{$contact->contact_name}}</td>
                                             <td>{{$contact->contact_number}}</td>
                                         </tr>
                                         @endforeach
-                                    @endif
                                     </tbody>
                                 </table>
                             </div>
