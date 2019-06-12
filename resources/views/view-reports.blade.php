@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <a href="/reports" class="btn btn-custom w-md waves-effect waves-light float-right">New Report</button>
+            <a href="/reports" class="btn btn-custom w-md waves-effect waves-light float-right">New Report</a>
             <h4 class="header-title m-b-30">Generated Reports</h4>
             
             <div class="row">
