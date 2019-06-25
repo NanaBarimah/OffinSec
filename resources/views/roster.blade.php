@@ -627,50 +627,46 @@
         data.is_fired = $('#dismiss').prop('checked');
         data.salary = $('#parting_salary').val();
         
-        if(data.is_fired && $('#parting_salary').val() != ""){
-            applyLoading(btn);
-            $.ajax({
-                url: '/api/remove-shift/delete',
-                data : data,
-                method: 'DELETE',
-                success: function(data){
-                    removeLoading(btn, 'Remove');
-                        if(data.error){
-                            $.toast({
-                                text : data.message,
-                                heading : 'Error',
-                                position: 'top-right',
-                                showHideTransition : 'slide', 
-                                bgColor: '#d9534f'
-                            });
-                        }else{
-                            $.toast({
-                                text : data.message,
-                                heading : 'Done',
-                                position: 'top-right',
-                                bgColor : '#5cb85c',
-                                showHideTransition : 'slide'
-                            });
-                            
-                            setTimeout(function(){
-                                location.reload();
-                            }, 500);
-                        }
-                },
-                error: function(err){
-                    removeLoading(btn, 'Remove');
-                    $.toast({
-                        text : 'Network error',
-                        heading : 'Error',
-                        position: 'top-right',
-                        showHideTransition : 'slide', 
-                        bgColor: '#d9534f'
-                    });
-                }
-            })
-        }else{
-            $('#parting_salary').closest('div').append('<p class="text-small text-danger">Enter the salary due this guard at the time of dismissal</p>');
-        }
+        applyLoading(btn);
+        $.ajax({
+            url: '/api/remove-shift/delete',
+            data : data,
+            method: 'DELETE',
+            success: function(data){
+                removeLoading(btn, 'Remove');
+                    if(data.error){
+                        $.toast({
+                            text : data.message,
+                            heading : 'Error',
+                            position: 'top-right',
+                            showHideTransition : 'slide', 
+                            bgColor: '#d9534f'
+                        });
+                    }else{
+                        $.toast({
+                            text : data.message,
+                            heading : 'Done',
+                            position: 'top-right',
+                            bgColor : '#5cb85c',
+                            showHideTransition : 'slide'
+                        });
+                        
+                        setTimeout(function(){
+                            location.reload();
+                        }, 500);
+                    }
+            },
+            error: function(err){
+                removeLoading(btn, 'Remove');
+                $.toast({
+                    text : 'Network error',
+                    heading : 'Error',
+                    position: 'top-right',
+                    showHideTransition : 'slide', 
+                    bgColor: '#d9534f'
+                });
+            }
+        });
         
     });
 
