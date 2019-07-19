@@ -79,46 +79,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="view-attendance-modal" tabindex="-1" style="z-index:9999999">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header text-center border-bottom-0 d-block">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title mt-2">Attendance</h4>
-                    </div>
-                    <div class="modal-body p-4">
-                        <div class="loader">
-                            <div class="sk-circle loader">
-                                <div class="sk-circle1 sk-child"></div>
-                                <div class="sk-circle2 sk-child"></div>
-                                <div class="sk-circle3 sk-child"></div>
-                                <div class="sk-circle4 sk-child"></div>
-                                <div class="sk-circle5 sk-child"></div>
-                                <div class="sk-circle6 sk-child"></div>
-                                <div class="sk-circle7 sk-child"></div>
-                                <div class="sk-circle8 sk-child"></div>
-                                <div class="sk-circle9 sk-child"></div>
-                                <div class="sk-circle10 sk-child"></div>
-                                <div class="sk-circle11 sk-child"></div>
-                                <div class="sk-circle12 sk-child"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="attendance_div" style="margin: 20px; overflow-x: hidden; overflow-y: auto; height: 70%;">
-                        <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
-                            <thead>
-                                <th>Guard Name</th>
-                                <th>Time</th>
-                                <th>Type</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Modal Add Category -->
         <div class="modal fade" id="record-attendance" tabindex="-1">
             <div class="modal-dialog">
@@ -253,55 +213,11 @@
 
         $('#view_attendance').on('click', function(e){
             e.preventDefault();
-            
-            $('.loader').css('display', 'block');
-            $('#attendance_div').css('display', 'none');
-
             if(attendance_date == null){
                 $(this).closest('.modal-body').append('<span class="text-danger text-small">Select a date </span>');
             }else{
-                    var data = 'date='+attendance_date+'&site='+$('#site').val();  
-                    console.log(data);
-                    
-                    $.ajax({
-                            url: '/api/attendance',
-                            method: 'GET',
-                            data: data,
-                            success: function(data){
-                                var attendances = [];
-
-                                var table = $('#attendance').DataTable();
-                                table.clear().draw();
-
-                                for(var i = 0; i < data.data.length; i++){
-                                    var type = "undefined";
-
-                                    if(data.data[i].type == 0){
-                                        type = "Check out";
-                                    }else if(data.data[i].type == 1){
-                                        type = "Check in";
-                                    }else if(data.data[i].type == 2){
-                                        type = "Random check";
-                                    }
-
-                                    table.row.add([
-                                        data.data[i].owner_guard.firstname + ' ' + data.data[i].owner_guard.lastname,
-                                        data.data[i].date_time,
-                                        type
-                                    ]).draw();
-                                }
-                                
-                                $('.loader').css('display', 'none');
-                                $('#attendance_div').css('display', 'block');
-                                
-                            },
-                            error: function(error){
-                                console.log(data);
-                            }
-                    });
-                    $('.modal').modal("hide");
-                    $('#view-attendance-modal').modal("show");
-            }
+                window.open(`/attendance-details?date=${attendance_date}&site=${$('#site').val()}`, "_blank");
+            } 
         });
 
 

@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/client/manage-salaries/{id}', 'ClientController@manageSalaries')->name('client.manage-salaries');
     
     Route::get('/attendance', 'AttendanceController@view')->name('view.attendance');
+    Route::get('/attendance-details', 'AttendanceController@details')->name('details.attendance');
     Route::get('/guards', 'GuardController@index')->name('guards');
     Route::get('/guards/add', 'GuardController@create')->name('guard.add');
     Route::get('/guards/reports', 'GuardController@reports')->name('guard.update');

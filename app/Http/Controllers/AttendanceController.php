@@ -52,10 +52,10 @@ class AttendanceController extends Controller
 
         
         if($request->type != 2){
-            if(Attendance::where([['guard_id', $request->guard_id], ['site_id', $request->site_id], ['type', $request->type]])->whereDate('created_at', date('Y-m-d'))->get()->count() > 0){
+            if(Attendance::where([['guard_id', $request->guard_id], ['site_id', $request->site_id], ['type', $request->type]])->whereDate('date_time', date('Y-m-d', strtotime($request->date_time)))->get()->count() > 0){
                 return response()->json([
                     'error' => true,
-                    'message' => $request->type == 1 ? "This guard has already checked in" : "This guard has already checked out"
+                    'message' => $request->type == 1 ? "This guard has already checked in for this day" : "This guard has already checked out for this day"
                 ]);
             }
         }
@@ -159,5 +159,20 @@ class AttendanceController extends Controller
             'error' => false,
             'data' => $attendance
         ]);
+    }
+
+    public function details(Request $request){
+        $request->validate([
+            'date' => 'required',
+            'site' => 'required'
+        ]);
+
+        $attendance = Attendance::with('site', 'owner_guard', 'owner_guard.duty_rosters')
+        ->where('site_id', $request->site)->whereRaw("DATE(date_time) = DATE('$request->date')")->get();
+        
+        $attendances = $attendance->groupBy('type');
+        
+        //return response()->json($attendances);
+        return view('attendance-details', compact("attendances"));
     }
 }
