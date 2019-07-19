@@ -17,8 +17,8 @@
                 <tbody>
                     @foreach($incidents as $incident)
                     <tr>
-                        <td>{{Carbon/Carbon::parse($incident->date)->format('jS F Y')}}</td>
-                        <td>{{Carbon/Carbon::parse($incident->created_at)->format('jS F Y')}}</td>
+                        <td>{{date('jS F, Y', strtotime($incident->date))}}</td>
+                        <td>{{date('jS F, Y', strtotime($incident->created_at))}}</td>
                         <td>{{$incident->site->name}}</td>
                         <td>{{$incident->incident}}</td>
                         <td>{{$incident->action_taken}}</td>
