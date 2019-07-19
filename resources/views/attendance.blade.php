@@ -141,7 +141,7 @@
 @endsection
 @section('modals')
     <div class="modal fade" id="view-attendance-modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header text-center border-bottom-0 d-block">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
