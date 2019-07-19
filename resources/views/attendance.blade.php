@@ -79,7 +79,49 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="view-attendance-modal" tabindex="-1" style="z-index:9999999">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header text-center border-bottom-0 d-block">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mt-2">Attendance</h4>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="loader">
+                            <div class="sk-circle loader">
+                                <div class="sk-circle1 sk-child"></div>
+                                <div class="sk-circle2 sk-child"></div>
+                                <div class="sk-circle3 sk-child"></div>
+                                <div class="sk-circle4 sk-child"></div>
+                                <div class="sk-circle5 sk-child"></div>
+                                <div class="sk-circle6 sk-child"></div>
+                                <div class="sk-circle7 sk-child"></div>
+                                <div class="sk-circle8 sk-child"></div>
+                                <div class="sk-circle9 sk-child"></div>
+                                <div class="sk-circle10 sk-child"></div>
+                                <div class="sk-circle11 sk-child"></div>
+                                <div class="sk-circle12 sk-child"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="attendance_div" style="margin:20px;">
+                        <div class="col-sm-12">
+                            <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
+                                <thead>
+                                    <th>Guard Name</th>
+                                    <th>Time</th>
+                                    <th>Type</th>
+                                </thead>
+                                <tbody>
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal Add Category -->
         <div class="modal fade" id="record-attendance" tabindex="-1">
             <div class="modal-dialog">
@@ -138,51 +180,6 @@
     </div>
     <!-- end col-12 -->
 </div> <!-- end row -->
-@endsection
-@section('modals')
-    <div class="modal fade" id="view-attendance-modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-                <div class="modal-header text-center border-bottom-0 d-block">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title mt-2">Attendance</h4>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="loader">
-                        <div class="sk-circle loader">
-                            <div class="sk-circle1 sk-child"></div>
-                            <div class="sk-circle2 sk-child"></div>
-                            <div class="sk-circle3 sk-child"></div>
-                            <div class="sk-circle4 sk-child"></div>
-                            <div class="sk-circle5 sk-child"></div>
-                            <div class="sk-circle6 sk-child"></div>
-                            <div class="sk-circle7 sk-child"></div>
-                            <div class="sk-circle8 sk-child"></div>
-                            <div class="sk-circle9 sk-child"></div>
-                            <div class="sk-circle10 sk-child"></div>
-                            <div class="sk-circle11 sk-child"></div>
-                            <div class="sk-circle12 sk-child"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" id="attendance_div" style="margin:20px;">
-                    <div class="col-sm-12">
-                        <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
-                            <thead>
-                                <th>Guard Name</th>
-                                <th>Time</th>
-                                <th>Type</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @section('scripts')
     <!-- Jquery-Ui -->
