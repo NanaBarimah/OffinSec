@@ -104,20 +104,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="attendance_div" style="margin:20px;">
-                        <div class="col-sm-12">
-                            <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
-                                <thead>
-                                    <th>Guard Name</th>
-                                    <th>Time</th>
-                                    <th>Type</th>
-                                </thead>
-                                <tbody>
+                    <div id="attendance_div" style="margin: 20px; overflow-x: hidden; overflow-y: auto; height: 70%;">
+                        <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
+                            <thead>
+                                <th>Guard Name</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                            </thead>
+                            <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
