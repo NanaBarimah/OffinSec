@@ -1,4 +1,7 @@
 @extends('layouts.main-layout', ['page_title' => 'View Attendance'])
+@section('styles')
+
+@endsection
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -61,7 +64,7 @@
                                             </tr>
                                         </thead>
                                         @isset($attendances[0])
-                                            @foreach($attendances[1] as $attendance)
+                                            @foreach($attendances[0] as $attendance)
                                                 <tr>
                                                     <td>{{$attendance->owner_guard->firstname.' '.$attendance->owner_guard->lastname}}</td>
                                                     <td>{{$attendance->owner_guard->duty_rosters[0] == null ? N/A : $attendance->owner_guard->duty_rosters[0]->pivot->shift_type_name}}</td>
@@ -74,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="">
+                        <div class="tab-pane" id="random">
                             <div class="col-sm-12">
                                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width:100%;">
                                     <thead>
@@ -86,7 +89,7 @@
                                         </tr>
                                     </thead>
                                     @isset($attendances[2])
-                                        @foreach($attendances[1] as $attendance)
+                                        @foreach($attendances[2] as $attendance)
                                             <tr>
                                                 <td>{{$attendance->owner_guard->firstname.' '.$attendance->owner_guard->lastname}}</td>
                                                 <td>{{$attendance->owner_guard->duty_rosters[0] == null ? N/A : $attendance->owner_guard->duty_rosters[0]->pivot->shift_type_name}}</td>
