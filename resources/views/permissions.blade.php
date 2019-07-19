@@ -124,7 +124,7 @@
                     </tbody>
                 </table>
             </div>
-        </div><!-- end col -->
+        </div>
     </div>
 @endsection
 @section('modals')
