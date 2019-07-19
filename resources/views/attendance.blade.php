@@ -140,39 +140,46 @@
 </div> <!-- end row -->
 @endsection
 @section('modals')
-    <div id="custom-modal" class="modal-demo">
-        <button type="button" class="close" onclick="Custombox.close();">
-            <span>&times;</span><span class="sr-only">Close</span>
-        </button>
-        <h4 class="custom-modal-title">Attendance</h4>
-        <div class="custom-modal-text">
-            <div class="loader">
-                <div class="sk-circle loader">
-                    <div class="sk-circle1 sk-child"></div>
-                    <div class="sk-circle2 sk-child"></div>
-                    <div class="sk-circle3 sk-child"></div>
-                    <div class="sk-circle4 sk-child"></div>
-                    <div class="sk-circle5 sk-child"></div>
-                    <div class="sk-circle6 sk-child"></div>
-                    <div class="sk-circle7 sk-child"></div>
-                    <div class="sk-circle8 sk-child"></div>
-                    <div class="sk-circle9 sk-child"></div>
-                    <div class="sk-circle10 sk-child"></div>
-                    <div class="sk-circle11 sk-child"></div>
-                    <div class="sk-circle12 sk-child"></div>
+    <div class="modal fade" id="view-attendance-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-center border-bottom-0 d-block">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title mt-2">Attendance</h4>
                 </div>
-            </div>
-            <div class="row col-sm-12" id="attendance_div">
-                <table id="attendance" class="table table-bordered table-striped table-hover dt-responsive nowrap">
-                    <thead>
-                        <th>Guard Name</th>
-                        <th>Time</th>
-                        <th>Type</th>
-                    </thead>
-                    <tbody>
+                <div class="modal-body p-4">
+                    <div class="loader">
+                        <div class="sk-circle loader">
+                            <div class="sk-circle1 sk-child"></div>
+                            <div class="sk-circle2 sk-child"></div>
+                            <div class="sk-circle3 sk-child"></div>
+                            <div class="sk-circle4 sk-child"></div>
+                            <div class="sk-circle5 sk-child"></div>
+                            <div class="sk-circle6 sk-child"></div>
+                            <div class="sk-circle7 sk-child"></div>
+                            <div class="sk-circle8 sk-child"></div>
+                            <div class="sk-circle9 sk-child"></div>
+                            <div class="sk-circle10 sk-child"></div>
+                            <div class="sk-circle11 sk-child"></div>
+                            <div class="sk-circle12 sk-child"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="attendance_div" style="margin:20px;">
+                    <div class="col-sm-12">
+                        <table id="attendance" class="table table-bordered table-hover dt-responsive no-wrap">
+                            <thead>
+                                <th>Guard Name</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                            </thead>
+                            <tbody>
 
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>
@@ -180,10 +187,6 @@
 @section('scripts')
     <!-- Jquery-Ui -->
     <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-
-    <!--Animations-->
-    <script src="{{asset('plugins/custombox/js/custombox.min.js')}}"></script>
-    <script src="{{asset('plugins/custombox/js/legacy.min.js')}}"></script>
 
     <!-- SCRIPTS -->
     <script src="{{asset('plugins/moment/moment.js')}}"></script>
@@ -302,24 +305,8 @@
                                 console.log(data);
                             }
                     });
-              
-                    
-                    Custombox.open({
-                    target: '#custom-modal',
-                    effect: 'push',
-                    overlaySpeed: '100',
-                    overlayColor: '#36404a',
-                    fullscreen: true,
-                    onOpen: function(){
-                        return 0;
-                    },
-                    onClose: function(){
-                        return 0;
-                    },
-                    onComplete: function(){
-                        return 0;
-                    }
-                });
+                    $('.modal').modal("hide");
+                    $('#view-attendance-modal').modal("show");
             }
         });
 
@@ -356,7 +343,7 @@
                     method : 'POST',
                     data : data,
                     success: function(data){
-                        removeLoading(btn, 'Add Client');
+                        removeLoading(btn, 'Save');
                             if(data.error){
                                 removeLoading(btn, 'Add Client');
 
@@ -380,7 +367,7 @@
                             }
                     },
                     error: function(err){
-                        removeLoading(btn, 'Add Client');
+                        removeLoading(btn, 'Save');
 
                         $.toast({
                             text : 'Network error',
