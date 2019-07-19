@@ -71,10 +71,14 @@
                     <tr>
                         <td><b>#{{$permission->id}}</b></td>
                         <td>
+                            @if($permission->owner_guard != null)
                             <a href="javascript: void(0);">
                                 <img src="{{$permission->owner_guard->photo == '' || $permission->owner_guard->photo == null ? asset('assets/images/avatar.jpg') : asset('assets/images/guards/'.$permission->owner_guard->photo)}}" onerror="this.src={{asset('assets/images/avatar.jpg')}}" class="rounded-circle thumb-sm" alt="friend" />
                                 <span class="ml-2">{{ucwords($permission->owner_guard->firstname.' '.$permission->owner_guard->lastname)}}</span>
                             </a>
+                            @else
+                                <span class="text-small text-muted">N/A</span>
+                            @endif
                         </td>
 
                         <td>
