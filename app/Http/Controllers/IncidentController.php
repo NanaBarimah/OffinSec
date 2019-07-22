@@ -42,7 +42,8 @@ class IncidentController extends Controller
         $request->validate([
             'incident' => 'required',
             'action_taken' => 'required',
-            'site_id' => 'required'
+            'site_id' => 'required',
+            'date' => 'required'
         ]);
 
         $incident = new Incident();
@@ -50,6 +51,7 @@ class IncidentController extends Controller
         $incident->incident = $request->incident;
         $incident->action_taken = $request->action_taken;
         $incident->site_id = $request->site_id;
+        $incident->date = date('Y-m-d', strtotime($request->date));
 
         if($incident->save()){
             return response()->json([

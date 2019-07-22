@@ -39,13 +39,15 @@ class OccurrenceController extends Controller
     {
         $request->validate([
             'occurrence' => 'required',
-            'site_id' => 'required'
+            'site_id' => 'required',
+            'date' => 'required'
         ]);
 
         $occurrence = new Occurrence();
 
         $occurrence->occurrence = $request->occurrence;
         $occurrence->site_id = $request->site_id;
+        $occurrence->date = date('Y-m-d', strtotime($request->date));
 
         if($occurrence->save()){
             return response()->json([
