@@ -47,7 +47,7 @@
                 </div>
 
 
-                <table class="table table-hover m-0 permissions-list table-actions-bar dt-responsive nowrap" cellspacing="0" width="100%" id="datatable">
+                <table class="table table-responsive table-hover m-0 permissions-list table-actions-bar dt-responsive nowrap" cellspacing="0" width="100%" id="datatable">
                     <thead>
                     <tr>
                         <th>
